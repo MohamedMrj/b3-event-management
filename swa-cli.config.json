@@ -4,7 +4,8 @@
     "app": {
       "context": "http://localhost:4200",
       "run": "npm start",
-      "apiLocation": "",
+      "apiLocation": "api",
+      "apiPort": 7177,
       "outputLocation": "dist/angular-basic",
       "devserverTimeout": 10000,
       "open": "true"
