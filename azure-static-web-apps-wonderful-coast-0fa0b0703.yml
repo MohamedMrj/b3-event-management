@@ -10,4 +10,4 @@ steps:
       app_location: '/'
       api_location: 'api'
       output_location: 'dist/angular-basic'
-      azure_static_web_apps_api_token: $(deployment_token)
+      azure_static_web_apps_api_token: $(AZURE_STATIC_WEB_APPS_API_TOKEN_WONDERFUL_COAST_0FA0B0703)
