@@ -1,14 +1,24 @@
 .center-content {
   display: flex;
-  justify-content: center;
-  /* align-items: center;  Center vertically */
-  /* height: 100%; Need full height to center vertically */
-  margin-top: 1rem;
-  padding: 0 1rem;
+  flex-direction: column;
+  height: 100%; /* Need full height to center vertically */
+  margin: 1rem;
 }
 
 @media (min-width: 640px) {
   .center-content {
-    margin-top: 4rem;
+    margin: 4rem 4rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .center-content {
+    margin: 4rem 8rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .center-content {
+    margin: 4rem 12rem;
   }
 }
