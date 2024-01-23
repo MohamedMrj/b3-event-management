@@ -2,6 +2,6 @@
   display: flex;
   justify-content: center;
   /* align-items: center;  Center vertically */
-  height: 100vh;
+  /* height: 100%; Need full height to center vertically */
   margin-top: 4rem;
 }

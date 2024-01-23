@@ -1,5 +1,5 @@
 mat-toolbar {
-  background-color: #FF4F94;
+  background-color: var(--pink); /* B3 Pink (--pink) and B3 Cyan (--cyan) available as variables */
 }
 
 .logo {
