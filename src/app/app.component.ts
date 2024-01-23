@@ -1,18 +1,22 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-root',
-  template: `<div>{{message}}</div>`,
+  templateUrl: './app.component.html'
 })
 export class AppComponent implements OnInit {
+  title = 'B3 Events';
   message = '';
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private titleService: Title) {
   }
 
   ngOnInit() {
+    this.titleService.setTitle(this.title); //
+
     this.get().subscribe(response => {
       this.message = response;
     });
