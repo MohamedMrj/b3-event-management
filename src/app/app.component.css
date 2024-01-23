@@ -3,5 +3,12 @@
   justify-content: center;
   /* align-items: center;  Center vertically */
   /* height: 100%; Need full height to center vertically */
-  margin-top: 4rem;
+  margin-top: 1rem;
+  padding: 0 1rem;
+}
+
+@media (min-width: 640px) {
+  .center-content {
+    margin-top: 4rem;
+  }
 }
