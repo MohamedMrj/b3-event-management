@@ -1,3 +1,13 @@
+mat-toolbar {
+  background-color: #FF4F94;
+}
+
+.logo {
+  height: 40px;
+  width: auto;
+  padding: 12px;
+}
+
 .example-spacer {
   flex: 1 1 auto;
 }
