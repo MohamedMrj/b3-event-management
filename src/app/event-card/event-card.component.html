@@ -1,11 +1,11 @@
 <mat-card class="event-card">
-    <a href="/events/1" class="card-link"><img [src]="imageUrl" [alt]="imageAlt"></a>
+    <a href="/event/{{event.id}}" class="card-link"><img [src]="event.eventImageUrl" [alt]="event.eventImageAlt"></a>
     <mat-card-header>
-        <mat-card-subtitle>{{ subtitle }}</mat-card-subtitle>
-        <mat-card-title><a href="/events/1" class="card-link">{{ title }}</a></mat-card-title>
+        <mat-card-subtitle>{{ event.subtitle }}</mat-card-subtitle>
+        <mat-card-title><a href="/event/{{event.id}}" class="card-link">{{ event.title }}</a></mat-card-title>
     </mat-card-header>
     <mat-card-content>
-        <p>{{ longText }}</p>
+        <p>{{ event.longText }}</p>
         <mat-divider></mat-divider>
     </mat-card-content>
     <mat-card-actions>

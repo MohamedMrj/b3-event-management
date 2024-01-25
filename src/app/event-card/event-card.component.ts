@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatCardModule } from '@angular/material/card';
+import { Event } from '../event';
 
 @Component({
   selector: 'event-card',
@@ -11,9 +12,5 @@ import { MatCardModule } from '@angular/material/card';
   imports: [MatCardModule, MatDividerModule, MatButtonModule],
 })
 export class EventCardComponent {
-  @Input() title: string;
-  @Input() subtitle: string;
-  @Input() longText: string;
-  @Input() imageUrl: string;
-  @Input() imageAlt: string;
+  @Input() event: Event;
 }
