@@ -1,8 +1,8 @@
 <mat-card class="event-card">
-    <img [src]="imageUrl" [alt]="imageAlt">
+    <a href="/events/1" class="card-link"><img [src]="imageUrl" [alt]="imageAlt"></a>
     <mat-card-header>
         <mat-card-subtitle>{{ subtitle }}</mat-card-subtitle>
-        <mat-card-title>{{ title }}</mat-card-title>
+        <mat-card-title><a href="/events/1" class="card-link">{{ title }}</a></mat-card-title>
     </mat-card-header>
     <mat-card-content>
         <p>{{ longText }}</p>
