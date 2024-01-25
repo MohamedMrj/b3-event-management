@@ -28,4 +28,10 @@ export class AppComponent implements OnInit {
 
     return this.http.get('/api/message', { responseType: 'text', params: params });
   }
+
+  eventSubtitle = 'Dog Lovers Meetup';
+  eventTitle = 'Shiba Inu Gathering';
+  eventLongText = 'Join us for a fun afternoon with Shiba Inus!';
+  eventImageUrl = 'https://material.angular.io/assets/img/examples/shiba2.jpg';
+  eventImageAlt = 'Photo of a Shiba Inu';
 }

@@ -1,7 +1,7 @@
-import {Component} from '@angular/core';
-import {MatButtonModule} from '@angular/material/button';
-import {MatDividerModule} from '@angular/material/divider';
-import {MatCardModule} from '@angular/material/card';
+import { Component, Input } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'event-card',
@@ -11,5 +11,9 @@ import {MatCardModule} from '@angular/material/card';
   imports: [MatCardModule, MatDividerModule, MatButtonModule],
 })
 export class EventCardComponent {
-  longText = `The sun sets over the horizon, painting the sky in hues of orange and pink. Birds chirp and flowers bloom, signaling the arrival of spring.`;
+  @Input() title: string;
+  @Input() subtitle: string;
+  @Input() longText: string;
+  @Input() imageUrl: string;
+  @Input() imageAlt: string;
 }

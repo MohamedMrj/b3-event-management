@@ -5,13 +5,9 @@
     <p>{{ message }}</p>
 
     <div class="events-container">
-        <event-card></event-card>
-        <event-card></event-card>
-        <event-card></event-card>
-        <event-card></event-card>
-        <event-card></event-card>
-        <event-card></event-card>
-        <event-card></event-card>
+        <event-card [subtitle]="eventSubtitle" [title]="eventTitle" [longText]="eventLongText"
+            [imageUrl]="eventImageUrl" [imageAlt]="eventImageAlt">
+        </event-card>
     </div>
 </div>
 
