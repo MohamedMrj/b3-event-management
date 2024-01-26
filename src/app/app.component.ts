@@ -10,7 +10,7 @@ import { Title } from '@angular/platform-browser';
 })
 
 export class AppComponent implements OnInit {
-  title = 'B3 Events';
+  title = 'Events';
   message = '';
 
   constructor(private http: HttpClient, private titleService: Title) {
