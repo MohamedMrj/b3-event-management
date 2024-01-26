@@ -41,15 +41,12 @@ mat-toolbar {
   gap: 1rem;
 }
 
-.logo-link {
+.logo {
   display: flex;
   gap: 1rem;
   align-items: center;
   text-decoration: none;
   color: inherit;
-}
-
-.logo {
   height: 100%;
   padding: 1rem 0;
 }
