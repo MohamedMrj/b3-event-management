@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { FooterComponent } from './footer.component';
+import { ApiTestComponent } from './api-test.component';
 
-describe('FooterComponent', () => {
-  let component: FooterComponent;
-  let fixture: ComponentFixture<FooterComponent>;
+describe('ApiTestComponent', () => {
+  let component: ApiTestComponent;
+  let fixture: ComponentFixture<ApiTestComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [FooterComponent]
+      declarations: [ApiTestComponent]
     });
-    fixture = TestBed.createComponent(FooterComponent);
+    fixture = TestBed.createComponent(ApiTestComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

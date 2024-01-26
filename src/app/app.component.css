@@ -1,3 +1,5 @@
+/* Main */
+
 .main-wrapper {
   margin: 1rem;
 }
@@ -29,5 +31,52 @@
 @media (min-width: 1536px) {
   .main-wrapper {
     margin: 4rem 16rem;
+  }
+}
+
+
+/* Header */
+
+mat-toolbar {
+  background-color: var(--pink); /* B3 Pink (--pink) and B3 Cyan (--cyan) available as variables */
+  gap: 1rem;
+}
+
+.logo {
+  height: 100%;
+  padding: 1rem 0;
+}
+
+.logo img {
+  height: 100%;
+  width: auto;
+}
+
+.flex-spacer {
+  flex: 1 1 auto;
+}
+
+/* Footer */
+
+
+.footer {
+  margin-top: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+  background-color: #000000;
+  color: #ffffff;
+}
+
+.footer .logo {
+  height: 2rem;
+  width: auto;
+  padding: 0;
+}
+
+@media (min-width: 640px) {
+  .footer {
+    padding: 4rem;
   }
 }

@@ -1,3 +1,16 @@
+.event-list-header {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.create-event-button {
+  background-color: var(--pink);
+}
+
+
 .events-container {
     display: grid;
     grid-template-columns: repeat(1, 1fr);

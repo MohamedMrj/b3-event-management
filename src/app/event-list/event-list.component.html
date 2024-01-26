@@ -1,3 +1,9 @@
+<div class="event-list-header">
+    <h1>Events</h1>
+    <button mat-fab aria-label="Create event button" class="create-event-button">
+        <mat-icon>add</mat-icon>
+    </button>
+</div>
 <div class="events-container">
     <event-card *ngFor="let event of eventList" [event]="event">
     </event-card>

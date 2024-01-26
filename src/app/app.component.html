@@ -1,10 +1,13 @@
-<app-header></app-header>
+<mat-toolbar>
+    <a href="/" class="logo"><img src="assets/b3-logo.png" alt="Logo"></a>
+    <span>Events</span>
+    <span class="flex-spacer"></span>
+</mat-toolbar>
 
 <div class="main-wrapper">
-    <h1>{{ title }}</h1>
-    <p>{{ message }}</p>
-
     <router-outlet></router-outlet>
 </div>
 
-<app-footer></app-footer>
+<div class="footer">
+    <img src="assets/b3-logo.png" alt="Logo" class="logo invert-color">
+</div>
