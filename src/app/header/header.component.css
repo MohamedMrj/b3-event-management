@@ -1,11 +1,16 @@
 mat-toolbar {
   background-color: var(--pink); /* B3 Pink (--pink) and B3 Cyan (--cyan) available as variables */
+  gap: 1rem;
 }
 
 .logo {
   height: 100%;
+  padding: 1rem 0;
+}
+
+.logo img {
+  height: 100%;
   width: auto;
-  padding: 1rem;
 }
 
 .flex-spacer {
