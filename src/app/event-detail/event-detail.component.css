@@ -1,0 +1,10 @@
+.event-detail-header {
+  display: flex;
+  gap: 1rem;
+  flex-direction: row;
+  margin-bottom: 1rem;
+}
+
+.flex-spacer {
+  flex: 1 1 auto;
+}

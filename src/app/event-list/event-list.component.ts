@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Title } from '@angular/platform-browser';
+import { Router } from '@angular/router';
 import { Event } from '../event';
 
 @Component({
@@ -9,8 +10,12 @@ import { Event } from '../event';
 })
 
 export class EventListComponent {
-  constructor(private titleService: Title) {
+  constructor(private router: Router, private titleService: Title) {
     this.titleService.setTitle('Events');
+  }
+
+  navigateToCreateEvent() {
+    this.router.navigate(['/event/create']);
   }
 
   // Example of a list of events to display until we have a backend

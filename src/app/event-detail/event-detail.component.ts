@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Title } from '@angular/platform-browser';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-event-detail',
@@ -7,7 +8,11 @@ import { Title } from '@angular/platform-browser';
   styleUrls: ['./event-detail.component.css']
 })
 export class EventDetailComponent {
-  constructor(private titleService: Title) {
+  constructor(private router: Router, private titleService: Title) {
     this.titleService.setTitle('>>>Event Title<<<');
+  }
+
+  navigateToEditEvent() {
+    this.router.navigate(['/event/update/:eventId']);
   }
 }

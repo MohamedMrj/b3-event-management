@@ -2,11 +2,6 @@
     box-sizing: border-box;
 }
 
-:root {
-    --pink: #FF4F94;
-    --cyan: #0CCCCC;
-}
-
 body {
     height: 100dvh;
     margin: 0;

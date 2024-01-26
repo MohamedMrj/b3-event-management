@@ -9,9 +9,9 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 
 const routes: Routes = [
   { path: '', component: EventListComponent },
-  { path: 'event/:eventid', component: EventDetailComponent },
   { path: 'event/create', component: EventCreateComponent },
   { path: 'event/update/:eventid', component: EventEditComponent },
+  { path: 'event/:eventid', component: EventDetailComponent },
   { path: 'api-test', component: ApiTestComponent },
   { path: '**', component: PageNotFoundComponent }
 ];
