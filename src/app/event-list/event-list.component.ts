@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { Event } from '../event';
 
 @Component({
@@ -8,6 +9,10 @@ import { Event } from '../event';
 })
 
 export class EventListComponent {
+  constructor(private titleService: Title) {
+    this.titleService.setTitle('Events');
+  }
+
   // Example of a list of events to display until we have a backend
   eventList: Event[] = [
     {
