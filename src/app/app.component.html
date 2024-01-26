@@ -4,10 +4,7 @@
     <h1>{{ title }}</h1>
     <p>{{ message }}</p>
 
-    <div class="events-container">
-        <event-card *ngFor="let event of eventList" [event]="event">
-        </event-card>
-    </div>
+    <app-event-list></app-event-list>
 </div>
 
 <app-footer></app-footer>

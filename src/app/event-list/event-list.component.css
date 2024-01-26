@@ -1,0 +1,30 @@
+.events-container {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    grid-auto-rows: minmax(100px, auto);
+    gap: 1rem;
+  }
+  
+  @media (min-width: 640px) {  
+    .events-container {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  
+  @media (min-width: 768px) {
+  }
+  
+  @media (min-width: 1024px) {
+    .events-container {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  
+  @media (min-width: 1280px) {
+  }
+  
+  @media (min-width: 1536px) {
+    .events-container {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
