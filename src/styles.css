@@ -21,6 +21,10 @@ h1 {
     height: 2rem;
 }
 
+.flex-spacer {
+    flex: 1 1 auto;
+}
+
 app-root {
     display: flex;
     flex-direction: column;
