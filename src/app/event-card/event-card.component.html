@@ -1,11 +1,28 @@
 <mat-card class="event-card">
-    <a href="/event/{{event.id}}" class="card-link"><img [src]="event.eventImageUrl" [alt]="event.eventImageAlt"></a>
+    <a href="/event/{{event.id}}" class="card-link">
+        <img [src]="event.eventImageUrl" [alt]="event.eventImageAlt">
+    </a>
     <mat-card-header>
-        <mat-card-subtitle>{{ event.subtitle }}</mat-card-subtitle>
-        <mat-card-title><a href="/event/{{event.id}}" class="card-link">{{ event.title }}</a></mat-card-title>
+        <mat-card-subtitle>{{ event.shortDescription }}</mat-card-subtitle>
+        <mat-card-title>
+            <a href="/event/{{event.id}}" class="card-link">
+                {{ event.title }}
+            </a>
+        </mat-card-title>
     </mat-card-header>
     <mat-card-content>
-        <p>{{ event.longText }}</p>
+        <p>{{ event.longDescription }}</p>
+        <span class="flex-spacer"></span>
+        <div class="event-card-location">
+            <mat-icon>event</mat-icon>
+            <p>{{ event.startDate | date: 'fullDate' }}</p>
+        </div>
+        <div class="event-card-location">
+            <mat-icon>location_on</mat-icon>
+            <a href="{{ getGoogleMapsUrl(event.location) }}" target="_blank">
+                {{ formatLocation(event.location) }}
+            </a>
+        </div>
     </mat-card-content>
     <mat-divider></mat-divider>
     <mat-card-actions>

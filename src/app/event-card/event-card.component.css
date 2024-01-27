@@ -11,15 +11,29 @@
   object-fit: cover;
 }
 
+.event-card-location {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.event-card-location a {
+  color: inherit;
+  text-decoration: none;
+  color: #ff4081;
+}
+
 .card-link {
   color: inherit;
   text-decoration: none;
 }
 
-mat-divider {
-  margin: auto 1rem 0 1rem;
-}
-
 .mat-mdc-card-content>:last-child:not(.mat-mdc-card-footer) {
   margin-bottom: 1rem;
+}
+
+mat-card-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
