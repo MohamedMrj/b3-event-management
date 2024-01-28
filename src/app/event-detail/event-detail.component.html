@@ -27,8 +27,10 @@
                     <mat-icon>location_on</mat-icon>
                     <a [href]="event.location | googleMapsUrl" target="_blank">{{ event.location | locationFormat }}</a>
                 </div>
-                <iframe [src]="event.location | googleMapsEmbedUrl | safe" loading="lazy" width="100%" height="250"
-                    frameborder="0" allowfullscreen></iframe>
+                <div class="googleMapsEmbed">
+                    <iframe [src]="event.location | googleMapsEmbedUrl | safe" loading="lazy" width="100%" height="250"
+                        frameborder="0" allowfullscreen></iframe>
+                </div>
             </div>
         </div>
         <div class="event-detail-body-left">

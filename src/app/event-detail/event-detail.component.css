@@ -29,6 +29,12 @@
   }
 }
 
+@media (max-width: 768px) {
+  .googleMapsEmbed {
+    display: none;
+  }
+}
+
 .event-detail-header {
   display: flex;
   gap: 1rem;
