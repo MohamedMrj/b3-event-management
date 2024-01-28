@@ -11,6 +11,10 @@
   object-fit: cover;
 }
 
+.cardDescription {
+  margin-bottom: 0.5rem;
+}
+
 .event-card-info {
   display: flex;
   align-items: center;
@@ -21,8 +25,13 @@
   margin-bottom: 1rem;
 }
 
+mat-card-header {
+  margin-bottom: 0.5rem;
+}
+
 mat-card-content {
   display: flex;
   flex-direction: column;
   height: 100%;
+  gap: 0.25rem;
 }

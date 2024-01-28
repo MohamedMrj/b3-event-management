@@ -27,9 +27,12 @@ a:hover {
 }
 
 h1 {
-    margin: 0;
     font-size: 2rem;
     font-weight: 600;
+}
+
+p, h1, h2 {
+    margin: 0;
 }
 
 .invert-color {
