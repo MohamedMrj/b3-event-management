@@ -6,6 +6,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  margin-top: 1rem;
 }
 
 .event-detail-body-right {
@@ -50,7 +51,6 @@
   align-items: center;
   flex-direction: row;
   gap: 1rem;
-  margin-bottom: 1rem;
 }
 
 .event-image {
