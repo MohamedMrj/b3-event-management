@@ -13,6 +13,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule, MAT_DATE_FORMATS } from '@angular/material/core';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatInputModule } from '@angular/material/input';
+import { MatMenuModule } from '@angular/material/menu';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { registerLocaleData } from '@angular/common';
 import localeSv from '@angular/common/locales/sv';
@@ -71,6 +72,7 @@ registerLocaleData(localePl);
     BrowserAnimationsModule,
     MarkdownModule.forRoot(),
     MatSnackBarModule,
+    MatMenuModule,
   ],
   bootstrap: [
     AppComponent

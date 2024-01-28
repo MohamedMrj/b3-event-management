@@ -1,11 +1,16 @@
 <div class="container">
     <div class="editEvent-header">
-        <h1>Edit {{ event.title }}</h1>
+        <h1>{{ event.title }}</h1>
         <span class="flex-spacer"></span>
-        <button mat-fab color="accent" aria-label="Delete event button" class="delete-event-button"
-            (click)="deleteEvent()">
-            <mat-icon>delete</mat-icon>
+        <button mat-icon-button [matMenuTriggerFor]="manageEventMenu" aria-label="Menu for managing event">
+            <mat-icon>more_vert</mat-icon>
         </button>
+        <mat-menu #manageEventMenu="matMenu">
+            <button mat-menu-item (click)="deleteEvent()">
+                <mat-icon color="warn">delete</mat-icon>
+                <span>Delete event</span>
+            </button>
+        </mat-menu>
     </div>
     <app-create-event-form></app-create-event-form>
 </div>

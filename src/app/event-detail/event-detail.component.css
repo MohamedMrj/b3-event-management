@@ -32,6 +32,12 @@
   gap: 0.5rem;
 }
 
+@media (max-width: 639px) {
+  h1 {
+    font-size: 1.5rem;
+  }
+}
+
 @media (min-width: 768px) {
   .event-detail-body {
     flex-direction: row-reverse;
@@ -53,7 +59,6 @@
   display: flex;
   align-items: center;
   flex-direction: row;
-  gap: 1rem;
   margin-bottom: 1rem;
 }
 
