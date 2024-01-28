@@ -29,10 +29,6 @@
   }
 }
 
-@media (min-width: 1536px) {
-
-}
-
 .event-detail-header {
   display: flex;
   gap: 1rem;
