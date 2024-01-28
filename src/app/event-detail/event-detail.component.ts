@@ -40,10 +40,7 @@ export class EventDetailComponent implements OnInit {
     this.router.navigate(['/event/update/', this.event?.id]);
   }
 
-  positionMap = {
-    street: "Industrigatan 25",
-    city: "Borlänge",
-    country: "Sweden"
-  };
-  mapsURL = `https://maps.google.com/maps?q=${this.positionMap.street}%20${this.positionMap.city}%20%${this.positionMap.country}&t=&z=15&ie=UTF8&iwloc=&output=embed`;
+  deleteEvent() {
+    console.log('This button will delete events.');
+  }
 }

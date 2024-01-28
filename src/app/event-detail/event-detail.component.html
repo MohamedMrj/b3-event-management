@@ -8,7 +8,8 @@
         <button mat-fab aria-label="Edit event button" class="edit-event-button" (click)="navigateToEditEvent()">
             <mat-icon>edit</mat-icon>
         </button>
-        <button mat-fab color="accent" aria-label="Delete event button" class="delete-event-button">
+        <button mat-fab color="accent" aria-label="Delete event button" class="delete-event-button"
+            (click)="deleteEvent()">
             <mat-icon>delete</mat-icon>
         </button>
     </div>
@@ -26,9 +27,8 @@
                     <mat-icon>location_on</mat-icon>
                     <a [href]="event.location | googleMapsUrl" target="_blank">{{ event.location | locationFormat }}</a>
                 </div>
-                <iframe [src]='mapsURL | safe' width="100%" height="250" frameborder="0" allowfullscreen
-                    webkitallowfullscreen mozallowfullscreen>
-                </iframe>
+                <iframe [src]="event.location | googleMapsEmbedUrl | safe" loading="lazy" width="100%" height="250"
+                    frameborder="0" allowfullscreen></iframe>
             </div>
         </div>
         <div class="event-detail-body-left">

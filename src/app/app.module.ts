@@ -33,6 +33,7 @@ import { SafePipe } from './safe.pipe';
 import { TimeFormatPipe } from './time-format.pipe';
 import { MarkdownModule } from 'ngx-markdown';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { GoogleMapsEmbedUrlPipe } from './google-maps-embed-url.pipe';
 
 registerLocaleData(localeSv);
 registerLocaleData(localePl);
@@ -52,6 +53,7 @@ registerLocaleData(localePl);
     GoogleMapsUrlPipe,
     SafePipe,
     TimeFormatPipe,
+    GoogleMapsEmbedUrlPipe,
   ],
   imports: [
     BrowserModule,
