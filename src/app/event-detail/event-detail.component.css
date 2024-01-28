@@ -1,6 +1,61 @@
+.event-detail-container {
+  margin: 0 auto;
+}
+
+.event-detail-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.event-detail-body-left {
+  flex: 1 1 0%;
+}
+
+.event-detail-body-right-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+@media (min-width: 768px) {
+  .event-detail-body {
+    flex-direction: row-reverse;
+    gap: 3rem;
+  }
+
+  .event-detail-body-right {
+    max-width: 30%;
+  }
+}
+
+@media (min-width: 1536px) {
+
+}
+
 .event-detail-header {
   display: flex;
   gap: 1rem;
   flex-direction: row;
-  margin-bottom: 1rem;
+}
+
+.event-image {
+  width: 100%;
+  aspect-ratio: 21/9;
+  object-fit: cover;
+}
+
+.event-info-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.noEventContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 50vh;
 }

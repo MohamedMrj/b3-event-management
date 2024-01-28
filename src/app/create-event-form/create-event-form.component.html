@@ -12,10 +12,10 @@
         <div class="form-group">
             <mat-form-field>
                 <mat-label>Short description</mat-label>
-                <input matInput type="text" class="form-control" id="shortDescription" required maxlength="30"
-                    [(ngModel)]="event.shortDescription" name="shortDescription" placeholder="Short description">
+                <input matInput type="text" class="form-control" id="longDescription" required maxlength="30"
+                    [(ngModel)]="event.longDescription" name="longDescription" placeholder="Short description">
                 <mat-icon matSuffix>short_text</mat-icon>
-                <mat-hint align="end">{{event.shortDescription.length}}/30</mat-hint>
+                <mat-hint align="end">{{event.longDescription.length}}/30</mat-hint>
             </mat-form-field>
         </div>
         <div class="form-group">
@@ -90,12 +90,22 @@
         </div>
         <div class="form-group">
             <mat-form-field>
+                <mat-hint><a href="https://www.markdownguide.org/basic-syntax/" target="_blank">Markdown</a> is
+                    supported</mat-hint>
                 <mat-label>Full description</mat-label>
-                <textarea matInput class="form-control" id="longDescription" maxlength="1000"
-                    [(ngModel)]="event.longDescription" name="longDescription"
+                <textarea matInput class="form-control" id="shortDescription" maxlength="10000"
+                    [(ngModel)]="event.shortDescription" name="shortDescription"
                     placeholder="Full description"></textarea>
-                <mat-hint align="end">{{event.longDescription.length}}/1000</mat-hint>
+                <mat-hint align="end">{{event.shortDescription.length}}/10000</mat-hint>
             </mat-form-field>
         </div>
+        <div class="form-group">
+            <button mat-raised-button color="primary" type="submit" [disabled]="!createEventForm.form.valid">
+                Create Event
+            </button>
+        </div>
     </form>
+</div>
+<div [hidden]="!submitted">
+    <p>Event created! You can view it here (add link to event) or <a href="/event/create">create another event</a></p>
 </div>

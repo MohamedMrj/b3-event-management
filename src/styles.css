@@ -1,3 +1,10 @@
+:root {
+    --pink: hsl(340, 100%, 63%);
+    --cyan: hsl(180, 89%, 42%);
+    --black: #000000;
+    --white: #ffffff;
+}
+
 *, *::before, *::after {
     box-sizing: border-box;
 }
@@ -8,6 +15,15 @@ body {
     font-family: system-ui, sans-serif;
     font-size: 1rem;
     background-color: #e6e6e6;
+}
+
+a {
+    color: var(--pink);
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
 }
 
 h1 {
@@ -30,3 +46,7 @@ app-root {
     flex-direction: column;
     height: 100%;
 }
+
+mat-icon {
+    flex-shrink: 0;
+  }

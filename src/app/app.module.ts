@@ -27,6 +27,12 @@ import { EventEditComponent } from './event-edit/event-edit.component';
 import { ApiTestComponent } from './api-test/api-test.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { CreateEventFormComponent } from './create-event-form/create-event-form.component';
+import { LocationFormatPipe } from './location-format.pipe';
+import { GoogleMapsUrlPipe } from './google-maps-url.pipe';
+import { SafePipe } from './safe.pipe';
+import { TimeFormatPipe } from './time-format.pipe';
+import { MarkdownModule } from 'ngx-markdown';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 registerLocaleData(localeSv);
 registerLocaleData(localePl);
@@ -42,6 +48,10 @@ registerLocaleData(localePl);
     ApiTestComponent,
     PageNotFoundComponent,
     CreateEventFormComponent,
+    LocationFormatPipe,
+    GoogleMapsUrlPipe,
+    SafePipe,
+    TimeFormatPipe,
   ],
   imports: [
     BrowserModule,
@@ -59,6 +69,8 @@ registerLocaleData(localePl);
     MatCheckboxModule,
     MatInputModule,
     BrowserAnimationsModule,
+    MarkdownModule.forRoot(),
+    MatSnackBarModule,
   ],
   bootstrap: [
     AppComponent

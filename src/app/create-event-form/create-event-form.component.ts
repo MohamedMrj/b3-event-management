@@ -17,11 +17,12 @@ export class CreateEventFormComponent {
   };
 
   event: Event = {
-    id: 0,
+    id: '0',
     title: '',
-    shortDescription: '',
     longDescription: '',
+    shortDescription: '',
     location: this.location,
+    organizer: '',
     startDate: new Date(),
     eventImageUrl: '',
     eventImageAlt: ''

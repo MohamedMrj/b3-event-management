@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { Event, Location } from '../event';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'event-card',
@@ -9,21 +10,20 @@ import { Event, Location } from '../event';
 export class EventCardComponent {
   @Input() event: Event;
 
-  formatLocation(location: string | Location): string {
-    if (typeof location === 'string') {
-      return location;
-    } else {
-      return `${location.street ? location.street + ', ' : ''}${location.city}, ${location.country}`;
-    }
+  constructor(private snackBar: MatSnackBar) {}
+
+  copyToClipboard(eventId: string): void {
+    const url = window.location.origin + '/event/' + eventId;
+    navigator.clipboard.writeText(url).then(() => {
+      this.snackBar.open('Copied to clipboard!', 'Close', {
+        duration: 3000
+      });
+    }).catch((error) => {
+      console.error('Failed to copy to clipboard: ', error);
+    });
   }
 
-  getGoogleMapsUrl(location: string | Location): string {
-    let address: string;
-    if (typeof location === 'string') {
-      address = location;
-    } else {
-      address = `${location.street ? location.street + ', ' : ''}${location.city}, ${location.country}`;
-    }
-    return `https://maps.google.com/?q=${encodeURIComponent(address)}`;
+  rsvp(eventId: string): void {
+    this.snackBar.open(`RSVP not implemented yet! Event id: ${eventId}`, 'Close', {});
   }
 }

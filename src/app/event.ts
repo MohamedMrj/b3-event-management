@@ -1,14 +1,15 @@
 export interface Event {
-    id: number;
+    id: string;
     title: string;
-    shortDescription: string;
     longDescription: string;
+    shortDescription: string;
     startDate: Date;
     endDate?: Date;
     startTime?: Time;
     endTime?: Time;
     allDayEvent?: boolean;
     location: Location;
+    organizer: string;
     eventImageUrl: string;
     eventImageAlt: string;
 }

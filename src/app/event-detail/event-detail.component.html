@@ -1,10 +1,53 @@
-<div class="event-detail-header">
-    <h1>>>> Event name here</h1>
-    <span class="flex-spacer"></span>
-    <button mat-fab aria-label="Edit event button" class="edit-event-button" (click)="navigateToEditEvent()">
-        <mat-icon>edit</mat-icon>
-    </button>
-    <button mat-fab color="accent" aria-label="Delete event button" class="delete-event-button">
-        <mat-icon>delete</mat-icon>
-    </button>
+<div *ngIf="event; else noEventTemplate" class="event-detail-container">
+    <div class="event-detail-header">
+        <div>
+            <h1>{{ event.title }}</h1>
+            <p><strong>Organizer:</strong> {{ event.organizer }}</p>
+        </div>
+        <span class="flex-spacer"></span>
+        <button mat-fab aria-label="Edit event button" class="edit-event-button" (click)="navigateToEditEvent()">
+            <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-fab color="accent" aria-label="Delete event button" class="delete-event-button">
+            <mat-icon>delete</mat-icon>
+        </button>
+    </div>
+    <div class="event-detail-body">
+        <div class="event-detail-body-right">
+            <div class="event-detail-body-right-item">
+                <div class="event-info-row">
+                    <mat-icon>event</mat-icon>
+                    <p>{{ event.startDate | date: 'fullDate' }} {{ event.startTime | timeFormat }} - {{ event.endDate |
+                        date:'fullDate' }} {{ event.endTime | timeFormat }}</p>
+                </div>
+            </div>
+            <div class="event-detail-body-right-item">
+                <div class="event-info-row">
+                    <mat-icon>location_on</mat-icon>
+                    <a [href]="event.location | googleMapsUrl" target="_blank">{{ event.location | locationFormat }}</a>
+                </div>
+                <iframe [src]='mapsURL | safe' width="100%" height="250" frameborder="0" allowfullscreen
+                    webkitallowfullscreen mozallowfullscreen>
+                </iframe>
+            </div>
+        </div>
+        <div class="event-detail-body-left">
+            <div class="event-detail-body-left-item">
+                <p>{{ event.shortDescription }}</p>
+            </div>
+            <div class="event-detail-body-left-item">
+                <img [src]="event.eventImageUrl" [alt]="event.eventImageAlt" class="event-image">
+            </div>
+            <div class="event-detail-body-left-item">
+                <h2>More info</h2>
+                <div [innerHTML]="event.longDescription | markdown"></div>
+            </div>
+        </div>
+    </div>
 </div>
+<ng-template #noEventTemplate>
+    <div class="noEventContainer">
+        <h1 aria-hidden="true">¯\(ツ)/¯</h1>
+        <p>Sorry, there is no such event.</p>
+    </div>
+</ng-template>
