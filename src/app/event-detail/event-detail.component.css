@@ -8,8 +8,18 @@
   justify-content: center;
 }
 
+.event-detail-body-right {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
 .event-detail-body-left {
   flex: 1 1 0%;
+}
+
+.event-detail-body-left p {
+  margin-top: 0;
 }
 
 .event-detail-body-right-item {
@@ -37,8 +47,10 @@
 
 .event-detail-header {
   display: flex;
-  gap: 1rem;
+  align-items: center;
   flex-direction: row;
+  gap: 1rem;
+  margin-bottom: 1rem;
 }
 
 .event-image {
