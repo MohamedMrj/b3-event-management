@@ -12,43 +12,26 @@
         <div class="form-group">
             <mat-form-field>
                 <mat-label>Short description</mat-label>
-                <input matInput type="text" class="form-control" id="longDescription" required maxlength="30"
-                    [(ngModel)]="event.longDescription" name="longDescription" placeholder="Short description">
+                <input matInput type="text" class="form-control" id="shortDescription" required maxlength="30"
+                    [(ngModel)]="event.shortDescription" name="shortDescription" placeholder="Short description">
                 <mat-icon matSuffix>short_text</mat-icon>
-                <mat-hint align="end">{{event.longDescription.length}}/30</mat-hint>
+                <mat-hint align="end">{{event.shortDescription.length}}/30</mat-hint>
             </mat-form-field>
         </div>
         <div class="form-group">
             <mat-form-field>
                 <mat-label>Start Date</mat-label>
-                <input matInput [matDatepicker]="startDatePicker" class="form-control" id="startDate" required
+                <input matInput type="datetime-local" class="form-control" id="startDate" required
                     [(ngModel)]="event.startDate" name="startDate">
                 <mat-datepicker-toggle matIconSuffix [for]="startDatePicker"></mat-datepicker-toggle>
                 <mat-datepicker #startDatePicker></mat-datepicker>
             </mat-form-field>
             <mat-form-field>
-                <mat-label>Start Time</mat-label>
-                <input matInput type="time" class="form-control" id="startTime" [(ngModel)]="event.startTime"
-                    [disabled]="event.allDayEvent" name="startTime">
-            </mat-form-field>
-        </div>
-        <div class="form-group">
-            <mat-checkbox class="example-margin" [(ngModel)]="event.allDayEvent" name="allDayEvent">
-                All-Day Event
-            </mat-checkbox>
-        </div>
-        <div class="form-group">
-            <mat-form-field>
                 <mat-label>End Date</mat-label>
-                <input matInput [matDatepicker]="endDatePicker" class="form-control" id="endDate"
-                    [(ngModel)]="event.endDate" [disabled]="event.allDayEvent" name="endDate">
+                <input matInput type="datetime-local" class="form-control" id="endDate" [(ngModel)]="event.endDate"
+                    name="endDate">
                 <mat-datepicker-toggle matIconSuffix [for]="endDatePicker"></mat-datepicker-toggle>
                 <mat-datepicker #endDatePicker></mat-datepicker>
-            </mat-form-field>
-            <mat-form-field>
-                <mat-label class="no-wrap-label">End Time</mat-label>
-                <input matInput type="time" class="form-control" id="endTime" [(ngModel)]="event.endTime"
-                    [disabled]="event.allDayEvent" name="endTime">
             </mat-form-field>
         </div>
         <div class="form-group">
@@ -93,15 +76,15 @@
                 <mat-hint><a href="https://www.markdownguide.org/basic-syntax/" target="_blank">Markdown</a> is
                     supported</mat-hint>
                 <mat-label>Full description</mat-label>
-                <textarea matInput class="form-control" id="shortDescription" maxlength="10000"
-                    [(ngModel)]="event.shortDescription" name="shortDescription"
+                <textarea matInput class="form-control" id="longDescription" maxlength="10000"
+                    [(ngModel)]="event.longDescription" name="longDescription"
                     placeholder="Full description"></textarea>
-                <mat-hint align="end">{{event.shortDescription.length}}/10000</mat-hint>
+                <mat-hint align="end">{{event.longDescription.length}}/10000</mat-hint>
             </mat-form-field>
         </div>
         <div class="form-group">
             <button mat-raised-button color="primary" type="submit" [disabled]="!createEventForm.form.valid">
-                Create Event
+                {{ isEditMode ? 'Update Event' : 'Create Event' }}
             </button>
         </div>
     </form>

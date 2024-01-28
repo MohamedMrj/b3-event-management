@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
-
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { EventService } from '../event.service';
 import { Event, Location } from '../event';
 
 @Component({
@@ -9,6 +10,8 @@ import { Event, Location } from '../event';
 })
 export class CreateEventFormComponent {
   submitted = false;
+  isEditMode = false;
+  eventId: string;
 
   location: Location = {
     street: '',
@@ -28,8 +31,38 @@ export class CreateEventFormComponent {
     eventImageAlt: ''
   };
 
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private eventService: EventService
+  ) {}
+
+ngOnInit() {
+    this.route.paramMap.subscribe(params => {
+      const eventId = params.get('eventid');
+      if (eventId) {
+        this.isEditMode = true;
+        this.eventService.events$.subscribe(events => {
+          const foundEvent = events.find(e => e.id === eventId);
+          if (foundEvent) {
+            this.event = foundEvent;
+          } else {
+            // Handle the case where the event is not found
+            // Maybe navigate back or show a message
+          }
+        });
+      }
+    });
+  }
+
   onSubmit() {
+    if (this.isEditMode) {
+      console.log("Updating Event: ", this.event);
+      // Add logic to update the event here
+    } else {
+      console.log("Creating Event: ", this.event);
+      // Add logic to update the event here
+    }
     this.submitted = true;
-    console.log("Event: ", this.event);
   }
 }

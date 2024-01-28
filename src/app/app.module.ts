@@ -30,7 +30,6 @@ import { CreateEventFormComponent } from './create-event-form/create-event-form.
 import { LocationFormatPipe } from './location-format.pipe';
 import { GoogleMapsUrlPipe } from './google-maps-url.pipe';
 import { SafePipe } from './safe.pipe';
-import { TimeFormatPipe } from './time-format.pipe';
 import { MarkdownModule } from 'ngx-markdown';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { GoogleMapsEmbedUrlPipe } from './google-maps-embed-url.pipe';
@@ -52,7 +51,6 @@ registerLocaleData(localePl);
     LocationFormatPipe,
     GoogleMapsUrlPipe,
     SafePipe,
-    TimeFormatPipe,
     GoogleMapsEmbedUrlPipe,
   ],
   imports: [

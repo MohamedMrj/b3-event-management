@@ -1,2 +1,11 @@
-<h1>Edit EVENT_NAME</h1>
-<p>Show text fields and boxes here.</p>
+<div class="container">
+    <div class="editEvent-header">
+        <h1>Edit {{ event.title }}</h1>
+        <span class="flex-spacer"></span>
+        <button mat-fab color="accent" aria-label="Delete event button" class="delete-event-button"
+            (click)="deleteEvent()">
+            <mat-icon>delete</mat-icon>
+        </button>
+    </div>
+    <app-create-event-form></app-create-event-form>
+</div>
