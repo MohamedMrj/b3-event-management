@@ -18,8 +18,8 @@ export class EventService {
           country: 'Sweden'
       },
       organizer: 'Shiba Inu Club',
-      startDate: new Date(),
-      endDate: new Date(),
+      startDateTime: new Date(2024, 3, 15, 14, 0), // 2024-04-15 14:00
+      endDateTime: new Date(2024, 3, 15, 16, 30), // 2024-04-15 16:30
       eventImageUrl: `https://material.angular.io/assets/img/examples/shiba2.jpg`,
       eventImageAlt: 'Photo of a Shiba Inu',
   },
@@ -27,8 +27,8 @@ export class EventService {
       id: '1',
       title: 'TechFrontiers 2024',
       organizer: 'Tech Conference Inc.',
-      startDate: new Date(),
-      endDate: new Date(),
+      startDateTime: new Date(),
+      endDateTime: new Date(),
       location: {
           city: 'Sälen',
           country: 'Sweden'
@@ -69,8 +69,8 @@ Early bird registration opens on April 1, 2024. For more information, visit our 
           country: 'France'
       },
       organizer: 'Art Gallery',
-      startDate: new Date(),
-      endDate: new Date(),
+      startDateTime: new Date(),
+      endDateTime: new Date(),
       eventImageUrl: `https://www.jacksonsart.com/blog/wp-content/uploads/2020/01/Mall-Gallery-Main-Gallery-Exhibition-Hire.jpg`,
       eventImageAlt: 'Photo of an art exhibition',
   },
@@ -84,8 +84,8 @@ Early bird registration opens on April 1, 2024. For more information, visit our 
           country: 'Sweden'
       },
       organizer: 'Shiba Inu Club',
-      startDate: new Date(),
-      endDate: new Date(),
+      startDateTime: new Date(),
+      endDateTime: new Date(),
       eventImageUrl: `https://material.angular.io/assets/img/examples/shiba2.jpg`,
       eventImageAlt: 'Photo of a Shiba Inu',
   },
@@ -99,8 +99,8 @@ Early bird registration opens on April 1, 2024. For more information, visit our 
           country: 'USA'
       },
       organizer: 'Tech Conference Inc.',
-      startDate: new Date(),
-      endDate: new Date(),
+      startDateTime: new Date(),
+      endDateTime: new Date(),
       eventImageUrl: `https://assets-global.website-files.com/6331e19fdfcbe01f4c12b610/640f82ab5d300300a891d92a_viva.jpeg`,
       eventImageAlt: 'Photo of a tech conference',
   }

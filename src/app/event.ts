@@ -3,8 +3,8 @@ export interface Event {
     title: string;
     longDescription: string;
     shortDescription: string;
-    startDate: Date;
-    endDate?: Date;
+    startDateTime: Date | string;
+    endDateTime: Date | string;
     location: Location;
     organizer: string;
     eventImageUrl: string;

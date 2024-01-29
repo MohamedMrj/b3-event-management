@@ -26,7 +26,8 @@ export class CreateEventFormComponent {
     shortDescription: '',
     location: this.location,
     organizer: '',
-    startDate: new Date(),
+    startDateTime: new Date(),
+    endDateTime: new Date(),
     eventImageUrl: '',
     eventImageAlt: ''
   };
@@ -37,7 +38,7 @@ export class CreateEventFormComponent {
     private eventService: EventService
   ) {}
 
-ngOnInit() {
+  ngOnInit() {
     this.route.paramMap.subscribe(params => {
       const eventId = params.get('eventid');
       if (eventId) {
@@ -46,9 +47,10 @@ ngOnInit() {
           const foundEvent = events.find(e => e.id === eventId);
           if (foundEvent) {
             this.event = foundEvent;
+            this.event.startDateTime = this.formatDateToDateTimeLocal(foundEvent.startDateTime);
+            this.event.endDateTime = this.formatDateToDateTimeLocal(foundEvent.endDateTime);
           } else {
             // Handle the case where the event is not found
-            // Maybe navigate back or show a message
           }
         });
       }
@@ -56,6 +58,9 @@ ngOnInit() {
   }
 
   onSubmit() {
+    this.event.startDateTime = new Date(this.event.startDateTime);
+    this.event.endDateTime = new Date(this.event.endDateTime);
+
     if (this.isEditMode) {
       console.log("Updating Event: ", this.event);
       // Add logic to update the event here
@@ -64,5 +69,12 @@ ngOnInit() {
       // Add logic to update the event here
     }
     this.submitted = true;
+  }
+
+  formatDateToDateTimeLocal(date: Date | string): string {
+    if (typeof date === 'string') {
+      date = new Date(date);
+    }
+    return date.toISOString().slice(0, 16); // Converts to 'YYYY-MM-DDTHH:mm' format
   }
 }
