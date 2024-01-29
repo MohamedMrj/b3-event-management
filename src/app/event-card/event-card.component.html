@@ -16,8 +16,17 @@
         <span class="flex-spacer"></span>
         <div class="event-card-info">
             <mat-icon>event</mat-icon>
-            <p>{{ event.startDateTime | date: 'fullDate' }} - {{ event.endDateTime |
-                date:'fullDate' }}</p>
+            <p>
+                <strong>Start:</strong> {{ event.startDateTime | date: 'longDate' }} {{ event.startDateTime | date:
+                'shortTime' }}<br>
+                <strong>End:</strong>
+                <span style="display: none;" #startDate>{{ event.startDateTime | date: 'shortDate' }}</span>
+                <span style="display: none;" #endDate>{{ event.endDateTime | date: 'shortDate' }}</span>
+                <ng-container *ngIf="startDate.innerText !== endDate.innerText">
+                    {{ event.endDateTime | date: 'longDate' }}
+                </ng-container>
+                {{ event.endDateTime | date: 'shortTime' }}
+            </p>
         </div>
         <div class="event-card-info">
             <mat-icon>location_on</mat-icon>
