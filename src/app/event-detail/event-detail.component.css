@@ -22,14 +22,14 @@
   flex: 1 1 0%;
 }
 
-.event-detail-body-left p {
-  margin: 0;
-}
-
 .event-detail-body-right-item {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+}
+
+.event-detail-body-left-item p {
+  margin: 0;
 }
 
 @media (max-width: 639px) {

@@ -12,13 +12,12 @@
 }
 
 .cardDescription {
-  margin-bottom: 0.5rem;
+  margin: 0.5rem 0;
 }
 
 .event-card-info {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
 }
 
 .mat-mdc-card-content>:last-child:not(.mat-mdc-card-footer) {
@@ -33,5 +32,4 @@ mat-card-content {
   display: flex;
   flex-direction: column;
   height: 100%;
-  gap: 0.25rem;
 }
