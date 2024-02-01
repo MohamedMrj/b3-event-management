@@ -13,6 +13,8 @@ export class CreateEventFormComponent {
   isEditMode = false;
   eventId: string;
 
+  timezones: string[] = [ 'Europe/Stockholm', 'Europe/London', 'Europe/Paris', 'America/New_York'];
+
   location: Location = {
     street: '',
     city: '',
@@ -26,7 +28,9 @@ export class CreateEventFormComponent {
     shortDescription: '',
     location: this.location,
     organizer: '',
-    startDate: new Date(),
+    startDateTime: '',
+    endDateTime: '',
+    timezone: '',
     eventImageUrl: '',
     eventImageAlt: ''
   };
@@ -37,7 +41,7 @@ export class CreateEventFormComponent {
     private eventService: EventService
   ) {}
 
-ngOnInit() {
+  ngOnInit() {
     this.route.paramMap.subscribe(params => {
       const eventId = params.get('eventid');
       if (eventId) {
@@ -48,7 +52,6 @@ ngOnInit() {
             this.event = foundEvent;
           } else {
             // Handle the case where the event is not found
-            // Maybe navigate back or show a message
           }
         });
       }

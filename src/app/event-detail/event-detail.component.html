@@ -27,9 +27,18 @@
             <div class="event-detail-body-right-item">
                 <div class="event-info-row">
                     <mat-icon>event</mat-icon>
-                    <span>{{ event.startDate | date: 'fullDate' }} - {{ event.endDate
-                        |
-                        date:'fullDate' }}</span>
+                    <span>
+                        <strong>Start:</strong> {{ event.startDateTime | date: 'longDate' }} {{ event.startDateTime |
+                        date:
+                        'shortTime' }}<br>
+                        <strong>End:</strong>
+                        <span style="display: none;" #startDate>{{ event.startDateTime | date: 'shortDate' }}</span>
+                        <span style="display: none;" #endDate>{{ event.endDateTime | date: 'shortDate' }}</span>
+                        <ng-container *ngIf="startDate.innerText !== endDate.innerText">
+                            {{ event.endDateTime | date: 'longDate' }}
+                        </ng-container>
+                        {{ event.endDateTime | date: 'shortTime' }}
+                    </span>
                 </div>
             </div>
             <div class="event-detail-body-right-item">

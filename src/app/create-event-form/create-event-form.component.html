@@ -12,26 +12,31 @@
         <div class="form-group">
             <mat-form-field>
                 <mat-label>Short description</mat-label>
-                <input matInput type="text" class="form-control" id="shortDescription" required maxlength="30"
+                <input matInput type="text" class="form-control" id="shortDescription" required maxlength="50"
                     [(ngModel)]="event.shortDescription" name="shortDescription" placeholder="Short description">
                 <mat-icon matSuffix>short_text</mat-icon>
-                <mat-hint align="end">{{event.shortDescription.length}}/30</mat-hint>
+                <mat-hint align="end">{{event.shortDescription.length}}/50</mat-hint>
             </mat-form-field>
         </div>
         <div class="form-group">
             <mat-form-field>
                 <mat-label>Start Date</mat-label>
-                <input matInput type="datetime-local" class="form-control" id="startDate" required
-                    [(ngModel)]="event.startDate" name="startDate">
-                <mat-datepicker-toggle matIconSuffix [for]="startDatePicker"></mat-datepicker-toggle>
-                <mat-datepicker #startDatePicker></mat-datepicker>
+                <input matInput type="datetime-local" class="form-control" id="startDateTime" required
+                    [(ngModel)]="event.startDateTime" name="startDateTime">
+                <mat-icon matSuffix>event</mat-icon>
             </mat-form-field>
             <mat-form-field>
                 <mat-label>End Date</mat-label>
-                <input matInput type="datetime-local" class="form-control" id="endDate" [(ngModel)]="event.endDate"
-                    name="endDate">
-                <mat-datepicker-toggle matIconSuffix [for]="endDatePicker"></mat-datepicker-toggle>
-                <mat-datepicker #endDatePicker></mat-datepicker>
+                <input matInput type="datetime-local" class="form-control" id="endDateTime" required
+                    [(ngModel)]="event.endDateTime" name="endDateTime">
+                <mat-icon matSuffix>event</mat-icon>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Timezone</mat-label>
+                <mat-select class="form-control" id="timezone" required [(ngModel)]="event.timezone" name="timezone">
+                    <mat-option *ngFor="let tz of timezones" [value]="tz">{{ tz }}</mat-option>
+                </mat-select>
+                <mat-icon matSuffix>language</mat-icon>
             </mat-form-field>
         </div>
         <div class="form-group">
@@ -90,5 +95,6 @@
     </form>
 </div>
 <div [hidden]="!submitted">
-    <p>Event created! You can view it here (add link to event) or <a href="/event/create">create another event</a></p>
+    <p>Event created! <a href="/event/{{event.id}}">View it here</a> or <a href="/event/create">create another
+            event</a>.</p>
 </div>
