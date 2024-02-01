@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { EventService } from '../event.service';
 import { Event } from '../event';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-event-edit',
@@ -17,7 +18,8 @@ export class EventEditComponent {
     private route: ActivatedRoute,
     private titleService: Title,
     private eventService: EventService,
-    ) {
+    private pageLocation: Location,
+  ) {
     this.titleService.setTitle('Edit >>> Event Title <<<');
   }
 
@@ -39,5 +41,9 @@ export class EventEditComponent {
 
   deleteEvent() {
     console.log('This button will delete events.');
+  }
+
+  goBack() {
+    this.pageLocation.back();
   }
 }

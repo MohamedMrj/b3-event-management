@@ -8,10 +8,6 @@
     width: 100%;
 }
 
-.cancel-button {
-    margin-bottom: 0.5rem;
-}
-
 /* Adjustments for larger screens */
 @media (min-width: 640px) {
     .form-group {

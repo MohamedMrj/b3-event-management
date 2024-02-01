@@ -1,4 +1,6 @@
 <div *ngIf="event; else noEventTemplate" class="event-detail-container">
+    <button mat-button appBackButton (click)="goBack()" class="back-button"><mat-icon>arrow_back</mat-icon>Go
+        back</button>
     <div class="event-detail-header">
         <h1>{{ event.title }}</h1>
         <span class="flex-spacer"></span>

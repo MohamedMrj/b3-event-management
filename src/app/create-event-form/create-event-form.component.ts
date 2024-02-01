@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Location } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EventService } from '../event.service';
 import { Event, EventLocation } from '../event';
@@ -38,9 +37,7 @@ export class CreateEventFormComponent {
 
   constructor(
     private route: ActivatedRoute,
-    private router: Router,
     private eventService: EventService,
-    private pageLocation: Location
   ) {}
 
   ngOnInit() {
@@ -69,9 +66,5 @@ export class CreateEventFormComponent {
       // Add logic to update the event here
     }
     this.submitted = true;
-  }
-
-  goBack() {
-    this.pageLocation.back();
   }
 }

@@ -1,4 +1,9 @@
 <div class="container">
-    <h1>Create Event</h1>
+    <button mat-button appBackButton (click)="goBack()" class="back-button"><mat-icon>arrow_back</mat-icon>Go
+        back</button>
+    <div class="editEvent-header">
+        <h1>Create Event</h1>
+        <span class="flex-spacer"></span>
+    </div>
     <app-create-event-form></app-create-event-form>
 </div>
