@@ -15,6 +15,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatDialogModule } from '@angular/material/dialog';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { registerLocaleData } from '@angular/common';
 import localeSv from '@angular/common/locales/sv';
@@ -35,6 +36,7 @@ import { SafePipe } from './safe.pipe';
 import { MarkdownModule } from 'ngx-markdown';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { GoogleMapsEmbedUrlPipe } from './google-maps-embed-url.pipe';
+import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 
 registerLocaleData(localeSv);
 registerLocaleData(localePl);
@@ -54,6 +56,7 @@ registerLocaleData(localePl);
     GoogleMapsUrlPipe,
     SafePipe,
     GoogleMapsEmbedUrlPipe,
+    ConfirmDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -75,6 +78,7 @@ registerLocaleData(localePl);
     MarkdownModule.forRoot(),
     MatSnackBarModule,
     MatMenuModule,
+    MatDialogModule,
   ],
   bootstrap: [
     AppComponent

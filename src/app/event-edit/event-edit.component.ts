@@ -4,6 +4,8 @@ import { Title } from '@angular/platform-browser';
 import { EventService } from '../event.service';
 import { Event } from '../event';
 import { Location } from '@angular/common';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-event-edit',
@@ -19,6 +21,7 @@ export class EventEditComponent {
     private titleService: Title,
     private eventService: EventService,
     private pageLocation: Location,
+    private dialog: MatDialog,
   ) {
     this.titleService.setTitle('Edit >>> Event Title <<<');
   }
@@ -45,5 +48,17 @@ export class EventEditComponent {
 
   goBack() {
     this.pageLocation.back();
+  }
+
+  confirmDiscardChanges() {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: { message: 'Do you want to discard the changes?' }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.goBack();
+      }
+    });
   }
 }
