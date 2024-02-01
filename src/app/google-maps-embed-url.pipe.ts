@@ -1,12 +1,12 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { Location } from './event';
+import { EventLocation } from './event';
 import { getGoogleMapsEmbedUrl } from './utils/location.utils';
 
 @Pipe({
   name: 'googleMapsEmbedUrl'
 })
 export class GoogleMapsEmbedUrlPipe implements PipeTransform {
-  transform(location: string | Location): string {
+  transform(location: string | EventLocation): string {
     return getGoogleMapsEmbedUrl(location);
   }
 }

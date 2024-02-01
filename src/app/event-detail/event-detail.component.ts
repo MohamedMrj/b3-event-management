@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Location } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { EventService } from '../event.service';
@@ -17,7 +18,8 @@ export class EventDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private eventService: EventService,
-    private titleService: Title
+    private titleService: Title,
+    private pageLocation: Location,
   ) {}
 
   ngOnInit() {
@@ -42,5 +44,9 @@ export class EventDetailComponent implements OnInit {
 
   deleteEvent() {
     console.log('This button will delete events.');
+  }
+
+  goBack() {
+    this.pageLocation.back();
   }
 }

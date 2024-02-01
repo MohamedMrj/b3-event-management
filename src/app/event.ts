@@ -6,12 +6,12 @@ export interface Event {
     startDateTime: string;
     endDateTime: string;
     timezone: string;
-    location: Location;
+    location: EventLocation;
     organizer: string;
     eventImageUrl: string;
     eventImageAlt: string;
 }
-export interface Location {
+export interface EventLocation {
     street?: string;
     city: string;
     country: string;

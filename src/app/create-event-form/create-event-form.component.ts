@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EventService } from '../event.service';
-import { Event, Location } from '../event';
+import { Event, EventLocation } from '../event';
 
 @Component({
   selector: 'app-create-event-form',
@@ -15,7 +15,7 @@ export class CreateEventFormComponent {
 
   timezones: string[] = [ 'Europe/Stockholm', 'Europe/London', 'Europe/Paris', 'America/New_York'];
 
-  location: Location = {
+  location: EventLocation = {
     street: '',
     city: '',
     country: ''
@@ -37,8 +37,7 @@ export class CreateEventFormComponent {
 
   constructor(
     private route: ActivatedRoute,
-    private router: Router,
-    private eventService: EventService
+    private eventService: EventService,
   ) {}
 
   ngOnInit() {

@@ -1,25 +1,25 @@
 .form-group {
     display: flex;
     flex-direction: column;
-    align-items: stretch; /* Ensure fields stretch to fill the form group */
+    align-items: stretch;
 }
 
 .form-group mat-form-field {
-    width: 100%; /* Full width within the form group */
+    width: 100%;
 }
 
 /* Adjustments for larger screens */
 @media (min-width: 640px) {
     .form-group {
         flex-direction: row;
-        align-items: flex-start; /* Align items at the start, so they don't stretch */
+        align-items: flex-start;
     }
 
     .form-group mat-form-field {
-        flex: 1; /* Make each field flexibly fill the available space */
+        flex: 1;
     }
 
     .form-group mat-form-field + mat-form-field {
-        margin-left: 0.5rem; /* Space between fields */
+        margin-left: 0.5rem;
     }
 }

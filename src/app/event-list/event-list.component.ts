@@ -16,7 +16,8 @@ export class EventListComponent implements OnInit {
   constructor(
     private eventService: EventService,
     private router: Router,
-    private titleService: Title,) {
+    private titleService: Title,
+  ) {
     this.titleService.setTitle('Events');
   }
 

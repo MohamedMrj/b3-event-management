@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Event, Location } from '../event';
+import { Event, EventLocation } from '../event';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
