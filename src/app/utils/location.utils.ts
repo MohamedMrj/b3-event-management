@@ -1,6 +1,6 @@
-import { Location } from '../event';
+import { EventLocation } from '../event';
 
-export function formatLocation(location: string | Location): string {
+export function formatLocation(location: string | EventLocation): string {
   if (typeof location === 'string') {
     return location;
   } else {
@@ -8,7 +8,7 @@ export function formatLocation(location: string | Location): string {
   }
 }
 
-export function getGoogleMapsUrl(location: string | Location): string {
+export function getGoogleMapsUrl(location: string | EventLocation): string {
   let address: string;
   if (typeof location === 'string') {
     address = location;
@@ -18,7 +18,7 @@ export function getGoogleMapsUrl(location: string | Location): string {
   return `https://maps.google.com/?q=${encodeURIComponent(address)}`;
 }
 
-export function getGoogleMapsEmbedUrl(location: string | Location): string {
+export function getGoogleMapsEmbedUrl(location: string | EventLocation): string {
   let address: string;
   if (typeof location === 'string') {
     address = location;

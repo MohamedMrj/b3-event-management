@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { Location } from './event';
+import { EventLocation } from './event';
 import { formatLocation } from './utils/location.utils';
 
 
@@ -7,7 +7,7 @@ import { formatLocation } from './utils/location.utils';
   name: 'locationFormat'
 })
 export class LocationFormatPipe implements PipeTransform {
-  transform(location: string | Location): string {
+  transform(location: string | EventLocation): string {
     return formatLocation(location);
   }
 }
