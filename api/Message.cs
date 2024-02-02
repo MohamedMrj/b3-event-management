@@ -15,12 +15,7 @@ namespace B3.Complete.Eventwebb
 {
   public static class Event
   {
-    // Denna sträng ska krypteras med Azure.Identity och läggas i Azure Key Vault efter testning
-    private const string connectionString =
-      "DefaultEndpointsProtocol=https;AccountName=b3eventwebbstorage;AccountKey=URmuupob95237E59Gg4dUKCdIo6dYp9w/hgT4Ras/0FsDK4b82RB+JD1oPYi6dPJV5lhIHdVZFHh+ASta2XhWw==;EndpointSuffix=core.windows.net";
-
     // Sätter vilket table som data ska hämtas från
-
     private const string tableName = "Events";
 
     [FunctionName("GetAllEvents")]
@@ -29,7 +24,7 @@ namespace B3.Complete.Eventwebb
       ILogger log
     )
     {
-      var client = new TableClient(connectionString, tableName);
+      var client = new TableClient(DatabaseConfig.ConnectionString, tableName);
       var queryResultsFilter = client.QueryAsync<TableEntity>();
       Azure.Page<TableEntity> result = null;
 
@@ -48,7 +43,7 @@ namespace B3.Complete.Eventwebb
       ILogger log
     )
     {
-      var client = new TableClient(connectionString, tableName);
+      var client = new TableClient(DatabaseConfig.ConnectionString, tableName);
 
       // Parse the id from the URL route
       if (!int.TryParse(id, out int eventId))
@@ -94,7 +89,7 @@ namespace B3.Complete.Eventwebb
       var requestBody = await new StreamReader(req.Body).ReadToEndAsync();
       var eventData = JsonSerializer.Deserialize<JsonElement>(requestBody);
 
-      var client = new TableClient(connectionString, tableName);
+      var client = new TableClient(DatabaseConfig.ConnectionString, tableName);
 
       // Retrieve the highest RowKey value
       int maxRowKey = await GetMaxRowKey(client, log) + 1;
@@ -144,7 +139,7 @@ namespace B3.Complete.Eventwebb
       ILogger log
     )
     {
-      var client = new TableClient(connectionString, tableName);
+      var client = new TableClient(DatabaseConfig.ConnectionString, tableName);
 
       // Parse the id from the URL route
       if (!int.TryParse(id, out int eventId))
