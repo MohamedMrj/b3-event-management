@@ -15,27 +15,6 @@ namespace B3.Complete.Eventwebb
 {
   public static class Event
   {
-    // Sätter vilket table som data ska hämtas från
-    private const string tableName = "Events";
-
-    [FunctionName("GetAllEvents")]
-    public static async Task<IActionResult> GeAllEvents(
-      [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] HttpRequest req,
-      ILogger log
-    )
-    {
-      var client = new TableClient(DatabaseConfig.ConnectionString, tableName);
-      var queryResultsFilter = client.QueryAsync<TableEntity>();
-      Azure.Page<TableEntity> result = null;
-
-      await foreach (Azure.Page<TableEntity> page in queryResultsFilter.AsPages())
-      {
-        result = page;
-      }
-
-      return new OkObjectResult(result);
-    }
-
     [FunctionName("GetEvent")]
     public static async Task<IActionResult> GetEvent(
       [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "event/{id}")] HttpRequest req,
@@ -43,7 +22,7 @@ namespace B3.Complete.Eventwebb
       ILogger log
     )
     {
-      var client = new TableClient(DatabaseConfig.ConnectionString, tableName);
+      var client = new TableClient(DatabaseConfig.ConnectionString, DatabaseConfig.TableName);
 
       // Parse the id from the URL route
       if (!int.TryParse(id, out int eventId))
@@ -83,13 +62,10 @@ namespace B3.Complete.Eventwebb
       ILogger log
     )
     {
-      //  string connectionString = Environment.GetEnvironmentVariable("AzureWebJobsStorage");
-      string tableName = "Events"; // Replace with your table name
-
       var requestBody = await new StreamReader(req.Body).ReadToEndAsync();
       var eventData = JsonSerializer.Deserialize<JsonElement>(requestBody);
 
-      var client = new TableClient(DatabaseConfig.ConnectionString, tableName);
+      var client = new TableClient(DatabaseConfig.ConnectionString, DatabaseConfig.TableName);
 
       // Retrieve the highest RowKey value
       int maxRowKey = await GetMaxRowKey(client, log) + 1;
@@ -139,7 +115,7 @@ namespace B3.Complete.Eventwebb
       ILogger log
     )
     {
-      var client = new TableClient(DatabaseConfig.ConnectionString, tableName);
+      var client = new TableClient(DatabaseConfig.ConnectionString, DatabaseConfig.TableName);
 
       // Parse the id from the URL route
       if (!int.TryParse(id, out int eventId))
