@@ -88,7 +88,7 @@ namespace B3.Complete.Eventwebb
       ILogger log
     )
     {
-      string connectionString = Environment.GetEnvironmentVariable("AzureWebJobsStorage");
+      //  string connectionString = Environment.GetEnvironmentVariable("AzureWebJobsStorage");
       string tableName = "Events"; // Replace with your table name
 
       var requestBody = await new StreamReader(req.Body).ReadToEndAsync();
@@ -138,7 +138,6 @@ namespace B3.Complete.Eventwebb
     }
 
     [FunctionName("DeleteEvent")]
-
     public static async Task<IActionResult> DeleteEvent(
       [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "event/{id}")] HttpRequest req,
       string id,
@@ -179,6 +178,6 @@ namespace B3.Complete.Eventwebb
       await client.DeleteEntityAsync(eventResult.PartitionKey, eventResult.RowKey);
 
       return new OkResult();
-    }    
+    }
   }
 }
