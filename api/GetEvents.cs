@@ -14,7 +14,7 @@ namespace B3.Complete.Eventwebb
   {
     [FunctionName("GetEvent")]
     public static async Task<IActionResult> Run(
-      [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "event/{id}")] HttpRequest req,
+      [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "getEvent/{id}")] HttpRequest req,
       string id,
       ILogger log
     )
