@@ -1,5 +1,3 @@
-using System.Net.NetworkInformation;
-
 namespace B3.Complete.Eventwebb
 {
   public class DatabaseConfig
