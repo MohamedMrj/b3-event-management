@@ -1,24 +1,21 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 
-public class User
+
+// C# record type for items in the table
+public record Product : ITableEntity
 {
-    public Guid UserID { get; set; }
+    public string RowKey { get; set; } = default!;
 
-    [Required]
-    [StringLength(50)]
-    public string FirstName { get; set; }
+    public string PartitionKey { get; set; } = default!;
 
-    [Required]
-    [StringLength(50)]
-    public string LastName { get; set; }
+    public string Name { get; init; } = default!;
 
-    [Required]
-    [EmailAddress]
-    public string Email { get; set; }
+    public int Quantity { get; init; }
 
-    [Phone]
-    public string PhoneNumber { get; set; }
+    public bool Sale { get; init; }
 
-    public UserRole Role { get; set; } = UserRole.NormalUser; // Default role
+    public ETag ETag { get; set; } = default!;
+
+    public DateTimeOffset? Timestamp { get; set; } = default!;
 }
