@@ -30,7 +30,7 @@
         </div>
         <div class="event-card-info">
             <mat-icon>location_on</mat-icon>
-            <a [href]="event.location | googleMapsUrl" target="_blank">{{ event.location | locationFormat }}</a>
+            <a [href]="event | googleMapsUrl" target="_blank">{{ event | locationFormat }}</a>
         </div>
     </mat-card-content>
     <mat-divider></mat-divider>

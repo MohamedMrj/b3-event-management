@@ -43,19 +43,19 @@
             <mat-form-field>
                 <mat-label>Street</mat-label>
                 <input matInput type="text" class="form-control" id="street" maxlength="30"
-                    [(ngModel)]="event.location.street" name="street" placeholder="Street" data-1p-ignore>
+                    [(ngModel)]="event.locationStreet" name="street" placeholder="Street" data-1p-ignore>
                 <mat-icon matSuffix>signpost</mat-icon>
             </mat-form-field>
             <mat-form-field>
                 <mat-label>City</mat-label>
                 <input matInput type="text" class="form-control" id="city" required maxlength="30"
-                    [(ngModel)]="event.location.city" name="city" placeholder="City" data-1p-ignore>
-                <mat-icon matSuffix>location_city</mat-icon>
+                    [(ngModel)]="event.locationCity" name="city" placeholder="City" data-1p-ignore>
+                <mat-icon matSuffix>locationCity</mat-icon>
             </mat-form-field>
             <mat-form-field>
                 <mat-label>Country</mat-label>
                 <input matInput type="text" class="form-control" id="country" required maxlength="50"
-                    [(ngModel)]="event.location.country" name="country" placeholder="Country" data-1p-ignore>
+                    [(ngModel)]="event.locationCountry" name="country" placeholder="Country" data-1p-ignore>
                 <mat-icon matSuffix>public</mat-icon>
             </mat-form-field>
         </div>

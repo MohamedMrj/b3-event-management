@@ -12,11 +12,9 @@ export class EventService {
       title: 'Shiba Inu Gathering',
       longDescription: 'Dog Lovers Meetup',
       shortDescription: 'Join us for a fun afternoon with Shiba Inus!',
-      location: {
-          street: 'Röda vägen 2',
-          city: 'Borlänge',
-          country: 'Sweden'
-      },
+      locationStreet: 'Röda vägen 2',
+      locationCity: 'Borlänge',
+      locationCountry: 'Sweden',
       organizer: 'Shiba Inu Club',
       startDateTime: '2024-01-28T19:15',
       endDateTime: '2024-01-29T21:35',
@@ -31,10 +29,8 @@ export class EventService {
       startDateTime: '2024-01-28T10:00:00+02:00',
       endDateTime: '2024-01-28T12:00:00+02:00',
       timezone: 'Europe/Stockholm',
-      location: {
-          city: 'Sälen',
-          country: 'Sweden'
-      },
+      locationCity: 'Sälen',
+      locationCountry: 'Sweden',
       eventImageUrl: `https://assets-global.website-files.com/6331e19fdfcbe01f4c12b610/640f82ab5d300300a891d92a_viva.jpeg`,
       eventImageAlt: 'Photo of a tech conference',
       shortDescription: 'Unveiling the Next Wave of Technological Breakthroughs',
@@ -66,10 +62,8 @@ Early bird registration opens on April 1, 2024. For more information, visit our 
       title: 'Art Exhibition',
       longDescription: 'Celebrating Creativity',
       shortDescription: 'Experience the beauty of art at our exhibition showcasing various forms of creativity.',
-      location: {
-          city: 'Paris',
-          country: 'France'
-      },
+      locationCity: 'Paris',
+      locationCountry: 'France',
       organizer: 'Art Gallery',
       startDateTime: '2024-01-28T10:00:00+02:00',
       endDateTime: '2024-01-28T12:00:00+02:00',
@@ -82,10 +76,8 @@ Early bird registration opens on April 1, 2024. For more information, visit our 
       title: 'Shiba Inu Gathering',
       longDescription: 'Dog Lovers Meetup',
       shortDescription: 'Join us for a fun afternoon with Shiba Inus!',
-      location: {
-          city: 'Borlänge',
-          country: 'Sweden'
-      },
+      locationCity: 'Borlänge',
+      locationCountry: 'Sweden',
       organizer: 'Shiba Inu Club',
       startDateTime: '2024-01-28T10:00:00+02:00',
       endDateTime: '2024-01-28T12:00:00+02:00',
@@ -98,10 +90,8 @@ Early bird registration opens on April 1, 2024. For more information, visit our 
       title: 'Tech Conference',
       longDescription: 'Exploring the Latest Technologies',
       shortDescription: 'Join us for a conference to learn about the latest technologies and trends in the industry.',
-      location: {
-          city: 'San Francisco',
-          country: 'USA'
-      },
+      locationCity: 'San Francisco',
+      locationCountry: 'USA',
       organizer: 'Tech Conference Inc.',
       startDateTime: '2024-01-28T10:00:00+02:00',
       endDateTime: '2024-01-28T12:00:00+02:00',
