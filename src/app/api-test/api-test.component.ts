@@ -1,7 +1,7 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
 import { Component } from '@angular/core';
 import { Title } from '@angular/platform-browser';
+import { EventService } from '../event.service';
+import { Event } from '../event';
 
 @Component({
   selector: 'app-api-test',
@@ -9,23 +9,29 @@ import { Title } from '@angular/platform-browser';
   styleUrls: ['./api-test.component.css']
 })
 export class ApiTestComponent {
+  event: Event | undefined;
+
   message = '';
 
-  constructor(private http: HttpClient, private titleService: Title) {
+  constructor(
+    private titleService: Title,
+    private eventService: EventService,
+  ) {
     this.titleService.setTitle("API Test");
   }
 
   ngOnInit() {
-    this.get().subscribe(response => {
-      this.message = response;
-    }, error => {
-      console.error('Error fetching data:', error);
-      this.message = 'Error fetching data';
-    });
-  }
+    const eventId = '3';
 
-  private get(): Observable<any> {
-    let params = new HttpParams().set('name', 'B3-eventwebb');
-    return this.http.get('/api/message', { responseType: 'text', params: params });
+    this.message = eventId;
+
+    this.eventService.fetchEventById(eventId).subscribe({
+      next: (data) => {
+        this.event = data;
+      },
+      error: (error) => {
+        console.error('There was an error!', error);
+      }
+    });
   }
 }

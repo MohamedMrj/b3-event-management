@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 import { Event } from './event';
 
 @Injectable({
@@ -103,11 +104,18 @@ Early bird registration opens on April 1, 2024. For more information, visit our 
 
   events$ = this.eventsSubject.asObservable();
 
-  constructor() {}
+  constructor(
+    private http: HttpClient,
+  ) {}
 
   // Method to get current events
   getEvents(): Event[] {
     return this.eventsSubject.getValue();
+  }
+
+  // Method to fetch event by id
+  fetchEventById(eventId: string): Observable<Event> {
+    return this.http.get<Event>(`/api/getEvent/${eventId}`);
   }
 
   // Method to add a new event
