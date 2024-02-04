@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { EventService } from '../event.service';
 import { Event } from '../event';
 
@@ -32,6 +32,7 @@ export class CreateEventFormComponent implements OnInit {
   };
 
   constructor(
+    private router: Router,
     private route: ActivatedRoute,
     private eventService: EventService,
   ) {}
@@ -59,13 +60,34 @@ export class CreateEventFormComponent implements OnInit {
   }
 
   onSubmit() {
+    this.submitted = true;
+  
     if (this.isEditMode) {
       console.log("Updating Event: ", this.event);
-      // Add logic to call the event update service method here
+      /* this.eventService.updateEvent(this.event.id, this.event).subscribe({
+        next: (updatedEvent) => {
+          console.log("Event updated successfully:", updatedEvent);
+          this.router.navigate(['/event', updatedEvent.id]);
+        },
+        error: (error) => {
+          console.error("Error updating event:", error);
+          // Add more error handling such as showing an error message to the user
+          this.submitted = false; // Reset submitted status to allow retry
+        }
+      }); */
     } else {
       console.log("Creating Event: ", this.event);
-      // Add logic to call the event creation service method here
+      this.eventService.createEvent(this.event).subscribe({
+        next: (createdEvent) => {
+          console.log("Event created successfully:", createdEvent);
+          this.router.navigate(['/event', createdEvent.id]);
+        },
+        error: (error) => {
+          console.error("Error creating event:", error);
+          // Add more error handling such as showing an error message to the user
+          this.submitted = false; // Reset submitted status to allow retry
+        }
+      });
     }
-    this.submitted = true;
   }
 }

@@ -1,99 +1,92 @@
-<div [hidden]="submitted">
-    <form (ngSubmit)="onSubmit()" #createEventForm="ngForm">
-        <div class="form-group">
-            <mat-form-field>
-                <mat-label>Title</mat-label>
-                <input matInput type="text" class="form-control" id="title" required maxlength="30"
-                    [(ngModel)]="event.title" name="title" placeholder="Title">
-                <mat-icon matSuffix>title</mat-icon>
-                <mat-hint align="end">{{event.title.length}}/30</mat-hint>
-            </mat-form-field>
-        </div>
-        <div class="form-group">
-            <mat-form-field>
-                <mat-label>Short description</mat-label>
-                <input matInput type="text" class="form-control" id="shortDescription" required maxlength="50"
-                    [(ngModel)]="event.shortDescription" name="shortDescription" placeholder="Short description">
-                <mat-icon matSuffix>short_text</mat-icon>
-                <mat-hint align="end">{{event.shortDescription.length}}/50</mat-hint>
-            </mat-form-field>
-        </div>
-        <div class="form-group">
-            <mat-form-field>
-                <mat-label>Start Date</mat-label>
-                <input matInput type="datetime-local" class="form-control" id="startDateTime" required
-                    [(ngModel)]="event.startDateTime" name="startDateTime">
-                <mat-icon matSuffix>event</mat-icon>
-            </mat-form-field>
-            <mat-form-field>
-                <mat-label>End Date</mat-label>
-                <input matInput type="datetime-local" class="form-control" id="endDateTime" required
-                    [(ngModel)]="event.endDateTime" name="endDateTime">
-                <mat-icon matSuffix>event</mat-icon>
-            </mat-form-field>
-            <mat-form-field>
-                <mat-label>Timezone</mat-label>
-                <mat-select class="form-control" id="timezone" required [(ngModel)]="event.timezone" name="timezone">
-                    <mat-option *ngFor="let tz of timezones" [value]="tz">{{ tz }}</mat-option>
-                </mat-select>
-                <mat-icon matSuffix>language</mat-icon>
-            </mat-form-field>
-        </div>
-        <div class="form-group">
-            <mat-form-field>
-                <mat-label>Street</mat-label>
-                <input matInput type="text" class="form-control" id="street" maxlength="30"
-                    [(ngModel)]="event.locationStreet" name="street" placeholder="Street" data-1p-ignore>
-                <mat-icon matSuffix>signpost</mat-icon>
-            </mat-form-field>
-            <mat-form-field>
-                <mat-label>City</mat-label>
-                <input matInput type="text" class="form-control" id="city" required maxlength="30"
-                    [(ngModel)]="event.locationCity" name="city" placeholder="City" data-1p-ignore>
-                <mat-icon matSuffix>locationCity</mat-icon>
-            </mat-form-field>
-            <mat-form-field>
-                <mat-label>Country</mat-label>
-                <input matInput type="text" class="form-control" id="country" required maxlength="50"
-                    [(ngModel)]="event.locationCountry" name="country" placeholder="Country" data-1p-ignore>
-                <mat-icon matSuffix>public</mat-icon>
-            </mat-form-field>
-        </div>
-        <div class="form-group">
-            <mat-form-field>
-                <mat-label>Event image URL</mat-label>
-                <input matInput type="text" class="form-control" id="imageUrl" required [(ngModel)]="event.imageUrl"
-                    name="imageUrl" placeholder="Event image URL">
-                <mat-icon matSuffix>image</mat-icon>
-            </mat-form-field>
-            <mat-form-field>
-                <mat-label>Event image alt</mat-label>
-                <mat-hint>Enter a description for the event image</mat-hint>
-                <input matInput #imageAlt type="text" class="form-control" id="imageAlt" required maxlength="100"
-                    [(ngModel)]="event.imageAlt" name="imageAlt" placeholder="Event image alt">
-                <mat-icon matSuffix>accessibility_new</mat-icon>
-                <mat-hint align="end">{{event.imageAlt.length}}/100</mat-hint>
-            </mat-form-field>
-        </div>
-        <div class="form-group">
-            <mat-form-field>
-                <mat-hint><a href="https://www.markdownguide.org/basic-syntax/" target="_blank">Markdown</a> is
-                    supported</mat-hint>
-                <mat-label>Full description</mat-label>
-                <textarea matInput class="form-control" id="longDescription" maxlength="10000"
-                    [(ngModel)]="event.longDescription" name="longDescription"
-                    placeholder="Full description"></textarea>
-                <mat-hint align="end">{{event.longDescription.length}}/10000</mat-hint>
-            </mat-form-field>
-        </div>
-        <div class="form-group">
-            <button mat-raised-button color="primary" type="submit" [disabled]="!createEventForm.form.valid">
-                {{ isEditMode ? 'Update Event' : 'Create Event' }}
-            </button>
-        </div>
-    </form>
-</div>
-<div [hidden]="!submitted">
-    <p>Event created! <a href="/event/{{event.id}}">View it here</a> or <a href="/event/create">create another
-            event</a>.</p>
-</div>
+<form (ngSubmit)="onSubmit()" #createEventForm="ngForm">
+    <div class="form-group">
+        <mat-form-field>
+            <mat-label>Title</mat-label>
+            <input matInput type="text" class="form-control" id="title" required maxlength="30"
+                [(ngModel)]="event.title" name="title" placeholder="Title">
+            <mat-icon matSuffix>title</mat-icon>
+            <mat-hint align="end">{{event.title.length}}/30</mat-hint>
+        </mat-form-field>
+    </div>
+    <div class="form-group">
+        <mat-form-field>
+            <mat-label>Short description</mat-label>
+            <input matInput type="text" class="form-control" id="shortDescription" required maxlength="50"
+                [(ngModel)]="event.shortDescription" name="shortDescription" placeholder="Short description">
+            <mat-icon matSuffix>short_text</mat-icon>
+            <mat-hint align="end">{{event.shortDescription.length}}/50</mat-hint>
+        </mat-form-field>
+    </div>
+    <div class="form-group">
+        <mat-form-field>
+            <mat-label>Start Date</mat-label>
+            <input matInput type="datetime-local" class="form-control" id="startDateTime" required
+                [(ngModel)]="event.startDateTime" name="startDateTime">
+            <mat-icon matSuffix>event</mat-icon>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>End Date</mat-label>
+            <input matInput type="datetime-local" class="form-control" id="endDateTime" required
+                [(ngModel)]="event.endDateTime" name="endDateTime">
+            <mat-icon matSuffix>event</mat-icon>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Timezone</mat-label>
+            <mat-select class="form-control" id="timezone" required [(ngModel)]="event.timezone" name="timezone">
+                <mat-option *ngFor="let tz of timezones" [value]="tz">{{ tz }}</mat-option>
+            </mat-select>
+            <mat-icon matSuffix>language</mat-icon>
+        </mat-form-field>
+    </div>
+    <div class="form-group">
+        <mat-form-field>
+            <mat-label>Street</mat-label>
+            <input matInput type="text" class="form-control" id="street" maxlength="30"
+                [(ngModel)]="event.locationStreet" name="street" placeholder="Street" data-1p-ignore>
+            <mat-icon matSuffix>signpost</mat-icon>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>City</mat-label>
+            <input matInput type="text" class="form-control" id="city" required maxlength="30"
+                [(ngModel)]="event.locationCity" name="city" placeholder="City" data-1p-ignore>
+            <mat-icon matSuffix>locationCity</mat-icon>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Country</mat-label>
+            <input matInput type="text" class="form-control" id="country" required maxlength="50"
+                [(ngModel)]="event.locationCountry" name="country" placeholder="Country" data-1p-ignore>
+            <mat-icon matSuffix>public</mat-icon>
+        </mat-form-field>
+    </div>
+    <div class="form-group">
+        <mat-form-field>
+            <mat-label>Event image URL</mat-label>
+            <input matInput type="text" class="form-control" id="imageUrl" required [(ngModel)]="event.imageUrl"
+                name="imageUrl" placeholder="Event image URL">
+            <mat-icon matSuffix>image</mat-icon>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Event image alt</mat-label>
+            <mat-hint>Enter a description for the event image</mat-hint>
+            <input matInput #imageAlt type="text" class="form-control" id="imageAlt" required maxlength="100"
+                [(ngModel)]="event.imageAlt" name="imageAlt" placeholder="Event image alt">
+            <mat-icon matSuffix>accessibility_new</mat-icon>
+            <mat-hint align="end">{{event.imageAlt.length}}/100</mat-hint>
+        </mat-form-field>
+    </div>
+    <div class="form-group">
+        <mat-form-field>
+            <mat-hint><a href="https://www.markdownguide.org/basic-syntax/" target="_blank">Markdown</a> is
+                supported</mat-hint>
+            <mat-label>Full description</mat-label>
+            <textarea matInput class="form-control" id="longDescription" maxlength="10000"
+                [(ngModel)]="event.longDescription" name="longDescription" placeholder="Full description"></textarea>
+            <mat-hint align="end">{{event.longDescription.length}}/10000</mat-hint>
+        </mat-form-field>
+    </div>
+    <div class="form-group">
+        <button mat-raised-button color="primary" type="submit" [disabled]="!createEventForm.form.valid">
+            {{ isEditMode ? 'Update Event' : 'Create Event' }}
+        </button>
+    </div>
+</form>
