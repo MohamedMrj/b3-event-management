@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using Azure;
 using Azure.Data.Tables;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -8,24 +10,46 @@ using Microsoft.Extensions.Logging;
 
 namespace B3.Complete.Eventwebb
 {
-  public static class GetAllEvents
-  {
-    [FunctionName("GetAllEvents")]
-    public static async Task<IActionResult> Run(
-      [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] HttpRequest req,
-      ILogger log
-    )
+    public static class GetAllEvents
     {
-      var client = new TableClient(DatabaseConfig.ConnectionString, DatabaseConfig.TableName);
-      var queryResultsFilter = client.QueryAsync<TableEntity>();
-      Azure.Page<TableEntity> result = null;
+        [FunctionName("GetAllEvents")]
+        public static async Task<IActionResult> Run(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] HttpRequest req,
+            ILogger log)
+        {
+            var client = new TableClient(DatabaseConfig.ConnectionString, DatabaseConfig.TableName);
+            var queryResults = client.QueryAsync<TableEntity>();
 
-      await foreach (Azure.Page<TableEntity> page in queryResultsFilter.AsPages())
-      {
-        result = page;
-      }
+            var eventsList = new List<object>();
 
-      return new OkObjectResult(result);
+            await foreach (var entity in queryResults)
+            {
+                var transformedEventData = new
+                {
+                    id = entity.RowKey,
+                    title = entity["Title"],
+                    longDescription = entity["LongDescription"],
+                    shortDescription = entity["ShortDescription"],
+                    locationStreet = entity["LocationStreet"],
+                    locationCity = entity["LocationCity"],
+                    locationCountry = entity["LocationCountry"],
+                    organizer = entity["CreatorUserID"],
+                    startDateTime = entity["StartDateTime"].ToString(),
+                    endDateTime = entity["EndDateTime"].ToString(),
+                    timezone = entity["Timezone"],
+                    imageUrl = entity["ImageUrl"],
+                    imageAlt = entity["ImageAlt"],
+                };
+
+                eventsList.Add(transformedEventData);
+            }
+
+            if (eventsList.Count == 0)
+            {
+                return new NotFoundResult();
+            }
+
+            return new OkObjectResult(eventsList);
+        }
     }
-  }
 }

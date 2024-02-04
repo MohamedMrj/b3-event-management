@@ -62,18 +62,17 @@
         <div class="form-group">
             <mat-form-field>
                 <mat-label>Event image URL</mat-label>
-                <input matInput type="text" class="form-control" id="eventImageUrl" required
-                    [(ngModel)]="event.eventImageUrl" name="eventImageUrl" placeholder="Event image URL">
+                <input matInput type="text" class="form-control" id="imageUrl" required [(ngModel)]="event.imageUrl"
+                    name="imageUrl" placeholder="Event image URL">
                 <mat-icon matSuffix>image</mat-icon>
             </mat-form-field>
             <mat-form-field>
                 <mat-label>Event image alt</mat-label>
                 <mat-hint>Enter a description for the event image</mat-hint>
-                <input matInput #eventImageAlt type="text" class="form-control" id="eventImageAlt" required
-                    maxlength="100" [(ngModel)]="event.eventImageAlt" name="eventImageAlt"
-                    placeholder="Event image alt">
+                <input matInput #imageAlt type="text" class="form-control" id="imageAlt" required maxlength="100"
+                    [(ngModel)]="event.imageAlt" name="imageAlt" placeholder="Event image alt">
                 <mat-icon matSuffix>accessibility_new</mat-icon>
-                <mat-hint align="end">{{event.eventImageAlt.length}}/100</mat-hint>
+                <mat-hint align="end">{{event.imageAlt.length}}/100</mat-hint>
             </mat-form-field>
         </div>
         <div class="form-group">

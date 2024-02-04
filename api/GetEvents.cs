@@ -15,7 +15,7 @@ namespace B3.Complete.Eventwebb
     {
         [FunctionName("GetEvent")]
         public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "getEvent/{id}")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "event/{id}")] HttpRequest req,
             string id,
             ILogger log)
         {
@@ -55,15 +55,17 @@ namespace B3.Complete.Eventwebb
             {
                 id = eventResult.RowKey,
                 title = eventResult["Title"],
-                longDescription = eventResult["Description"],
-                shortDescription = eventResult["Description"],
-                location = eventResult["Location"],
+                longDescription = eventResult["LongDescription"],
+                shortDescription = eventResult["ShortDescription"],
+                locationStreet = eventResult["LocationStreet"],
+                locationCity = eventResult["LocationCity"],
+                locationCountry = eventResult["LocationCountry"],
                 organizer = eventResult["CreatorUserID"],
-                startDateTime = ((DateTimeOffset)eventResult["Timestamp"]).ToString("yyyy-MM-ddTHH:mm:ss"),
-                endDateTime = ((DateTimeOffset)eventResult["Timestamp"]).ToString("yyyy-MM-ddTHH:mm:ss"),
-                timezone = "Europe/Stockholm", // Assuming the timezone is always Europe/Stockholm
-                eventImageUrl = eventResult["ImageURL"],
-                eventImageAlt = "Photo of an Event" // You can specify a default alt text or fetch it from another source
+                startDateTime = eventResult["StartDateTime"].ToString(),
+                endDateTime = eventResult["EndDateTime"].ToString(),
+                timezone = eventResult["Timezone"],
+                imageUrl = eventResult["ImageUrl"],
+                imageAlt = eventResult["ImageAlt"],
             };
 
             return new OkObjectResult(transformedEventData);
