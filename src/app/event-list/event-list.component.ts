@@ -9,25 +9,31 @@ import { Event } from '../event';
   templateUrl: './event-list.component.html',
   styleUrls: ['./event-list.component.css']
 })
-
 export class EventListComponent implements OnInit {
   eventList: Event[] = [];
 
   constructor(
     private eventService: EventService,
     private router: Router,
-    private titleService: Title,
+    private titleService: Title
   ) {
     this.titleService.setTitle('Events');
   }
 
-    ngOnInit() {
-        this.eventService.events$.subscribe(events => {
-            this.eventList = events;
-          });
-    }
+  ngOnInit() {
+    this.fetchAllEvents();
+  }
+
+  fetchAllEvents() {
+    this.eventService.fetchAllEvents().subscribe(events => {
+      this.eventList = events;
+    }, error => {
+      console.error('Error fetching events:', error);
+      // Add more error handling such as showing an error message to the user
+    });
+  }
 
   navigateToCreateEvent() {
-    this.router.navigate(['/event/create']);
+    this.router.navigate(['/createEvent']);
   }
 }

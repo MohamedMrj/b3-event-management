@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { EventService } from '../event.service';
 import { Event } from '../event';
@@ -8,12 +8,12 @@ import { Event } from '../event';
   templateUrl: './create-event-form.component.html',
   styleUrls: ['./create-event-form.component.css']
 })
-export class CreateEventFormComponent {
+export class CreateEventFormComponent implements OnInit {
   submitted = false;
   isEditMode = false;
-  eventId: string;
+  eventId: string = '';
 
-  timezones: string[] = [ 'Europe/Stockholm', 'Europe/London', 'Europe/Paris', 'America/New_York'];
+  timezones: string[] = ['Europe/Stockholm', 'Europe/London', 'Europe/Paris', 'America/New_York'];
 
   event: Event = {
     id: '',
@@ -27,8 +27,8 @@ export class CreateEventFormComponent {
     startDateTime: '',
     endDateTime: '',
     timezone: '',
-    eventImageUrl: '',
-    eventImageAlt: ''
+    imageUrl: '',
+    imageAlt: ''
   };
 
   constructor(
@@ -41,14 +41,19 @@ export class CreateEventFormComponent {
       const eventId = params.get('eventid');
       if (eventId) {
         this.isEditMode = true;
-        this.eventService.events$.subscribe(events => {
-          const foundEvent = events.find(e => e.id === eventId);
-          if (foundEvent) {
-            this.event = foundEvent;
-          } else {
-            // Handle the case where the event is not found
-          }
-        });
+        this.fetchEvent(eventId);
+      }
+    });
+  }
+
+  fetchEvent(eventId: string) {
+    this.eventService.fetchEventById(eventId).subscribe({
+      next: (foundEvent) => {
+        this.event = foundEvent;
+      },
+      error: () => {
+        console.error('Event not found:', eventId);
+        // Add more error handling such as showing an error message to the user
       }
     });
   }
@@ -56,10 +61,10 @@ export class CreateEventFormComponent {
   onSubmit() {
     if (this.isEditMode) {
       console.log("Updating Event: ", this.event);
-      // Add logic to update the event here
+      // Add logic to call the event update service method here
     } else {
       console.log("Creating Event: ", this.event);
-      // Add logic to update the event here
+      // Add logic to call the event creation service method here
     }
     this.submitted = true;
   }

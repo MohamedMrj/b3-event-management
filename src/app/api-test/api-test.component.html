@@ -1,2 +1,33 @@
 <h1>API Test</h1>
-<p>{{ message }}</p>
+
+<p>This test will fetch details for event {{ message }}</p>
+
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Title</th>
+        <th>Long Description</th>
+        <th>Short Description</th>
+        <th>Organizer</th>
+        <th>Start Date/Time</th>
+        <th>End Date/Time</th>
+        <th>Timezone</th>
+        <th>Event Image URL</th>
+        <th>Event Image Alt</th>
+    </tr>
+    <tr>
+        <td>{{ event.id }}</td>
+        <td>{{ event.title }}</td>
+        <td>{{ event.longDescription }}</td>
+        <td>{{ event.shortDescription }}</td>
+        <td>{{ event.organizer }}</td>
+        <td>{{ event.locationStreet }}</td>
+        <td>{{ event.locationCity }}</td>
+        <td>{{ event.locationCountry }}</td>
+        <td>{{ event.startDateTime }}</td>
+        <td>{{ event.endDateTime }}</td>
+        <td>{{ event.timezone }}</td>
+        <td>{{ event.imageUrl }}</td>
+        <td>{{ event.imageAlt }}</td>
+    </tr>
+</table>

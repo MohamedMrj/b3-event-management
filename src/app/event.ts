@@ -10,6 +10,6 @@ export interface Event {
     locationCity: string;
     locationCountry: string;
     organizer: string;
-    eventImageUrl: string;
-    eventImageAlt: string;
+    imageUrl: string;
+    imageAlt: string;
 }

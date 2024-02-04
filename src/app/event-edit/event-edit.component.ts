@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { EventService } from '../event.service';
 import { Event } from '../event';
@@ -12,38 +12,66 @@ import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.compone
   templateUrl: './event-edit.component.html',
   styleUrls: ['./event-edit.component.css']
 })
-export class EventEditComponent {
+export class EventEditComponent implements OnInit {
   event: Event | undefined;
   eventNotFound: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private titleService: Title,
     private eventService: EventService,
     private pageLocation: Location,
     private dialog: MatDialog,
-  ) {
-    this.titleService.setTitle('Edit >>> Event Title <<<');
-  }
+  ) {}
 
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
       const eventId = params.get('eventid');
-      this.eventService.events$.subscribe(events => {
-        const foundEvent = events.find(e => e.id === eventId);
-        if (foundEvent) {
-          this.event = foundEvent;
-          this.titleService.setTitle(`Editing ${foundEvent.title}`);
-          this.eventNotFound = false;
-        } else {
-          this.eventNotFound = true;
-        }
-      });
+      if (eventId) {
+        this.fetchEvent(eventId);
+      }
+    });
+  }
+
+  fetchEvent(eventId: string) {
+    this.eventService.fetchEventById(eventId).subscribe({
+      next: (foundEvent) => {
+        this.event = foundEvent;
+        this.titleService.setTitle(`Editing ${foundEvent.title}`);
+        this.eventNotFound = false;
+      },
+      error: () => {
+        this.eventNotFound = true;
+        // Add more error handling such as showing an error message to the user
+      }
     });
   }
 
   deleteEvent() {
-    console.log('This button will delete events.');
+    if (this.event?.id) {
+      // Confirm deletion with the user
+      const confirmDialogRef = this.dialog.open(ConfirmDialogComponent, {
+        data: { message: 'Are you sure you want to delete this event?' }
+      });
+
+      confirmDialogRef.afterClosed().subscribe(result => {
+        if (result) {
+          console.log(`Deleting event: ${this.event.id}`);
+          this.eventService.deleteEvent(this.event.id).subscribe({
+            next: (response) => {
+              console.log(`Event: ${this.event.id} deleted successfully.`);
+              this.router.navigate(['/']);
+            },
+            error: (error) => {
+              console.error('Error deleting event:', error);
+              // Add more error handling such as showing an error message to the user
+            }
+          });
+        }
+        
+      });
+    }
   }
 
   goBack() {
