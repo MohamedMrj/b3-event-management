@@ -8,6 +8,10 @@
 
 /* Header */
 
+mat-toolbar {
+  background-color: var(--pink-dark);
+}
+
 .header-wrapper {
   display: flex;
   height: 100%;

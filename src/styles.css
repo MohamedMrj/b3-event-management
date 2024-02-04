@@ -1,6 +1,6 @@
 :root {
-  --pink: hsl(340, 100%, 63%);
-  --pink-darker: hsl(336, 78%, 50%);
+  --pink: hsl(340, 100%, 63%); /* Use for dark mode */
+  --pink-dark: hsl(336, 78%, 50%); /* Use for light mode */
   --cyan: hsl(180, 89%, 42%);
   --black: #000000;
   --white: #ffffff;
@@ -21,7 +21,7 @@ body {
 }
 
 a {
-  color: var(--pink-darker);
+  color: var(--pink-dark);
   text-decoration: none;
 }
 
