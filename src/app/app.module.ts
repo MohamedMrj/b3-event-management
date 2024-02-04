@@ -18,6 +18,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatDialogModule } from '@angular/material/dialog';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { registerLocaleData } from '@angular/common';
+import { MatPaginatorModule } from '@angular/material/paginator';
 import localeSv from '@angular/common/locales/sv';
 import localePl from '@angular/common/locales/pl';
 
@@ -79,6 +80,7 @@ registerLocaleData(localePl);
     MatSnackBarModule,
     MatMenuModule,
     MatDialogModule,
+    MatPaginatorModule,
   ],
   bootstrap: [
     AppComponent
