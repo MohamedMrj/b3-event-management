@@ -31,6 +31,15 @@ export class CreateEventFormComponent implements OnInit {
     imageAlt: ''
   };
 
+  // Set maxlength for input fields
+  titleMaxLength: number = 30;
+  shortDescriptionMaxLength: number = 100;
+  locationStreetMaxLength: number = 30;
+  locationCityMaxLength: number = 50;
+  locationCountryMaxLength: number = 50;
+  imageAltMaxLength: number = 100;
+  longDescriptionMaxLength: number = 10000;
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
