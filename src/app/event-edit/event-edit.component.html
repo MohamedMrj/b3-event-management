@@ -1,20 +1,24 @@
 <div class="container">
-    <button mat-button (click)="confirmDiscardChanges()" class="back-button">
-        <mat-icon>arrow_back</mat-icon>
-        Go back
+  <button mat-button (click)="confirmDiscardChanges()" class="back-button">
+    <mat-icon>arrow_back</mat-icon>
+    Go back
+  </button>
+  <div class="editEvent-header">
+    <h1>{{ event.title }}</h1>
+    <span class="flex-spacer"></span>
+    <button
+      mat-icon-button
+      [matMenuTriggerFor]="manageEventMenu"
+      aria-label="Menu for managing event"
+    >
+      <mat-icon>more_vert</mat-icon>
     </button>
-    <div class="editEvent-header">
-        <h1>{{ event.title }}</h1>
-        <span class="flex-spacer"></span>
-        <button mat-icon-button [matMenuTriggerFor]="manageEventMenu" aria-label="Menu for managing event">
-            <mat-icon>more_vert</mat-icon>
-        </button>
-        <mat-menu #manageEventMenu="matMenu">
-            <button mat-menu-item (click)="deleteEvent()">
-                <mat-icon color="warn">delete</mat-icon>
-                <span>Delete event</span>
-            </button>
-        </mat-menu>
-    </div>
-    <app-create-event-form></app-create-event-form>
+    <mat-menu #manageEventMenu="matMenu">
+      <button mat-menu-item (click)="deleteEvent()">
+        <mat-icon color="warn">delete</mat-icon>
+        <span>Delete event</span>
+      </button>
+    </mat-menu>
+  </div>
+  <app-create-event-form></app-create-event-form>
 </div>

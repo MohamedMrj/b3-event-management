@@ -13,11 +13,11 @@ const routes: Routes = [
   { path: 'event/update/:eventid', component: EventEditComponent },
   { path: 'event/:eventid', component: EventDetailComponent },
   { path: 'api-test', component: ApiTestComponent },
-  { path: '**', component: PageNotFoundComponent }
+  { path: '**', component: PageNotFoundComponent },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

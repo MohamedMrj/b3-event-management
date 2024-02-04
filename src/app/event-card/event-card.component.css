@@ -21,7 +21,7 @@
   gap: 0.5rem;
 }
 
-.mat-mdc-card-content>:last-child:not(.mat-mdc-card-footer) {
+.mat-mdc-card-content > :last-child:not(.mat-mdc-card-footer) {
   margin-bottom: 1rem;
 }
 

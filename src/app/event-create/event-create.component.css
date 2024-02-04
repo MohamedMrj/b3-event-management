@@ -1,21 +1,21 @@
 .container {
-    margin: 0 auto;
+  margin: 0 auto;
 }
 
 .back-button {
-    margin-bottom: 1rem;
+  margin-bottom: 1rem;
 }
 
 .editEvent-header {
-    display: flex;
-    align-items: center;
-    flex-direction: row;
-    gap: 1rem;
-    margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  gap: 1rem;
+  margin-bottom: 1rem;
 }
 
 @media (min-width: 1024px) {
-    .container {
-        max-width: 900px;
-    }
+  .container {
+    max-width: 900px;
+  }
 }

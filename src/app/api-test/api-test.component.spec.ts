@@ -8,7 +8,7 @@ describe('ApiTestComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [ApiTestComponent]
+      declarations: [ApiTestComponent],
     });
     fixture = TestBed.createComponent(ApiTestComponent);
     component = fixture.componentInstance;

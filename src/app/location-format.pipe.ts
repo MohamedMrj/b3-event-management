@@ -3,7 +3,7 @@ import { Event } from './event';
 import { formatLocation } from './utils/location.utils';
 
 @Pipe({
-  name: 'locationFormat'
+  name: 'locationFormat',
 })
 export class LocationFormatPipe implements PipeTransform {
   transform(event: Event): string {

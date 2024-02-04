@@ -8,7 +8,7 @@ import { Event } from '../event';
 @Component({
   selector: 'app-event-detail',
   templateUrl: './event-detail.component.html',
-  styleUrls: ['./event-detail.component.css']
+  styleUrls: ['./event-detail.component.css'],
 })
 export class EventDetailComponent implements OnInit {
   event: Event | undefined;
@@ -23,7 +23,7 @@ export class EventDetailComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.route.paramMap.subscribe(params => {
+    this.route.paramMap.subscribe((params) => {
       const eventId = params.get('eventid');
       if (eventId) {
         this.fetchEvent(eventId);
@@ -42,7 +42,7 @@ export class EventDetailComponent implements OnInit {
       },
       error: () => {
         this.eventNotFound = true;
-      }
+      },
     });
   }
 
@@ -63,7 +63,7 @@ export class EventDetailComponent implements OnInit {
         error: (error) => {
           console.error('Error deleting event:', error);
           // Add more error handling such as showing an error message to the user
-        }
+        },
       });
     }
   }

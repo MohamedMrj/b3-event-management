@@ -4,10 +4,9 @@ import { HttpClient } from '@angular/common/http';
 import { Event } from './event';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class EventService {
-
   constructor(private http: HttpClient) {}
 
   // Fetch all events

@@ -3,7 +3,7 @@ import { Event } from './event';
 import { getGoogleMapsEmbedUrl } from './utils/location.utils';
 
 @Pipe({
-  name: 'googleMapsEmbedUrl'
+  name: 'googleMapsEmbedUrl',
 })
 export class GoogleMapsEmbedUrlPipe implements PipeTransform {
   transform(event: Event): string {

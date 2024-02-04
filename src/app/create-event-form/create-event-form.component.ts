@@ -6,14 +6,19 @@ import { Event } from '../event';
 @Component({
   selector: 'app-create-event-form',
   templateUrl: './create-event-form.component.html',
-  styleUrls: ['./create-event-form.component.css']
+  styleUrls: ['./create-event-form.component.css'],
 })
 export class CreateEventFormComponent implements OnInit {
   submitted = false;
   isEditMode = false;
   eventId: string = '';
 
-  timezones: string[] = ['Europe/Stockholm', 'Europe/London', 'Europe/Paris', 'America/New_York'];
+  timezones: string[] = [
+    'Europe/Stockholm',
+    'Europe/London',
+    'Europe/Paris',
+    'America/New_York',
+  ];
 
   event: Event = {
     id: '',
@@ -28,7 +33,7 @@ export class CreateEventFormComponent implements OnInit {
     endDateTime: '',
     timezone: '',
     imageUrl: '',
-    imageAlt: ''
+    imageAlt: '',
   };
 
   // Set maxlength for input fields
@@ -47,7 +52,7 @@ export class CreateEventFormComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.route.paramMap.subscribe(params => {
+    this.route.paramMap.subscribe((params) => {
       const eventId = params.get('eventid');
       if (eventId) {
         this.isEditMode = true;
@@ -64,38 +69,38 @@ export class CreateEventFormComponent implements OnInit {
       error: () => {
         console.error('Event not found:', eventId);
         // Add more error handling such as showing an error message to the user
-      }
+      },
     });
   }
 
   onSubmit() {
     this.submitted = true;
-  
+
     if (this.isEditMode) {
-      console.log("Updating Event: ", this.event);
+      console.log('Updating Event: ', this.event);
       this.eventService.updateEvent(this.event.id, this.event).subscribe({
         next: (updatedEvent) => {
-          console.log("Event updated successfully:", updatedEvent);
+          console.log('Event updated successfully:', updatedEvent);
           this.router.navigate(['/event', updatedEvent.id]);
         },
         error: (error) => {
-          console.error("Error updating event:", error);
+          console.error('Error updating event:', error);
           // Add more error handling such as showing an error message to the user
           this.submitted = false; // Reset submitted status to allow retry
-        }
+        },
       });
     } else {
-      console.log("Creating Event: ", this.event);
+      console.log('Creating Event: ', this.event);
       this.eventService.createEvent(this.event).subscribe({
         next: (createdEvent) => {
-          console.log("Event created successfully:", createdEvent);
+          console.log('Event created successfully:', createdEvent);
           this.router.navigate(['/event', createdEvent.id]);
         },
         error: (error) => {
-          console.error("Error creating event:", error);
+          console.error('Error creating event:', error);
           // Add more error handling such as showing an error message to the user
           this.submitted = false; // Reset submitted status to allow retry
-        }
+        },
       });
     }
   }

@@ -6,7 +6,7 @@ import { Event } from '../event';
 @Component({
   selector: 'app-api-test',
   templateUrl: './api-test.component.html',
-  styleUrls: ['./api-test.component.css']
+  styleUrls: ['./api-test.component.css'],
 })
 export class ApiTestComponent {
   event: Event | undefined;
@@ -17,7 +17,7 @@ export class ApiTestComponent {
     private titleService: Title,
     private eventService: EventService,
   ) {
-    this.titleService.setTitle("API Test");
+    this.titleService.setTitle('API Test');
   }
 
   ngOnInit() {
@@ -31,7 +31,7 @@ export class ApiTestComponent {
       },
       error: (error) => {
         console.error('There was an error!', error);
-      }
+      },
     });
   }
 }

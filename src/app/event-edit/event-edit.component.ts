@@ -10,7 +10,7 @@ import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.compone
 @Component({
   selector: 'app-event-edit',
   templateUrl: './event-edit.component.html',
-  styleUrls: ['./event-edit.component.css']
+  styleUrls: ['./event-edit.component.css'],
 })
 export class EventEditComponent implements OnInit {
   event: Event | undefined;
@@ -26,7 +26,7 @@ export class EventEditComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.route.paramMap.subscribe(params => {
+    this.route.paramMap.subscribe((params) => {
       const eventId = params.get('eventid');
       if (eventId) {
         this.fetchEvent(eventId);
@@ -44,7 +44,7 @@ export class EventEditComponent implements OnInit {
       error: () => {
         this.eventNotFound = true;
         // Add more error handling such as showing an error message to the user
-      }
+      },
     });
   }
 
@@ -52,10 +52,10 @@ export class EventEditComponent implements OnInit {
     if (this.event?.id) {
       // Confirm deletion with the user
       const confirmDialogRef = this.dialog.open(ConfirmDialogComponent, {
-        data: { message: 'Are you sure you want to delete this event?' }
+        data: { message: 'Are you sure you want to delete this event?' },
       });
 
-      confirmDialogRef.afterClosed().subscribe(result => {
+      confirmDialogRef.afterClosed().subscribe((result) => {
         if (result) {
           console.log(`Deleting event: ${this.event.id}`);
           this.eventService.deleteEvent(this.event.id).subscribe({
@@ -66,10 +66,9 @@ export class EventEditComponent implements OnInit {
             error: (error) => {
               console.error('Error deleting event:', error);
               // Add more error handling such as showing an error message to the user
-            }
+            },
           });
         }
-        
       });
     }
   }
@@ -80,10 +79,10 @@ export class EventEditComponent implements OnInit {
 
   confirmDiscardChanges() {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      data: { message: 'Do you want to discard the changes?' }
+      data: { message: 'Do you want to discard the changes?' },
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         this.goBack();
       }

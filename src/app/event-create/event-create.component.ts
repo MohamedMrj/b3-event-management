@@ -7,14 +7,14 @@ import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.compone
 @Component({
   selector: 'app-event-create',
   templateUrl: './event-create.component.html',
-  styleUrls: ['./event-create.component.css']
+  styleUrls: ['./event-create.component.css'],
 })
 export class EventCreateComponent {
   constructor(
     private titleService: Title,
     private pageLocation: Location,
     private dialog: MatDialog,
-    ) {
+  ) {
     this.titleService.setTitle('Create Event');
   }
 
@@ -24,10 +24,10 @@ export class EventCreateComponent {
 
   confirmDiscardChanges() {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      data: { message: 'Do you want to discard the changes?' }
+      data: { message: 'Do you want to discard the changes?' },
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         this.goBack();
       }

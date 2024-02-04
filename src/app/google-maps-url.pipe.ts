@@ -3,7 +3,7 @@ import { Event } from './event'; // Assuming this is the correct path to your Ev
 import { getGoogleMapsUrl } from './utils/location.utils';
 
 @Pipe({
-  name: 'googleMapsUrl'
+  name: 'googleMapsUrl',
 })
 export class GoogleMapsUrlPipe implements PipeTransform {
   transform(event: Event): string {
