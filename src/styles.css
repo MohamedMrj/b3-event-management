@@ -1,5 +1,6 @@
 :root {
   --pink: hsl(340, 100%, 63%);
+  --pink-darker: hsl(336, 78%, 50%);
   --cyan: hsl(180, 89%, 42%);
   --black: #000000;
   --white: #ffffff;
@@ -20,7 +21,7 @@ body {
 }
 
 a {
-  color: var(--pink);
+  color: var(--pink-darker);
   text-decoration: none;
 }
 

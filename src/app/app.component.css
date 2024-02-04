@@ -23,6 +23,11 @@
   align-items: center;
   height: 100%;
   padding: 1rem 0;
+  color: var(--white);
+}
+
+.logo:hover {
+  text-decoration: none;
 }
 
 .logo img {
