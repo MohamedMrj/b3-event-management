@@ -64,7 +64,7 @@ export class CreateEventFormComponent implements OnInit {
   
     if (this.isEditMode) {
       console.log("Updating Event: ", this.event);
-      /* this.eventService.updateEvent(this.event.id, this.event).subscribe({
+      this.eventService.updateEvent(this.event.id, this.event).subscribe({
         next: (updatedEvent) => {
           console.log("Event updated successfully:", updatedEvent);
           this.router.navigate(['/event', updatedEvent.id]);
@@ -74,7 +74,7 @@ export class CreateEventFormComponent implements OnInit {
           // Add more error handling such as showing an error message to the user
           this.submitted = false; // Reset submitted status to allow retry
         }
-      }); */
+      });
     } else {
       console.log("Creating Event: ", this.event);
       this.eventService.createEvent(this.event).subscribe({

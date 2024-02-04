@@ -26,8 +26,8 @@ export class EventService {
   }
 
   // Update an existing event
-  updateEvent(event: Event): Observable<Event> {
-    return this.http.put<Event>(`/api/event/${event.id}`, event);
+  updateEvent(eventId: string, event: Event): Observable<Event> {
+    return this.http.put<Event>(`/api/event/${eventId}`, event);
   }
 
   // Delete an event
