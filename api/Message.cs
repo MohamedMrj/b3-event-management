@@ -17,8 +17,8 @@ namespace B3.Complete.Eventwebb
   {
     [FunctionName("CreateEvent")]
     public static async Task<IActionResult> CreateEvent(
-      [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "event")] HttpRequest req,
-      ILogger log
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "event")] HttpRequest req,
+        ILogger log
     )
     {
       var requestBody = await new StreamReader(req.Body).ReadToEndAsync();
@@ -33,12 +33,18 @@ namespace B3.Complete.Eventwebb
       {
         PartitionKey = DateTime.UtcNow.ToString("yyyyMM"),
         RowKey = maxRowKey.ToString(), // Use the next RowKey value
-        ["Title"] = eventData.GetProperty("Title").GetString(),
-        ["Description"] = eventData.GetProperty("Description").GetString(),
-        ["Location"] = eventData.GetProperty("Location").GetString(),
-        ["CreatorUserID"] = eventData.GetProperty("CreatorUserID").GetString(),
-        ["ImageURL"] = eventData.GetProperty("ImageURL").GetString(),
-        ["isPublic"] = eventData.GetProperty("isPublic").GetBoolean()
+        ["Title"] = eventData.GetProperty("title").GetString(),
+        ["LongDescription"] = eventData.GetProperty("longDescription").GetString(),
+        ["ShortDescription"] = eventData.GetProperty("shortDescription").GetString(),
+        ["LocationStreet"] = eventData.GetProperty("locationStreet").GetString(),
+        ["LocationCity"] = eventData.GetProperty("locationCity").GetString(),
+        ["LocationCountry"] = eventData.GetProperty("locationCountry").GetString(),
+        ["CreatorUserID"] = eventData.GetProperty("organizer").GetString(),
+        ["StartDateTime"] = eventData.GetProperty("startDateTime").GetString(),
+        ["EndDateTime"] = eventData.GetProperty("endDateTime").GetString(),
+        ["Timezone"] = eventData.GetProperty("timezone").GetString(),
+        ["ImageUrl"] = eventData.GetProperty("imageUrl").GetString(),
+        ["ImageAlt"] = eventData.GetProperty("imageAlt").GetString(),
       };
 
       try
@@ -51,8 +57,27 @@ namespace B3.Complete.Eventwebb
         return new BadRequestObjectResult("Error creating the event.");
       }
 
-      return new OkObjectResult(newEvent);
+      // Prepare the response entity to match the specified fields
+      var responseEntity = new
+      {
+        id = newEvent.RowKey,
+        title = newEvent["Title"],
+        longDescription = newEvent["LongDescription"],
+        shortDescription = newEvent["ShortDescription"],
+        locationStreet = newEvent["LocationStreet"],
+        locationCity = newEvent["LocationCity"],
+        locationCountry = newEvent["LocationCountry"],
+        organizer = newEvent["CreatorUserID"],
+        startDateTime = newEvent["StartDateTime"],
+        endDateTime = newEvent["EndDateTime"],
+        timezone = newEvent["Timezone"],
+        imageUrl = newEvent["ImageUrl"],
+        imageAlt = newEvent["ImageAlt"],
+      };
+
+      return new OkObjectResult(responseEntity);
     }
+
 
     private static async Task<int> GetMaxRowKey(TableClient client, ILogger log)
     {
