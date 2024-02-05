@@ -10,11 +10,11 @@ using Microsoft.Extensions.Logging;
 
 namespace B3.Complete.Eventwebb
 {
-  public static class GetEvent
+  public static class DeleteEvent
   {
-    [FunctionName("GetEvent")]
+    [FunctionName("DeleteEvent")]
     public static async Task<IActionResult> Run(
-      [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "event/{id}")] HttpRequest req,
+      [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "event/{id}")] HttpRequest req,
       string id,
       ILogger log
     )
@@ -38,7 +38,7 @@ namespace B3.Complete.Eventwebb
       {
         foreach (var entity in page.Values)
         {
-          result.Add(entity);
+          result.Add(entity); //https://dev.azure.com/B3Complete/H%C3%B6gskolan%20Dalarna/_git/B3_Eventwebb/pushes <-- Vad är detta?
         }
       }
 
@@ -50,25 +50,9 @@ namespace B3.Complete.Eventwebb
         return new NotFoundResult();
       }
 
-      // Transform the retrieved data into the desired format
-      var transformedEventData = new
-      {
-        id = eventResult.RowKey,
-        title = eventResult["Title"],
-        longDescription = eventResult["LongDescription"],
-        shortDescription = eventResult["ShortDescription"],
-        locationStreet = eventResult["LocationStreet"],
-        locationCity = eventResult["LocationCity"],
-        locationCountry = eventResult["LocationCountry"],
-        organizer = eventResult["CreatorUserID"],
-        startDateTime = eventResult["StartDateTime"].ToString(),
-        endDateTime = eventResult["EndDateTime"].ToString(),
-        timezone = eventResult["Timezone"],
-        imageUrl = eventResult["ImageUrl"],
-        imageAlt = eventResult["ImageAlt"],
-      };
+      await client.DeleteEntityAsync(eventResult.PartitionKey, eventResult.RowKey);
 
-      return new OkObjectResult(transformedEventData);
+      return new OkResult();
     }
   }
 }
