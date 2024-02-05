@@ -1,15 +1,5 @@
 {
   "navigationFallback": {
     "rewrite": "/index.html"
-  },
-  "routes": [
-    {
-      "route": "/sv/*",
-      "rewrite": "/dist/angular-basic-sv/index.html"
-    },
-    {
-      "route": "/*",
-      "rewrite": "/dist/angular-basic/index.html"
-    }
-  ]
+  }
 }
