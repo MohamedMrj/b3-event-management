@@ -76,6 +76,16 @@ export class CreateEventFormComponent implements OnInit {
   onSubmit() {
     this.submitted = true;
 
+    // Convert startDateTime and endDateTime to ISO format
+    if (this.event.startDateTime) {
+      this.event.startDateTime = new Date(
+        this.event.startDateTime,
+      ).toISOString();
+    }
+    if (this.event.endDateTime) {
+      this.event.endDateTime = new Date(this.event.endDateTime).toISOString();
+    }
+
     if (this.isEditMode) {
       console.log('Updating Event: ', this.event);
       this.eventService.updateEvent(this.event.id, this.event).subscribe({
@@ -85,7 +95,6 @@ export class CreateEventFormComponent implements OnInit {
         },
         error: (error) => {
           console.error('Error updating event:', error);
-          // Add more error handling such as showing an error message to the user
           this.submitted = false; // Reset submitted status to allow retry
         },
       });
@@ -98,7 +107,6 @@ export class CreateEventFormComponent implements OnInit {
         },
         error: (error) => {
           console.error('Error creating event:', error);
-          // Add more error handling such as showing an error message to the user
           this.submitted = false; // Reset submitted status to allow retry
         },
       });
