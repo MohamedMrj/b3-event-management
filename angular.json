@@ -68,6 +68,11 @@
                   "maximumError": "10kb"
                 }
               ]
+            },
+            "sv": {
+              "localize": ["sv"],
+              "outputPath": "dist/angular-basic-sv/",
+              "i18nMissingTranslation": "error"
             }
           },
           "defaultConfiguration": ""
@@ -80,6 +85,9 @@
           "configurations": {
             "production": {
               "browserTarget": "angular-basic:build:production"
+            },
+            "sv": {
+              "browserTarget": "angular-basic:build:sv"
             }
           }
         },
@@ -119,6 +127,15 @@
             "production": {
               "devServerTarget": "angular-basic:serve:production"
             }
+          }
+        }
+      },
+      "i18n": {
+        "sourceLocale": "en-US",
+        "locales": {
+          "sv": {
+            "translation": "src/locale/messages.sv.xlf",
+            "baseHref": ""
           }
         }
       }
