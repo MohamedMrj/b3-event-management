@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule, LOCALE_ID } from '@angular/core';
+import { NgModule, LOCALE_ID, isDevMode } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -39,6 +39,7 @@ import { MarkdownModule } from 'ngx-markdown';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { GoogleMapsEmbedUrlPipe } from './google-maps-embed-url.pipe';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
+import { ServiceWorkerModule } from '@angular/service-worker';
 
 registerLocaleData(localeSv);
 registerLocaleData(localePl);
@@ -83,6 +84,12 @@ registerLocaleData(localePl);
     MatDialogModule,
     MatPaginatorModule,
     MatTabsModule,
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      enabled: !isDevMode(),
+      // Register the ServiceWorker as soon as the application is stable
+      // or after 30 seconds (whichever comes first).
+      registrationStrategy: 'registerWhenStable:30000'
+    }),
   ],
   bootstrap: [AppComponent],
   providers: [{ provide: LOCALE_ID, useValue: navigator.language || 'en' }],
