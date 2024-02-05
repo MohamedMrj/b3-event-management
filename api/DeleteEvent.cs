@@ -38,7 +38,7 @@ namespace B3.Complete.Eventwebb
       {
         foreach (var entity in page.Values)
         {
-          result.Add(entity); //https://dev.azure.com/B3Complete/H%C3%B6gskolan%20Dalarna/_git/B3_Eventwebb/pushes <-- Vad är detta?
+          result.Add(entity);
         }
       }
 
