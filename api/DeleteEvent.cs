@@ -1,4 +1,5 @@
-using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Azure.Data.Tables;
 using Microsoft.AspNetCore.Http;
@@ -13,33 +14,45 @@ namespace B3.Complete.Eventwebb
   {
     [FunctionName("DeleteEvent")]
     public static async Task<IActionResult> Run(
-      [HttpTrigger(AuthorizationLevel.Function, "delete", Route = "event/{yearMonth}/{eventId}")]
-        HttpRequest req,
-      string yearMonth,
-      string eventId,
+      [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "event/{id}")] HttpRequest req,
+      string id,
       ILogger log
     )
     {
-      // Log information about the attempted event deletion
-      log.LogInformation($"Attempting to delete event: {eventId}");
+      var client = new TableClient(DatabaseConfig.ConnectionString, DatabaseConfig.TableName);
 
-      // Initialize a TableClient to interact with Azure Table Storage
-      var client = new TableClient(DatabaseConfig.ConnectionString, DatabaseConfig.EventTable);
-
-      try
+      // Parse the id from the URL route
+      if (!int.TryParse(id, out int eventId))
       {
-        // Attempt to delete the entity from Azure Table Storage
-        await client.DeleteEntityAsync(yearMonth, eventId);
+        return new BadRequestObjectResult("Invalid event ID");
+      }
 
-        // Return a successful response if the deletion is successful
-        return new OkObjectResult($"Event {eventId} deleted successfully.");
-      }
-      catch (Exception ex)
+      // Construct the filter to retrieve a specific row based on RowKey only
+      var filter = TableClient.CreateQueryFilter($"RowKey eq '{eventId}'");
+
+      var queryResults = client.QueryAsync<TableEntity>(filter);
+
+      var result = new List<TableEntity>();
+
+      await foreach (var page in queryResults.AsPages())
       {
-        // Log an error message if the deletion fails and return a bad request response
-        log.LogError($"Could not delete event: {ex.Message}");
-        return new BadRequestObjectResult("Error deleting the event.");
+        foreach (var entity in page.Values)
+        {
+          result.Add(entity); //https://dev.azure.com/B3Complete/H%C3%B6gskolan%20Dalarna/_git/B3_Eventwebb/pushes <-- Vad är detta?
+        }
       }
+
+      // Since we're querying based on RowKey only, we expect only one result
+      var eventResult = result.FirstOrDefault();
+
+      if (eventResult == null)
+      {
+        return new NotFoundResult();
+      }
+
+      await client.DeleteEntityAsync(eventResult.PartitionKey, eventResult.RowKey);
+
+      return new OkResult();
     }
   }
 }

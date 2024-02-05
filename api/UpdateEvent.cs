@@ -15,47 +15,74 @@ namespace B3.Complete.Eventwebb
   {
     [FunctionName("UpdateEvent")]
     public static async Task<IActionResult> Run(
-      [HttpTrigger(AuthorizationLevel.Function, "put", Route = "event/{yearMonth}/{eventId}")]
-        HttpRequest req,
-      string yearMonth,
-      string eventId,
+      [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "event/{id}")] HttpRequest req,
+      string id,
       ILogger log
     )
     {
-      log.LogInformation($"Updating event: {eventId} in {yearMonth}.");
-
       var requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-      var updatedEventData = JsonSerializer.Deserialize<EventEntity>(requestBody);
+      var updatedEventData = JsonSerializer.Deserialize<JsonElement>(requestBody);
 
-      if (updatedEventData == null)
+      var client = new TableClient(DatabaseConfig.ConnectionString, DatabaseConfig.TableName);
+
+      var filter = $"RowKey eq '{id}'";
+      var queryResults = client.QueryAsync<TableEntity>(filter);
+      TableEntity eventEntity = null;
+
+      await foreach (var entity in queryResults)
       {
-        return new BadRequestObjectResult("Invalid event data.");
+        eventEntity = entity;
+        break;
       }
 
-      var client = new TableClient(DatabaseConfig.ConnectionString, DatabaseConfig.EventTable);
+      if (eventEntity == null)
+      {
+        return new NotFoundResult();
+      }
+
+      eventEntity["Title"] = updatedEventData.GetProperty("title").GetString();
+      eventEntity["LongDescription"] = updatedEventData.GetProperty("longDescription").GetString();
+      eventEntity["ShortDescription"] = updatedEventData
+        .GetProperty("shortDescription")
+        .GetString();
+      eventEntity["LocationStreet"] = updatedEventData.GetProperty("locationStreet").GetString();
+      eventEntity["LocationCity"] = updatedEventData.GetProperty("locationCity").GetString();
+      eventEntity["LocationCountry"] = updatedEventData.GetProperty("locationCountry").GetString();
+      eventEntity["CreatorUserID"] = updatedEventData.GetProperty("organizer").GetString();
+      eventEntity["StartDateTime"] = updatedEventData.GetProperty("startDateTime").GetString();
+      eventEntity["EndDateTime"] = updatedEventData.GetProperty("endDateTime").GetString();
+      eventEntity["Timezone"] = updatedEventData.GetProperty("timezone").GetString();
+      eventEntity["ImageUrl"] = updatedEventData.GetProperty("imageUrl").GetString();
+      eventEntity["ImageAlt"] = updatedEventData.GetProperty("imageAlt").GetString();
 
       try
       {
-        // Fetch the existing event entity to update
-        var response = await client.GetEntityAsync<EventEntity>(yearMonth, eventId);
-        var existingEvent = response.Value;
-
-        // Update the existing event entity with new values
-        existingEvent.Title = updatedEventData.Title ?? existingEvent.Title;
-        existingEvent.LongDescription =
-          updatedEventData.LongDescription ?? existingEvent.LongDescription;
-        // ... and so on for each updatable field
-
-        // Replace the existing event entity with the updated one
-        await client.UpdateEntityAsync(existingEvent, existingEvent.ETag, TableUpdateMode.Replace);
-
-        return new OkObjectResult(existingEvent);
+        await client.UpdateEntityAsync(eventEntity, Azure.ETag.All, TableUpdateMode.Replace);
       }
       catch (Exception ex)
       {
         log.LogError($"Could not update event: {ex.Message}");
         return new BadRequestObjectResult("Error updating the event.");
       }
+
+      return new OkObjectResult(
+        new
+        {
+          id = eventEntity.RowKey,
+          title = eventEntity["Title"],
+          longDescription = eventEntity["LongDescription"],
+          shortDescription = eventEntity["ShortDescription"],
+          locationStreet = eventEntity["LocationStreet"],
+          locationCity = eventEntity["LocationCity"],
+          locationCountry = eventEntity["LocationCountry"],
+          organizer = eventEntity["CreatorUserID"],
+          startDateTime = eventEntity["StartDateTime"],
+          endDateTime = eventEntity["EndDateTime"],
+          timezone = eventEntity["Timezone"],
+          imageUrl = eventEntity["ImageUrl"],
+          imageAlt = eventEntity["ImageAlt"],
+        }
+      );
     }
   }
 }

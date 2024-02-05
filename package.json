@@ -4,13 +4,10 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "start:sv": "ng serve --configuration=sv",
     "build": "ng build --configuration production",
-    "build:sv": "ng build --configuration=sv",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "i18n:extract": "ng xi18n",
     "swa:start": "swa start app",
     "swa:login": "swa deploy app",
     "swa:deploy": "swa login"
@@ -39,7 +36,6 @@
     "@angular/cli": "^16.2.11",
     "@angular/compiler-cli": "^16.2.12",
     "@angular/language-service": "^16.2.12",
-    "@angular/localize": "^16.2.12",
     "@azure/static-web-apps-cli": "*",
     "@types/jasmine": "~3.6.0",
     "@types/jasminewd2": "~2.0.3",

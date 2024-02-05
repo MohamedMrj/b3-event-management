@@ -19,7 +19,7 @@ namespace B3.Complete.Eventwebb
       ILogger log
     )
     {
-      var client = new TableClient(DatabaseConfig.ConnectionString, DatabaseConfig.EventTable);
+      var client = new TableClient(DatabaseConfig.ConnectionString, DatabaseConfig.TableName);
 
       // Parse the id from the URL route
       if (!int.TryParse(id, out int eventId))

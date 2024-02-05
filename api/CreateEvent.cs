@@ -20,24 +20,34 @@ namespace B3.Complete.Eventwebb
     )
     {
       var requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-      var eventData = JsonSerializer.Deserialize<EventEntity>(requestBody);
+      var eventData = JsonSerializer.Deserialize<JsonElement>(requestBody);
 
-      if (eventData == null)
-      {
-        return new BadRequestObjectResult("Invalid event data.");
-      }
-
-      var client = new TableClient(DatabaseConfig.ConnectionString, DatabaseConfig.EventTable);
+      var client = new TableClient(DatabaseConfig.ConnectionString, DatabaseConfig.TableName);
 
       // Retrieve the highest RowKey value
       int maxRowKey = await GetMaxRowKey(client, log) + 1;
 
-      // Set the PartitionKey and RowKey
-      eventData.PartitionKey = DateTime.UtcNow.ToString("yyyyMM");
-      eventData.RowKey = maxRowKey.ToString();
+      var newEvent = new TableEntity
+      {
+        PartitionKey = DateTime.UtcNow.ToString("yyyyMM"),
+        RowKey = maxRowKey.ToString(), // Use the next RowKey value
+        ["Title"] = eventData.GetProperty("title").GetString(),
+        ["LongDescription"] = eventData.GetProperty("longDescription").GetString(),
+        ["ShortDescription"] = eventData.GetProperty("shortDescription").GetString(),
+        ["LocationStreet"] = eventData.GetProperty("locationStreet").GetString(),
+        ["LocationCity"] = eventData.GetProperty("locationCity").GetString(),
+        ["LocationCountry"] = eventData.GetProperty("locationCountry").GetString(),
+        ["CreatorUserID"] = eventData.GetProperty("organizer").GetString(),
+        ["StartDateTime"] = eventData.GetProperty("startDateTime").GetString(),
+        ["EndDateTime"] = eventData.GetProperty("endDateTime").GetString(),
+        ["Timezone"] = eventData.GetProperty("timezone").GetString(),
+        ["ImageUrl"] = eventData.GetProperty("imageUrl").GetString(),
+        ["ImageAlt"] = eventData.GetProperty("imageAlt").GetString(),
+      };
+
       try
       {
-        await client.AddEntityAsync(eventData);
+        await client.AddEntityAsync(newEvent);
       }
       catch (Exception ex)
       {
@@ -45,8 +55,25 @@ namespace B3.Complete.Eventwebb
         return new BadRequestObjectResult("Error creating the event.");
       }
 
-      // Return the created event data
-      return new OkObjectResult(eventData);
+      // Prepare the response entity to match the specified fields
+      var responseEntity = new
+      {
+        id = newEvent.RowKey,
+        title = newEvent["Title"],
+        longDescription = newEvent["LongDescription"],
+        shortDescription = newEvent["ShortDescription"],
+        locationStreet = newEvent["LocationStreet"],
+        locationCity = newEvent["LocationCity"],
+        locationCountry = newEvent["LocationCountry"],
+        organizer = newEvent["CreatorUserID"],
+        startDateTime = newEvent["StartDateTime"],
+        endDateTime = newEvent["EndDateTime"],
+        timezone = newEvent["Timezone"],
+        imageUrl = newEvent["ImageUrl"],
+        imageAlt = newEvent["ImageAlt"],
+      };
+
+      return new OkObjectResult(responseEntity);
     }
 
     private static async Task<int> GetMaxRowKey(TableClient client, ILogger log)

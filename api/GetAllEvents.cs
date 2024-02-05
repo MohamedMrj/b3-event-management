@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Azure.Data.Tables;
@@ -14,34 +13,43 @@ namespace B3.Complete.Eventwebb
   {
     [FunctionName("GetAllEvents")]
     public static async Task<IActionResult> Run(
-      [HttpTrigger(AuthorizationLevel.Function, "get", Route = "events")] HttpRequest req,
+      [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] HttpRequest req,
       ILogger log
     )
     {
-      // Log information about the retrieval of all events
-      log.LogInformation("Retrieving all events.");
+      var client = new TableClient(DatabaseConfig.ConnectionString, DatabaseConfig.TableName);
+      var queryResults = client.QueryAsync<TableEntity>();
 
-      // Initialize a TableClient to interact with Azure Table Storage
-      var client = new TableClient(DatabaseConfig.ConnectionString, DatabaseConfig.EventTable);
-      var events = new List<EventEntity>();
+      var eventsList = new List<object>();
 
-      try
+      await foreach (var entity in queryResults)
       {
-        // Retrieve all entities in the table using asynchronous streaming
-        await foreach (var entity in client.QueryAsync<EventEntity>())
+        var transformedEventData = new
         {
-          events.Add(entity);
-        }
+          id = entity.RowKey,
+          title = entity["Title"],
+          longDescription = entity["LongDescription"],
+          shortDescription = entity["ShortDescription"],
+          locationStreet = entity["LocationStreet"],
+          locationCity = entity["LocationCity"],
+          locationCountry = entity["LocationCountry"],
+          organizer = entity["CreatorUserID"],
+          startDateTime = entity["StartDateTime"].ToString(),
+          endDateTime = entity["EndDateTime"].ToString(),
+          timezone = entity["Timezone"],
+          imageUrl = entity["ImageUrl"],
+          imageAlt = entity["ImageAlt"],
+        };
 
-        // Return a successful response with the list of events
-        return new OkObjectResult(events);
+        eventsList.Add(transformedEventData);
       }
-      catch (Exception ex)
+
+      if (eventsList.Count == 0)
       {
-        // Log an error message if the retrieval fails and return a bad request response
-        log.LogError($"Could not retrieve events: {ex.Message}");
-        return new BadRequestObjectResult("Error retrieving events.");
+        return new NotFoundResult();
       }
+
+      return new OkObjectResult(eventsList);
     }
   }
 }
