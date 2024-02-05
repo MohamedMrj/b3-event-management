@@ -1,6 +1,6 @@
 :root {
-  --pink: hsl(340, 100%, 63%); /* Use for dark mode */
-  --pink-dark: hsl(336, 78%, 50%); /* Use for light mode */
+  --pink: #ff4281; /* Use for dark mode */
+  --pink-dark: #e31c6c; /* Use for light mode */
   --cyan: hsl(180, 89%, 42%);
   --black: #000000;
   --white: #ffffff;
