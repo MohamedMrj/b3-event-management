@@ -8,7 +8,7 @@ describe('EventCreateComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [EventCreateComponent]
+      declarations: [EventCreateComponent],
     });
     fixture = TestBed.createComponent(EventCreateComponent);
     component = fixture.componentInstance;

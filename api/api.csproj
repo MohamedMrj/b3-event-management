@@ -5,7 +5,11 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Azure.Data.Tables" Version="12.8.2" />
+<<<<<<< HEAD
     <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="4.2.0" />
+=======
+    <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="4.3.0" />
+>>>>>>> da5e3d313e442689ba5eb734fdad4c8b7b8cedfb
   </ItemGroup>
   <ItemGroup>
     <None Update="host.json">

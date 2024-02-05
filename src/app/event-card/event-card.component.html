@@ -1,41 +1,49 @@
 <mat-card class="event-card">
-    <a href="/event/{{event.id}}" class="card-link">
-        <img [src]="event.eventImageUrl" [alt]="event.eventImageAlt">
-    </a>
-    <mat-card-header>
-        <mat-card-title>
-            <a href="/event/{{event.id}}" class="card-link">
-                {{ event.title }}
-            </a>
-        </mat-card-title>
-        <mat-card-subtitle><strong style="color:black;">Organizer:</strong> {{ event.organizer
-            }}</mat-card-subtitle>
-    </mat-card-header>
-    <mat-card-content>
-        <p class="cardDescription">{{ event.shortDescription }}</p>
-        <span class="flex-spacer"></span>
-        <div class="event-card-info">
-            <mat-icon>event</mat-icon>
-            <p>
-                <strong>Start:</strong> {{ event.startDateTime | date: 'longDate' }} {{ event.startDateTime | date:
-                'shortTime' }}<br>
-                <strong>End:</strong>
-                <span style="display: none;" #startDate>{{ event.startDateTime | date: 'shortDate' }}</span>
-                <span style="display: none;" #endDate>{{ event.endDateTime | date: 'shortDate' }}</span>
-                <ng-container *ngIf="startDate.innerText !== endDate.innerText">
-                    {{ event.endDateTime | date: 'longDate' }}
-                </ng-container>
-                {{ event.endDateTime | date: 'shortTime' }}
-            </p>
-        </div>
-        <div class="event-card-info">
-            <mat-icon>location_on</mat-icon>
-            <a [href]="event.location | googleMapsUrl" target="_blank">{{ event.location | locationFormat }}</a>
-        </div>
-    </mat-card-content>
-    <mat-divider></mat-divider>
-    <mat-card-actions>
-        <button mat-button (click)="rsvp(event.id)">RSVP</button>
-        <button mat-button (click)="copyToClipboard(event.id)">SHARE</button>
-    </mat-card-actions>
+  <a href="/event/{{ event.id }}" class="card-link">
+    <img [src]="event.imageUrl" [alt]="event.imageAlt" />
+  </a>
+  <mat-card-header>
+    <mat-card-title>
+      <a href="/event/{{ event.id }}" class="card-link">
+        {{ event.title }}
+      </a>
+    </mat-card-title>
+    <mat-card-subtitle
+      ><strong style="color: black">Organizer:</strong>
+      {{ event.organizer }}</mat-card-subtitle
+    >
+  </mat-card-header>
+  <mat-card-content>
+    <p class="cardDescription">{{ event.shortDescription }}</p>
+    <span class="flex-spacer"></span>
+    <div class="event-card-info">
+      <mat-icon>event</mat-icon>
+      <p>
+        <strong>Start:</strong> {{ event.startDateTime | date: 'longDate' }}
+        {{ event.startDateTime | date: 'shortTime' }}<br />
+        <strong>End:</strong>
+        <span style="display: none" #startDate>{{
+          event.startDateTime | date: 'shortDate'
+        }}</span>
+        <span style="display: none" #endDate>{{
+          event.endDateTime | date: 'shortDate'
+        }}</span>
+        <ng-container *ngIf="startDate.innerText !== endDate.innerText">
+          {{ event.endDateTime | date: 'longDate' }}
+        </ng-container>
+        {{ event.endDateTime | date: 'shortTime' }}
+      </p>
+    </div>
+    <div class="event-card-info">
+      <mat-icon>location_on</mat-icon>
+      <a [href]="event | googleMapsUrl" target="_blank">{{
+        event | locationFormat
+      }}</a>
+    </div>
+  </mat-card-content>
+  <mat-divider></mat-divider>
+  <mat-card-actions>
+    <button mat-button (click)="rsvp(event.id)">RSVP</button>
+    <button mat-button (click)="copyToClipboard(event.id)">SHARE</button>
+  </mat-card-actions>
 </mat-card>

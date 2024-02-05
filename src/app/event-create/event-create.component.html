@@ -1,4 +1,11 @@
 <div class="container">
+  <button mat-button (click)="confirmDiscardChanges()" class="back-button">
+    <mat-icon>arrow_back</mat-icon>
+    Go back
+  </button>
+  <div class="editEvent-header">
     <h1>Create Event</h1>
-    <app-create-event-form></app-create-event-form>
+    <span class="flex-spacer"></span>
+  </div>
+  <app-create-event-form></app-create-event-form>
 </div>

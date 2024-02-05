@@ -1,5 +1,5 @@
-import { BrowserModule } from "@angular/platform-browser";
-import { NgModule, LOCALE_ID } from "@angular/core";
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule, LOCALE_ID, isDevMode } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -8,19 +8,22 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { FormsModule } from '@angular/forms';
-import { MatFormFieldModule} from '@angular/material/form-field';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatDialogModule } from '@angular/material/dialog';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { registerLocaleData } from '@angular/common';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatTabsModule } from '@angular/material/tabs';
 import localeSv from '@angular/common/locales/sv';
 import localePl from '@angular/common/locales/pl';
 
-import { AppComponent } from "./app.component";
+import { AppComponent } from './app.component';
 import { EventCardComponent } from './event-card/event-card.component';
 import { EventListComponent } from './event-list/event-list.component';
 import { EventDetailComponent } from './event-detail/event-detail.component';
@@ -35,6 +38,8 @@ import { SafePipe } from './safe.pipe';
 import { MarkdownModule } from 'ngx-markdown';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { GoogleMapsEmbedUrlPipe } from './google-maps-embed-url.pipe';
+import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
+import { ServiceWorkerModule } from '@angular/service-worker';
 
 registerLocaleData(localeSv);
 registerLocaleData(localePl);
@@ -54,14 +59,15 @@ registerLocaleData(localePl);
     GoogleMapsUrlPipe,
     SafePipe,
     GoogleMapsEmbedUrlPipe,
+    ConfirmDialogComponent,
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
     AppRoutingModule,
     MatToolbarModule,
-    MatCardModule, 
-    MatDividerModule, 
+    MatCardModule,
+    MatDividerModule,
     MatButtonModule,
     MatSelectModule,
     MatIconModule,
@@ -75,12 +81,17 @@ registerLocaleData(localePl);
     MarkdownModule.forRoot(),
     MatSnackBarModule,
     MatMenuModule,
+    MatDialogModule,
+    MatPaginatorModule,
+    MatTabsModule,
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      enabled: !isDevMode(),
+      // Register the ServiceWorker as soon as the application is stable
+      // or after 30 seconds (whichever comes first).
+      registrationStrategy: 'registerWhenStable:30000'
+    }),
   ],
-  bootstrap: [
-    AppComponent
-  ],
-  providers: [
-    { provide: LOCALE_ID, useValue: navigator.language || 'en'}
-  ]
+  bootstrap: [AppComponent],
+  providers: [{ provide: LOCALE_ID, useValue: navigator.language || 'en' }],
 })
 export class AppModule {}

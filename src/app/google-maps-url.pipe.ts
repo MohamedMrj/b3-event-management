@@ -1,12 +1,13 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { Location } from './event';
+import { Event } from './event'; // Assuming this is the correct path to your Event interface
 import { getGoogleMapsUrl } from './utils/location.utils';
 
 @Pipe({
-  name: 'googleMapsUrl'
+  name: 'googleMapsUrl',
 })
 export class GoogleMapsUrlPipe implements PipeTransform {
-  transform(location: string | Location): string {
-    return getGoogleMapsUrl(location);
+  transform(event: Event): string {
+    const { locationStreet, locationCity, locationCountry } = event;
+    return getGoogleMapsUrl(locationStreet, locationCity, locationCountry);
   }
 }
