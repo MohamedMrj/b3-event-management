@@ -18,6 +18,14 @@ mat-paginator {
   background-color: transparent;
 }
 
+.create-event-button {
+  color: var(--pink-dark);
+}
+
+.create-event-button mat-icon {
+  color: var(--white);
+}
+
 @media (min-width: 640px) {
   .events-container {
     grid-template-columns: repeat(2, 1fr);
