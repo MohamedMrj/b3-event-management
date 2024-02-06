@@ -23,7 +23,7 @@ export class EventEditComponent implements OnInit {
     private eventService: EventService,
     private pageLocation: Location,
     private dialog: MatDialog,
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.route.paramMap.subscribe((params) => {
@@ -59,7 +59,7 @@ export class EventEditComponent implements OnInit {
         if (result) {
           console.log(`Deleting event: ${this.event.id}`);
           this.eventService.deleteEvent(this.event.id).subscribe({
-            next: (response) => {
+            next: () => {
               console.log(`Event: ${this.event.id} deleted successfully.`);
               this.router.navigate(['/']);
             },

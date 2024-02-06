@@ -20,7 +20,7 @@ export class EventDetailComponent implements OnInit {
     private eventService: EventService,
     private titleService: Title,
     private pageLocation: Location,
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.route.paramMap.subscribe((params) => {
@@ -56,7 +56,7 @@ export class EventDetailComponent implements OnInit {
     if (this.event?.id) {
       console.log(`Deleting event: ${this.event.id}`);
       this.eventService.deleteEvent(this.event.id).subscribe({
-        next: (response) => {
+        next: () => {
           console.log(`Event: ${this.event.id} deleted successfully.`);
           this.router.navigate(['/']);
         },

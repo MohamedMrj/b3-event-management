@@ -3,14 +3,14 @@ import { Event } from '../event';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
-  selector: 'event-card',
+  selector: 'app-event-card',
   templateUrl: './event-card.component.html',
   styleUrls: ['./event-card.component.css'],
 })
 export class EventCardComponent {
   @Input() event: Event;
 
-  constructor(private snackBar: MatSnackBar) {}
+  constructor(private snackBar: MatSnackBar) { }
 
   copyToClipboard(eventId: string): void {
     const url = window.location.origin + '/event/' + eventId;

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { EventService } from '../event.service';
 import { Event } from '../event';
@@ -8,7 +8,7 @@ import { Event } from '../event';
   templateUrl: './api-test.component.html',
   styleUrls: ['./api-test.component.css'],
 })
-export class ApiTestComponent {
+export class ApiTestComponent implements OnInit {
   event: Event | undefined;
 
   message = '';

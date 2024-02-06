@@ -5,7 +5,7 @@
   </button>
 </div>
 <div class="events-container">
-  <event-card *ngFor="let event of eventList" [event]="event"> </event-card>
+  <app-event-card *ngFor="let event of eventList" [event]="event"> </app-event-card>
 </div>
 <mat-paginator [length]="totalEvents" [pageSize]="eventsPerPage" [pageSizeOptions]="[6, 12, 18]"
   (page)="onPageChange($event)">

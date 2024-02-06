@@ -11,7 +11,7 @@ export function getGoogleMapsUrl(
   city: string,
   country: string,
 ): string {
-  let address = `${street ? street + ', ' : ''}${city}, ${country}`;
+  const address = `${street ? street + ', ' : ''}${city}, ${country}`;
   return `https://maps.google.com/?q=${encodeURIComponent(address)}`;
 }
 
@@ -21,6 +21,6 @@ export function getGoogleMapsEmbedUrl(
   country: string,
 ): string {
   // Format the address using the provided parameters for embedding.
-  let address = `${street ? street + ', ' : ''}${city}, ${country}`;
+  const address = `${street ? street + ', ' : ''}${city}, ${country}`;
   return `https://maps.google.com/maps?q=${encodeURIComponent(address)}&t=&z=15&ie=UTF8&iwloc=&output=embed`;
 }
