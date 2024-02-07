@@ -9,47 +9,30 @@ using Microsoft.Extensions.Logging;
 
 namespace B3.Complete.Eventwebb
 {
-  public static class GetAllEvents
-  {
-    [FunctionName("GetAllEvents")]
-    public static async Task<IActionResult> Run(
-      [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] HttpRequest req,
-      ILogger log
-    )
+    public static class GetAllEvents
     {
-      var client = new TableClient(DatabaseConfig.ConnectionString, DatabaseConfig.TableName);
-      var queryResults = client.QueryAsync<TableEntity>();
-
-      var eventsList = new List<object>();
-
-      await foreach (var entity in queryResults)
-      {
-        var transformedEventData = new
+        [FunctionName("GetAllEvents")]
+        public static async Task<IActionResult> Run(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] HttpRequest req,
+            ILogger log
+        )
         {
-          id = entity.RowKey,
-          title = entity["Title"],
-          longDescription = entity["LongDescription"],
-          shortDescription = entity["ShortDescription"],
-          locationStreet = entity["LocationStreet"],
-          locationCity = entity["LocationCity"],
-          locationCountry = entity["LocationCountry"],
-          organizer = entity["CreatorUserID"],
-          startDateTime = entity["StartDateTime"].ToString(),
-          endDateTime = entity["EndDateTime"].ToString(),
-          timezone = entity["Timezone"],
-          imageUrl = entity["ImageUrl"],
-          imageAlt = entity["ImageAlt"],
-        };
+            var client = new TableClient(DatabaseConfig.ConnectionString, DatabaseConfig.TableName);
+            var queryResults = client.QueryAsync<EventEntity>(); // Using the specific EventEntity class
 
-        eventsList.Add(transformedEventData);
-      }
+            var eventsList = new List<EventEntity>(); // Changed from List<object> to List<EventEntity>
 
-      if (eventsList.Count == 0)
-      {
-        return new NotFoundResult();
-      }
+            await foreach (var entity in queryResults)
+            {
+                eventsList.Add(entity);
+            }
 
-      return new OkObjectResult(eventsList);
+            if (eventsList.Count == 0)
+            {
+                return new NotFoundResult();
+            }
+
+            return new OkObjectResult(eventsList);
+        }
     }
-  }
 }
