@@ -13,7 +13,7 @@ import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.compone
   styleUrls: ['./event-edit.component.css'],
 })
 export class EventEditComponent implements OnInit {
-  event: Event | undefined;
+  event: Event;
   eventNotFound: boolean = false;
 
   constructor(
@@ -43,6 +43,7 @@ export class EventEditComponent implements OnInit {
       },
       error: () => {
         this.eventNotFound = true;
+        this.titleService.setTitle('Event Not Found');
         // Add more error handling such as showing an error message to the user
       },
     });
