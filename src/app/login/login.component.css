@@ -1,3 +1,21 @@
+.container {
+  margin: 0 auto;
+}
+
+.login-header {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+@media (min-width: 640px) {
+  .container {
+    max-width: 480px;
+  }
+}
+
 .form-group {
   display: flex;
   flex-direction: column;
