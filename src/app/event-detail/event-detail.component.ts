@@ -13,6 +13,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class EventDetailComponent implements OnInit {
   event: Event;
+  isLoading: boolean = true;
   eventNotFound: boolean = false;
 
   constructor(
@@ -61,14 +62,17 @@ export class EventDetailComponent implements OnInit {
   }
 
   fetchEvent(eventId: string) {
+    this.isLoading = true;
     this.eventService.fetchEventById(eventId).subscribe({
       next: (foundEvent) => {
         this.event = foundEvent;
+        this.isLoading = false;
         this.titleService.setTitle(foundEvent.title);
         this.eventNotFound = false;
       },
       error: () => {
         this.eventNotFound = true;
+        this.isLoading = false;
       },
     });
   }
