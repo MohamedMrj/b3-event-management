@@ -6,6 +6,7 @@ import { Event } from '../event';
 import { Location } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-event-edit',
@@ -23,6 +24,7 @@ export class EventEditComponent implements OnInit {
     private eventService: EventService,
     private pageLocation: Location,
     private dialog: MatDialog,
+    private snackBar: MatSnackBar,
   ) { }
 
   ngOnInit() {
@@ -44,7 +46,7 @@ export class EventEditComponent implements OnInit {
       error: () => {
         this.eventNotFound = true;
         this.titleService.setTitle('Event Not Found');
-        // Add more error handling such as showing an error message to the user
+        this.snackBar.open('Event not found', 'Close', { duration: 3000 });
       },
     });
   }
@@ -58,15 +60,16 @@ export class EventEditComponent implements OnInit {
 
       confirmDialogRef.afterClosed().subscribe((result) => {
         if (result) {
-          console.log(`Deleting event: ${this.event.id}`);
           this.eventService.deleteEvent(this.event.id).subscribe({
             next: () => {
               console.log(`Event: ${this.event.id} deleted successfully.`);
-              this.router.navigate(['/']);
+              this.router.navigate(['/'], { queryParams: { eventDeleted: 'true' } });
             },
             error: (error) => {
               console.error('Error deleting event:', error);
-              // Add more error handling such as showing an error message to the user
+              this.snackBar.open('Error deleting event', 'Close', {
+                duration: 3000,
+              });
             },
           });
         }
