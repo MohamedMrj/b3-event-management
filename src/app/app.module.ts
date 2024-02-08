@@ -94,4 +94,4 @@ registerLocaleData(localePl);
   bootstrap: [AppComponent],
   providers: [{ provide: LOCALE_ID, useValue: navigator.language || 'en' }],
 })
-export class AppModule {}
+export class AppModule { }
