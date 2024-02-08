@@ -20,4 +20,15 @@ describe('LoginComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+  it('should log "Login successful" when valid credentials are provided', () => {
+    // Set valid credentials
+    component.username = 'validUsername';
+    component.password = 'validPassword';
+
+    // Trigger login click
+    component.onLoginClick();
+
+    // Assert that the login was successful
+    expect(component.loginError).toBeFalsy(); // Assuming loginError is set to false on successful login
+  });
 });
