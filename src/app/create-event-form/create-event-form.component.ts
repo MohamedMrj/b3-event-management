@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { EventService } from '../event.service';
 import { Event } from '../event';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-create-event-form',
@@ -49,7 +50,8 @@ export class CreateEventFormComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private eventService: EventService,
-  ) {}
+    private snackBar: MatSnackBar,
+  ) { }
 
   ngOnInit() {
     this.route.paramMap.subscribe((params) => {
@@ -68,7 +70,7 @@ export class CreateEventFormComponent implements OnInit {
       },
       error: () => {
         console.error('Event not found:', eventId);
-        // Add more error handling such as showing an error message to the user
+        this.snackBar.open('Event not found', 'Close', { duration: 3000 });
       },
     });
   }
@@ -87,26 +89,27 @@ export class CreateEventFormComponent implements OnInit {
     }
 
     if (this.isEditMode) {
-      console.log('Updating Event: ', this.event);
       this.eventService.updateEvent(this.event.id, this.event).subscribe({
         next: (updatedEvent) => {
           console.log('Event updated successfully:', updatedEvent);
-          this.router.navigate(['/event', updatedEvent.id]);
+          this.router.navigate(['/event', updatedEvent.id], { queryParams: { eventUpdated: 'true' } });
+
         },
         error: (error) => {
           console.error('Error updating event:', error);
+          this.snackBar.open('Error updating event', 'Close', { duration: 3000 });
           this.submitted = false; // Reset submitted status to allow retry
         },
       });
     } else {
-      console.log('Creating Event: ', this.event);
       this.eventService.createEvent(this.event).subscribe({
         next: (createdEvent) => {
           console.log('Event created successfully:', createdEvent);
-          this.router.navigate(['/event', createdEvent.id]);
+          this.router.navigate(['/event', createdEvent.id], { queryParams: { eventCreated: 'true' } });
         },
         error: (error) => {
           console.error('Error creating event:', error);
+          this.snackBar.open('Error creating event', 'Close', { duration: 3000 });
           this.submitted = false; // Reset submitted status to allow retry
         },
       });
