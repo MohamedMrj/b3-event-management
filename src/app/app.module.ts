@@ -29,6 +29,7 @@ import { EventListComponent } from './event-list/event-list.component';
 import { EventDetailComponent } from './event-detail/event-detail.component';
 import { EventCreateComponent } from './event-create/event-create.component';
 import { EventEditComponent } from './event-edit/event-edit.component';
+import { LoginComponent } from './login/login.component';
 import { ApiTestComponent } from './api-test/api-test.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { CreateEventFormComponent } from './create-event-form/create-event-form.component';
@@ -52,6 +53,7 @@ registerLocaleData(localePl);
     EventDetailComponent,
     EventCreateComponent,
     EventEditComponent,
+    LoginComponent,
     ApiTestComponent,
     PageNotFoundComponent,
     CreateEventFormComponent,
@@ -94,4 +96,4 @@ registerLocaleData(localePl);
   bootstrap: [AppComponent],
   providers: [{ provide: LOCALE_ID, useValue: navigator.language || 'en' }],
 })
-export class AppModule {}
+export class AppModule { }

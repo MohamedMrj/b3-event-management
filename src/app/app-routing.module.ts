@@ -6,6 +6,7 @@ import { EventCreateComponent } from './event-create/event-create.component';
 import { EventEditComponent } from './event-edit/event-edit.component';
 import { ApiTestComponent } from './api-test/api-test.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { LoginComponent } from './login/login.component';
 
 const routes: Routes = [
   { path: '', component: EventListComponent },
@@ -13,6 +14,7 @@ const routes: Routes = [
   { path: 'event/update/:eventid', component: EventEditComponent },
   { path: 'event/:eventid', component: EventDetailComponent },
   { path: 'api-test', component: ApiTestComponent },
+  { path: 'login', component: LoginComponent },
   { path: '**', component: PageNotFoundComponent },
 ];
 
@@ -20,4 +22,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }
