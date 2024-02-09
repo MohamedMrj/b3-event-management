@@ -7,11 +7,25 @@ import { Location } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { CreateEventFormComponent } from '../create-event-form/create-event-form.component';
+import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
+import { MatIcon } from '@angular/material/icon';
+import { MatButton, MatIconButton } from '@angular/material/button';
 
 @Component({
-  selector: 'app-event-edit',
-  templateUrl: './event-edit.component.html',
-  styleUrls: ['./event-edit.component.css'],
+    selector: 'app-event-edit',
+    templateUrl: './event-edit.component.html',
+    styleUrls: ['./event-edit.component.css'],
+    standalone: true,
+    imports: [
+        MatButton,
+        MatIcon,
+        MatIconButton,
+        MatMenuTrigger,
+        MatMenu,
+        MatMenuItem,
+        CreateEventFormComponent,
+    ],
 })
 export class EventEditComponent implements OnInit {
   event: Event;

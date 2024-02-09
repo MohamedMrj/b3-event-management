@@ -8,8 +8,8 @@ describe('EventDetailComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [EventDetailComponent],
-    });
+    imports: [EventDetailComponent],
+});
     fixture = TestBed.createComponent(EventDetailComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

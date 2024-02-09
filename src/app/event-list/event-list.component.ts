@@ -4,11 +4,23 @@ import { Router } from '@angular/router';
 import { EventService } from '../event.service';
 import { Event } from '../event';
 import { MatPaginator } from '@angular/material/paginator';
+import { EventCardComponent } from '../event-card/event-card.component';
+import { NgFor } from '@angular/common';
+import { MatIcon } from '@angular/material/icon';
+import { MatFabButton } from '@angular/material/button';
 
 @Component({
-  selector: 'app-event-list',
-  templateUrl: './event-list.component.html',
-  styleUrls: ['./event-list.component.css'],
+    selector: 'app-event-list',
+    templateUrl: './event-list.component.html',
+    styleUrls: ['./event-list.component.css'],
+    standalone: true,
+    imports: [
+        MatFabButton,
+        MatIcon,
+        NgFor,
+        EventCardComponent,
+        MatPaginator,
+    ],
 })
 export class EventListComponent implements OnInit {
   eventList: Event[] = [];

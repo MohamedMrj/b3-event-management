@@ -1,15 +1,42 @@
 import { Component, OnInit } from '@angular/core';
-import { Location } from '@angular/common';
+import { Location, NgIf, AsyncPipe, DatePipe } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { EventService } from '../event.service';
 import { Event } from '../event';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { GoogleMapsEmbedUrlPipe } from '../google-maps-embed-url.pipe';
+import { SafePipe } from '../safe.pipe';
+import { GoogleMapsUrlPipe } from '../google-maps-url.pipe';
+import { LocationFormatPipe } from '../location-format.pipe';
+import { MarkdownPipe } from 'ngx-markdown';
+import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
+import { MatIcon } from '@angular/material/icon';
+import { MatButton, MatIconButton } from '@angular/material/button';
+import { MatProgressBar } from '@angular/material/progress-bar';
 
 @Component({
-  selector: 'app-event-detail',
-  templateUrl: './event-detail.component.html',
-  styleUrls: ['./event-detail.component.css'],
+    selector: 'app-event-detail',
+    templateUrl: './event-detail.component.html',
+    styleUrls: ['./event-detail.component.css'],
+    standalone: true,
+    imports: [
+        NgIf,
+        MatProgressBar,
+        MatButton,
+        MatIcon,
+        MatIconButton,
+        MatMenuTrigger,
+        MatMenu,
+        MatMenuItem,
+        AsyncPipe,
+        DatePipe,
+        MarkdownPipe,
+        LocationFormatPipe,
+        GoogleMapsUrlPipe,
+        SafePipe,
+        GoogleMapsEmbedUrlPipe,
+    ],
 })
 export class EventDetailComponent implements OnInit {
   event: Event;
