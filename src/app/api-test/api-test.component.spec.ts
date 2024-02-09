@@ -8,8 +8,8 @@ describe('ApiTestComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [ApiTestComponent],
-    });
+    imports: [ApiTestComponent],
+});
     fixture = TestBed.createComponent(ApiTestComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

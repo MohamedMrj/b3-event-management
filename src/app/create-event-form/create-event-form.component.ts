@@ -3,11 +3,34 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { EventService } from '../event.service';
 import { Event } from '../event';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatButton } from '@angular/material/button';
+import { MatOption } from '@angular/material/core';
+import { MatSelect } from '@angular/material/select';
+import { MatIcon } from '@angular/material/icon';
+import { MatInput } from '@angular/material/input';
+import { MatFormField, MatLabel, MatSuffix, MatHint } from '@angular/material/form-field';
+import { FormsModule } from '@angular/forms';
+import { NgIf, NgFor } from '@angular/common';
 
 @Component({
-  selector: 'app-create-event-form',
-  templateUrl: './create-event-form.component.html',
-  styleUrls: ['./create-event-form.component.css'],
+    selector: 'app-create-event-form',
+    templateUrl: './create-event-form.component.html',
+    styleUrls: ['./create-event-form.component.css'],
+    standalone: true,
+    imports: [
+        NgIf,
+        FormsModule,
+        MatFormField,
+        MatLabel,
+        MatInput,
+        MatIcon,
+        MatSuffix,
+        MatHint,
+        MatSelect,
+        NgFor,
+        MatOption,
+        MatButton,
+    ],
 })
 export class CreateEventFormComponent implements OnInit {
   submitted = false;
