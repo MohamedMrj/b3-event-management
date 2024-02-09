@@ -1,0 +1,25 @@
+.login-card {
+    display: flex;
+    flex-direction: column;
+    width: 600px;
+    justify-content: center;
+    margin-left: 300px;
+}
+
+.h2 {
+    justify-content: center;
+    margin: 20px;
+
+}
+.input-field {
+    display: flex;
+    justify-content: center;
+}
+
+.login-button {
+    justify-content: center;
+    margin-left: 240px;
+}
+
+
+  
