@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { LoginInfo, LoginService } from '../login.service';
 
 @Component({
   selector: 'app-login',
@@ -10,20 +11,29 @@ export class LoginComponent {
   password: string = '';
   loginError: boolean = false;
 
-  constructor() {}
+  constructor(
+    private loginService: LoginService
+  ) {}
 
   onLoginClick(): void {
-    // Implement your login logic here
-    if (this.username === 'validUsername' && this.password === 'validPassword') {
-      // Authentication successful
-      console.log('Login successful');
-      this.loginError = false;
-      // Add further logic such as navigating to another page, etc.
-    } else {
-      // Authentication failed
-      console.log('Login failed');
-      this.loginError = true;
+    console.log("insideinfo");
+    let l: LoginInfo = {
+      username: this.username,
+      password: this.password
     }
+  
+    this.loginService.login(l);
+    // Implement your login logic here
+    // if (this.username === 'validUsername' && this.password === 'validPassword') {
+    //   // Authentication successful
+    //   console.log('Login successful');
+    //   this.loginError = false;
+    //   // Add further logic such as navigating to another page, etc.
+    // } else {
+    //   // Authentication failed
+    //   console.log('Login failed');
+    //   this.loginError = true;
+    // }
   }
 
 }
