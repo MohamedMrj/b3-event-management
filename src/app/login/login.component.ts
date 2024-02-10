@@ -1,7 +1,12 @@
 import { Component } from '@angular/core';
-import { FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormControl,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import {MatCardModule} from '@angular/material/card';
+import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -10,8 +15,16 @@ import { MatInputModule } from '@angular/material/input';
   selector: 'app-login',
   standalone: true,
   styleUrls: ['./login.component.css'],
-  imports: [MatCardModule, MatFormFieldModule, MatInputModule, FormsModule, ReactiveFormsModule, MatIconModule, MatButtonModule],
-  templateUrl: './login.component.html'
+  imports: [
+    MatCardModule,
+    MatFormFieldModule,
+    MatInputModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatIconModule,
+    MatButtonModule,
+  ],
+  templateUrl: './login.component.html',
 })
 export class LoginComponent {
   email = new FormControl('', [Validators.required, Validators.email]);

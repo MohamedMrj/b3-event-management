@@ -8,15 +8,11 @@ import { MatIcon } from '@angular/material/icon';
 import { MatButton } from '@angular/material/button';
 
 @Component({
-    selector: 'app-event-create',
-    templateUrl: './event-create.component.html',
-    styleUrls: ['./event-create.component.css'],
-    standalone: true,
-    imports: [
-        MatButton,
-        MatIcon,
-        CreateEventFormComponent,
-    ],
+  selector: 'app-event-create',
+  templateUrl: './event-create.component.html',
+  styleUrls: ['./event-create.component.css'],
+  standalone: true,
+  imports: [MatButton, MatIcon, CreateEventFormComponent],
 })
 export class EventCreateComponent {
   constructor(

@@ -14,7 +14,7 @@ describe('EventListComponent', () => {
         EventListComponent,
         HttpClientTestingModule,
         RouterTestingModule,
-        NoopAnimationsModule
+        NoopAnimationsModule,
       ],
     }).compileComponents();
 

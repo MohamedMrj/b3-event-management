@@ -22,7 +22,7 @@ describe('EventCardComponent', () => {
         CommonModule,
         GoogleMapsUrlPipe,
         LocationFormatPipe,
-      ]
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(EventCardComponent);
@@ -41,7 +41,7 @@ describe('EventCardComponent', () => {
       locationCity: 'Mock City',
       locationCountry: 'Mockland',
       imageUrl: 'https://example.com/mock-image.jpg',
-      imageAlt: 'A mock event image'
+      imageAlt: 'A mock event image',
     };
 
     component.event = mockEvent;

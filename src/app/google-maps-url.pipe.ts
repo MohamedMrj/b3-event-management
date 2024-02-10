@@ -3,12 +3,16 @@ import { Event } from './event'; // Assuming this is the correct path to your Ev
 import { getGoogleMapsUrl } from './utils/location.utils';
 
 @Pipe({
-    name: 'googleMapsUrl',
-    standalone: true,
+  name: 'googleMapsUrl',
+  standalone: true,
 })
 export class GoogleMapsUrlPipe implements PipeTransform {
   transform(event: Event): string {
     const { locationStreet, locationCity, locationCountry } = event;
-    return getGoogleMapsUrl(locationStreet, locationCity, locationCountry);
+    return getGoogleMapsUrl(
+      locationStreet ?? '',
+      locationCity,
+      locationCountry,
+    );
   }
 }

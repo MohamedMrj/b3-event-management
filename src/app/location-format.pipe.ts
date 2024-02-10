@@ -3,12 +3,12 @@ import { Event } from './event';
 import { formatLocation } from './utils/location.utils';
 
 @Pipe({
-    name: 'locationFormat',
-    standalone: true,
+  name: 'locationFormat',
+  standalone: true,
 })
 export class LocationFormatPipe implements PipeTransform {
   transform(event: Event): string {
     const { locationStreet, locationCity, locationCountry } = event;
-    return formatLocation(locationStreet, locationCity, locationCountry);
+    return formatLocation(locationStreet ?? '', locationCity, locationCountry);
   }
 }

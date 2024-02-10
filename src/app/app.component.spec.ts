@@ -7,27 +7,25 @@ import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
 
 describe('AppComponent', () => {
-    beforeEach(async () => {
-        const activatedRouteStub = {
-            queryParams: of({ eventDeleted: 'true' })
-        };
+  beforeEach(async () => {
+    const activatedRouteStub = {
+      queryParams: of({ eventDeleted: 'true' }),
+    };
 
-        await TestBed.configureTestingModule({
-            imports: [
-                AppComponent,
-                RouterTestingModule,
-                MatSnackBarModule,
-                NoopAnimationsModule,
-            ],
-            providers: [
-                { provide: ActivatedRoute, useValue: activatedRouteStub }
-            ]
-        }).compileComponents();
-    });
+    await TestBed.configureTestingModule({
+      imports: [
+        AppComponent,
+        RouterTestingModule,
+        MatSnackBarModule,
+        NoopAnimationsModule,
+      ],
+      providers: [{ provide: ActivatedRoute, useValue: activatedRouteStub }],
+    }).compileComponents();
+  });
 
-    it('should create the app', () => {
-        const fixture = TestBed.createComponent(AppComponent);
-        const app = fixture.componentInstance;
-        expect(app).toBeTruthy();
-    });
+  it('should create the app', () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    const app = fixture.componentInstance;
+    expect(app).toBeTruthy();
+  });
 });

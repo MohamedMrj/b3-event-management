@@ -7,10 +7,10 @@ import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideMarkdown } from 'ngx-markdown';
 
 export const appConfig: ApplicationConfig = {
-    providers: [
-        provideRouter(routes),
-        provideAnimations(),
-        provideHttpClient(),
-        provideMarkdown(),
-    ]
+  providers: [
+    provideRouter(routes),
+    provideAnimations(),
+    provideHttpClient(),
+    provideMarkdown(),
+  ],
 };

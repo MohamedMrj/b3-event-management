@@ -11,14 +11,14 @@ import { HttpClient } from '@angular/common/http';
   standalone: true,
 })
 export class ApiTestComponent implements OnInit {
-  event: Event;
+  event!: Event;
 
   message = '';
 
   constructor(
     private titleService: Title,
     private eventService: EventService,
-    private http: HttpClient
+    private http: HttpClient,
   ) {
     this.titleService.setTitle('API Test');
   }

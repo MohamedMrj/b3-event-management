@@ -7,11 +7,11 @@ describe('ConfirmDialogComponent', () => {
   let fixture: ComponentFixture<ConfirmDialogComponent>;
 
   const mockDialogRef = {
-    close: jasmine.createSpy('close')
+    close: jasmine.createSpy('close'),
   };
 
   const mockDialogData: DialogData = {
-    message: 'Are you sure?'
+    message: 'Are you sure?',
   };
 
   beforeEach(async () => {
@@ -19,7 +19,7 @@ describe('ConfirmDialogComponent', () => {
       imports: [ConfirmDialogComponent],
       providers: [
         { provide: MatDialogRef, useValue: mockDialogRef },
-        { provide: MAT_DIALOG_DATA, useValue: mockDialogData }
+        { provide: MAT_DIALOG_DATA, useValue: mockDialogData },
       ],
     }).compileComponents();
 

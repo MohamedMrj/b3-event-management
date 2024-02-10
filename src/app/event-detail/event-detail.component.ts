@@ -16,30 +16,30 @@ import { MatButton, MatIconButton } from '@angular/material/button';
 import { MatProgressBar } from '@angular/material/progress-bar';
 
 @Component({
-    selector: 'app-event-detail',
-    templateUrl: './event-detail.component.html',
-    styleUrls: ['./event-detail.component.css'],
-    standalone: true,
-    imports: [
-        NgIf,
-        MatProgressBar,
-        MatButton,
-        MatIcon,
-        MatIconButton,
-        MatMenuTrigger,
-        MatMenu,
-        MatMenuItem,
-        AsyncPipe,
-        DatePipe,
-        MarkdownPipe,
-        LocationFormatPipe,
-        GoogleMapsUrlPipe,
-        SafePipe,
-        GoogleMapsEmbedUrlPipe,
-    ],
+  selector: 'app-event-detail',
+  templateUrl: './event-detail.component.html',
+  styleUrls: ['./event-detail.component.css'],
+  standalone: true,
+  imports: [
+    NgIf,
+    MatProgressBar,
+    MatButton,
+    MatIcon,
+    MatIconButton,
+    MatMenuTrigger,
+    MatMenu,
+    MatMenuItem,
+    AsyncPipe,
+    DatePipe,
+    MarkdownPipe,
+    LocationFormatPipe,
+    GoogleMapsUrlPipe,
+    SafePipe,
+    GoogleMapsEmbedUrlPipe,
+  ],
 })
 export class EventDetailComponent implements OnInit {
-  event: Event;
+  event!: Event;
   isLoading: boolean = true;
   eventNotFound: boolean = false;
 
@@ -50,17 +50,24 @@ export class EventDetailComponent implements OnInit {
     private titleService: Title,
     private pageLocation: Location,
     private snackBar: MatSnackBar,
-  ) { }
+  ) {}
 
   ngOnInit() {
     // Check if user is redirected after creating or updating an event
-    this.route.queryParams.subscribe(params => {
-      if (params['eventCreated'] === 'true' || params['eventUpdated'] === 'true') {
+    this.route.queryParams.subscribe((params) => {
+      if (
+        params['eventCreated'] === 'true' ||
+        params['eventUpdated'] === 'true'
+      ) {
         if (params['eventCreated'] === 'true') {
-          this.snackBar.open('Event created successfully!', 'Close', { duration: 3000 });
+          this.snackBar.open('Event created successfully!', 'Close', {
+            duration: 3000,
+          });
         }
         if (params['eventUpdated'] === 'true') {
-          this.snackBar.open('Event updated successfully!', 'Close', { duration: 3000 });
+          this.snackBar.open('Event updated successfully!', 'Close', {
+            duration: 3000,
+          });
         }
 
         // Specify the types for queryParams
@@ -73,7 +80,7 @@ export class EventDetailComponent implements OnInit {
           relativeTo: this.route,
           queryParams: queryParams,
           queryParamsHandling: '', // remove to keep other query params
-          replaceUrl: true // does not add this navigation to history
+          replaceUrl: true, // does not add this navigation to history
         });
       }
     });
@@ -116,7 +123,9 @@ export class EventDetailComponent implements OnInit {
       this.eventService.deleteEvent(this.event.id).subscribe({
         next: () => {
           console.log(`Event: ${this.event.id} deleted successfully.`);
-          this.router.navigate(['/'], { queryParams: { eventDeleted: 'true' } });
+          this.router.navigate(['/'], {
+            queryParams: { eventDeleted: 'true' },
+          });
         },
         error: (error) => {
           console.error('Error deleting event:', error);

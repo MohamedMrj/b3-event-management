@@ -1,5 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import {
+  HttpClientTestingModule,
+  HttpTestingController,
+} from '@angular/common/http/testing';
 import { ApiTestComponent } from './api-test.component';
 
 describe('ApiTestComponent', () => {
@@ -22,7 +25,21 @@ describe('ApiTestComponent', () => {
   });
 
   it('should create and fetch event data', () => {
-    component.event = { id: '', title: '', longDescription: '', shortDescription: '', organizer: '', locationStreet: '', locationCity: '', locationCountry: '', startDateTime: '', endDateTime: '', timezone: '', imageUrl: '', imageAlt: '' };
+    component.event = {
+      id: '',
+      title: '',
+      longDescription: '',
+      shortDescription: '',
+      organizer: '',
+      locationStreet: '',
+      locationCity: '',
+      locationCountry: '',
+      startDateTime: '',
+      endDateTime: '',
+      timezone: '',
+      imageUrl: '',
+      imageAlt: '',
+    };
 
     fixture.detectChanges();
 
@@ -39,7 +56,7 @@ describe('ApiTestComponent', () => {
       endDateTime: '2022-01-02T00:00:00Z',
       timezone: 'GMT',
       imageUrl: 'https://example.com/image.jpg',
-      imageAlt: 'An example image'
+      imageAlt: 'An example image',
     };
 
     const req = httpTestingController.expectOne('/api/event/3');

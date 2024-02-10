@@ -13,7 +13,7 @@ describe('CreateEventFormComponent', () => {
 
   beforeEach(async () => {
     const activatedRouteMock = {
-      paramMap: of(new Map([['eventid', '1']]))
+      paramMap: of(new Map([['eventid', '1']])),
     };
 
     await TestBed.configureTestingModule({
@@ -22,11 +22,9 @@ describe('CreateEventFormComponent', () => {
         RouterTestingModule,
         HttpClientModule,
         MatSnackBarModule,
-        NoopAnimationsModule
+        NoopAnimationsModule,
       ],
-      providers: [
-        { provide: ActivatedRoute, useValue: activatedRouteMock }
-      ]
+      providers: [{ provide: ActivatedRoute, useValue: activatedRouteMock }],
     }).compileComponents();
 
     fixture = TestBed.createComponent(CreateEventFormComponent);

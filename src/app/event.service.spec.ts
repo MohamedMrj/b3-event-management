@@ -1,7 +1,10 @@
 import { TestBed } from '@angular/core/testing';
 import { Event } from './event';
 import { EventService } from './event.service';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import {
+  HttpClientTestingModule,
+  HttpTestingController,
+} from '@angular/common/http/testing';
 
 describe('EventService', () => {
   let service: EventService;
@@ -26,7 +29,7 @@ describe('EventService', () => {
   it('fetchAllEvents should make a GET request to fetch all events', () => {
     const mockEvents: Event[] = [];
 
-    service.fetchAllEvents().subscribe(events => {
+    service.fetchAllEvents().subscribe((events) => {
       expect(events).toEqual(mockEvents);
     });
 

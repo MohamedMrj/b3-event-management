@@ -10,17 +10,11 @@ import { MatIcon } from '@angular/material/icon';
 import { MatFabButton } from '@angular/material/button';
 
 @Component({
-    selector: 'app-event-list',
-    templateUrl: './event-list.component.html',
-    styleUrls: ['./event-list.component.css'],
-    standalone: true,
-    imports: [
-        MatFabButton,
-        MatIcon,
-        NgFor,
-        EventCardComponent,
-        MatPaginator,
-    ],
+  selector: 'app-event-list',
+  templateUrl: './event-list.component.html',
+  styleUrls: ['./event-list.component.css'],
+  standalone: true,
+  imports: [MatFabButton, MatIcon, NgFor, EventCardComponent, MatPaginator],
 })
 export class EventListComponent implements OnInit {
   eventList: Event[] = [];
@@ -30,7 +24,7 @@ export class EventListComponent implements OnInit {
   eventsPerPage: number = 6;
   currentPage: number = 1;
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   constructor(
     private eventService: EventService,
@@ -45,19 +39,23 @@ export class EventListComponent implements OnInit {
   }
 
   fetchAllEvents() {
-    this.eventService.fetchAllEvents().subscribe(
-      (events) => {
-        this.totalEvents = events.length; // Set this based on server response if we implement pagination in the backend
+    this.eventService.fetchAllEvents().subscribe({
+      next: (events) => {
+        this.totalEvents = events.length; // Set this based on server response if you implement pagination in the backend
         this.eventList = events.slice(
           (this.currentPage - 1) * this.eventsPerPage,
           this.currentPage * this.eventsPerPage,
         );
       },
-      (error) => {
+      error: (error) => {
         console.error('Error fetching events:', error);
         // Add more error handling such as showing an error message to the user
       },
-    );
+      complete: () => {
+        console.log('Event fetch operation completed');
+        // Optionally handle completion
+      },
+    });
   }
 
   onPageChange(event: { pageIndex: number; pageSize: number }) {

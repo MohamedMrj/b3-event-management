@@ -12,18 +12,12 @@ describe('EventDetailComponent', () => {
   beforeEach(() => {
     const activatedRouteStub = {
       paramMap: of(new Map([['eventid', '1']])),
-      queryParams: of({ eventCreated: 'true', eventUpdated: 'true' })
+      queryParams: of({ eventCreated: 'true', eventUpdated: 'true' }),
     };
 
     TestBed.configureTestingModule({
-      imports: [
-        EventDetailComponent,
-        RouterTestingModule,
-        HttpClientModule
-      ],
-      providers: [
-        { provide: ActivatedRoute, useValue: activatedRouteStub }
-      ]
+      imports: [EventDetailComponent, RouterTestingModule, HttpClientModule],
+      providers: [{ provide: ActivatedRoute, useValue: activatedRouteStub }],
     });
     fixture = TestBed.createComponent(EventDetailComponent);
     component = fixture.componentInstance;
