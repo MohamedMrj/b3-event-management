@@ -1,14 +1,16 @@
 {
-  "$schema": "https://raw.githubusercontent.com/Azure/static-web-apps-cli/main/schema/swa-cli.config.schema.json",
+  "$schema": "https://aka.ms/azure/static-web-apps-cli/schema",
   "configurations": {
-    "app": {
-      "context": "http://localhost:4200",
-      "run": "npm start",
+    "b3-eventwebb": {
+      "appLocation": ".",
       "apiLocation": "api",
-      "apiPort": 7177,
       "outputLocation": "dist/angular-basic",
-      "devserverTimeout": 10000,
-      "open": true
+      "apiLanguage": "dotnetisolated",
+      "apiVersion": "6.0",
+      "appBuildCommand": "npm run build",
+      "apiBuildCommand": "dotnet publish -c Release",
+      "run": "npm start",
+      "appDevserverUrl": "http://localhost:4200"
     }
   }
 }
