@@ -39,6 +39,16 @@ mat-toolbar {
   width: auto;
 }
 
+.menu-item {
+  font-size: 1rem;
+  color: var(--white);
+}
+
+.menu-item:hover {
+  text-decoration: none;
+  color: var(--pink);
+}
+
 /* Footer */
 
 .footer {
