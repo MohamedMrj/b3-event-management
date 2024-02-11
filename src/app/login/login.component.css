@@ -1,21 +1,43 @@
-.login-card {
+.container {
+  margin: 0 auto;
+}
+
+.login-header {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+@media (min-width: 640px) {
+  .container {
+    max-width: 480px;
+  }
+}
+
+.form-group {
   display: flex;
   flex-direction: column;
-  width: 600px;
-  justify-content: center;
-  margin-left: 300px;
+  align-items: stretch;
 }
 
-.h2 {
-  justify-content: center;
-  margin: 20px;
-}
-.input-field {
-  display: flex;
-  justify-content: center;
+.form-group mat-form-field {
+  width: 100%;
 }
 
-.login-button {
-  justify-content: center;
-  margin-left: 240px;
+/* Adjustments for larger screens */
+@media (min-width: 640px) {
+  .form-group {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+
+  .form-group mat-form-field {
+    flex: 1;
+  }
+
+  .form-group mat-form-field + mat-form-field {
+    margin-left: 0.5rem;
+  }
 }
