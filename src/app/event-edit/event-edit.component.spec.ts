@@ -37,24 +37,23 @@ describe('EventEditComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
-        EventEditComponent, // Import the standalone component here
+        EventEditComponent,
         RouterTestingModule,
         HttpClientTestingModule,
         NoopAnimationsModule,
       ],
       providers: [
         { provide: ActivatedRoute, useValue: activatedRouteMock },
-        { provide: EventService, useValue: eventServiceMock }, // Provide the mock EventService
+        { provide: EventService, useValue: eventServiceMock },
       ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(EventEditComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges(); // Trigger ngOnInit and other lifecycle events
+    fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
-    // Optionally, add more checks here
   });
 });
