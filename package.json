@@ -12,8 +12,8 @@
     "cypress:open": "cypress open",
     "cypress:run": "cypress run",
     "swa:login": "swa login",
-    "swa:start": "swa start app",
-    "swa:deploy": "swa deploy app"
+    "swa:start": "swa start b3-eventwebb",
+    "swa:deploy": "swa deploy b3-eventwebb"
   },
   "private": true,
   "dependencies": {
