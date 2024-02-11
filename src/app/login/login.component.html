@@ -1,28 +1,28 @@
 <div class="container">
     <div class="login-header">
-        <h1>Login</h1>
+        <h1>Logga In</h1>
         <span class="flex-spacer"></span>
     </div>
     <form>
         <div class="form-group">
             <mat-form-field>
-                <mat-label>Username</mat-label>
+                <mat-label>Ange e-postadress</mat-label>
                 <input matInput type="text" class="form-control" id="username" required name="username"
-                    placeholder="Username" [(ngModel)]="username" />
+                    placeholder="epost@exempel.com" [(ngModel)]="username" />
                 <mat-icon matSuffix>face</mat-icon>
             </mat-form-field>
         </div>
         <div class="form-group">
             <mat-form-field>
-                <mat-label>Password</mat-label>
+                <mat-label>Ange lösenord</mat-label>
                 <input matInput type="password" class="form-control" id="password" required name="password"
-                    placeholder="Password" [(ngModel)]="password" />
+                    placeholder="Lösenord" [(ngModel)]="password" />
                 <mat-icon matSuffix>password</mat-icon>
             </mat-form-field>
         </div>
         <div class="form-group">
-            <button mat-raised-button color="primary" type="button" (click)="onLoginClick()">
-                Login
+            <button mat-raised-button color="accent" type="button" (click)="onLoginClick()">
+                Logga In
             </button>
         </div>
     </form>

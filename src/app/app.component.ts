@@ -4,6 +4,7 @@ import {
   ActivatedRoute,
   Router,
   RouterLink,
+  RouterLinkActive,
   RouterOutlet,
 } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -12,7 +13,7 @@ import { MatToolbar } from '@angular/material/toolbar';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, MatToolbar, RouterLink],
+  imports: [RouterOutlet, MatToolbar, RouterLink, RouterLinkActive],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })

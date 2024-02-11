@@ -5,11 +5,11 @@
       <span>Events</span>
     </a>
     <span class="flex-spacer"></span>
-    <a [routerLink]="['/']" class="menu-item">
-      <span>Alla Event</span>
+    <a [routerLink]="['']" class="menu-item">
+      <span [routerLinkActive] = "'active'" [routerLinkActiveOptions]="{exact: true}">Alla Event</span>
     </a>
     <a [routerLink]="['/my-events']" class="menu-item">
-      <span>Mina Event</span>
+      <span [routerLinkActive] = "'active'">Mina Event</span>
     </a>
   </div>
 </mat-toolbar>
