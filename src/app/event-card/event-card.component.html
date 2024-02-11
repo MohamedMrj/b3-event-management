@@ -1,10 +1,10 @@
 <mat-card class="event-card">
-  <a href="/event/{{ event.id }}" class="card-link">
+  <a [routerLink]="['/event', event.id]" class="card-link">
     <img [src]="event.imageUrl" [alt]="event.imageAlt" />
   </a>
   <mat-card-header>
     <mat-card-title>
-      <a href="/event/{{ event.id }}" class="card-link">
+      <a [routerLink]="['/event', event.id]" class="card-link">
         {{ event.title }}
       </a>
     </mat-card-title>

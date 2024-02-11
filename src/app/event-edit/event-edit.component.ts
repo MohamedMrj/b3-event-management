@@ -7,14 +7,28 @@ import { Location } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { CreateEventFormComponent } from '../create-event-form/create-event-form.component';
+import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
+import { MatIcon } from '@angular/material/icon';
+import { MatButton, MatIconButton } from '@angular/material/button';
 
 @Component({
   selector: 'app-event-edit',
   templateUrl: './event-edit.component.html',
   styleUrls: ['./event-edit.component.css'],
+  standalone: true,
+  imports: [
+    MatButton,
+    MatIcon,
+    MatIconButton,
+    MatMenuTrigger,
+    MatMenu,
+    MatMenuItem,
+    CreateEventFormComponent,
+  ],
 })
 export class EventEditComponent implements OnInit {
-  event: Event;
+  event!: Event;
   eventNotFound: boolean = false;
 
   constructor(
@@ -25,7 +39,7 @@ export class EventEditComponent implements OnInit {
     private pageLocation: Location,
     private dialog: MatDialog,
     private snackBar: MatSnackBar,
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.route.paramMap.subscribe((params) => {
@@ -59,11 +73,13 @@ export class EventEditComponent implements OnInit {
       });
 
       confirmDialogRef.afterClosed().subscribe((result) => {
-        if (result) {
+        if (result && this.event?.id) {
           this.eventService.deleteEvent(this.event.id).subscribe({
             next: () => {
               console.log(`Event: ${this.event.id} deleted successfully.`);
-              this.router.navigate(['/'], { queryParams: { eventDeleted: 'true' } });
+              this.router.navigate(['/'], {
+                queryParams: { eventDeleted: 'true' },
+              });
             },
             error: (error) => {
               console.error('Error deleting event:', error);

@@ -4,10 +4,15 @@ import { getGoogleMapsEmbedUrl } from './utils/location.utils';
 
 @Pipe({
   name: 'googleMapsEmbedUrl',
+  standalone: true,
 })
 export class GoogleMapsEmbedUrlPipe implements PipeTransform {
   transform(event: Event): string {
     const { locationStreet, locationCity, locationCountry } = event;
-    return getGoogleMapsEmbedUrl(locationStreet, locationCity, locationCountry);
+    return getGoogleMapsEmbedUrl(
+      locationStreet ?? '',
+      locationCity,
+      locationCountry,
+    );
   }
 }

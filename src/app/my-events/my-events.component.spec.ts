@@ -1,26 +1,24 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { HttpClientModule } from '@angular/common/http';
-import { EventCreateComponent } from './event-create.component';
+import { MyEventsComponent } from './my-events.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { MatDialogModule } from '@angular/material/dialog';
 
-describe('EventCreateComponent', () => {
-  let component: EventCreateComponent;
-  let fixture: ComponentFixture<EventCreateComponent>;
+describe('EventListComponent', () => {
+  let component: MyEventsComponent;
+  let fixture: ComponentFixture<MyEventsComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
-        EventCreateComponent,
-        HttpClientModule,
+        MyEventsComponent,
+        HttpClientTestingModule,
         RouterTestingModule,
         NoopAnimationsModule,
-        MatDialogModule,
       ],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(EventCreateComponent);
+    fixture = TestBed.createComponent(MyEventsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -4,9 +4,19 @@
     Go back
   </button>
   <div class="editEvent-header">
-    <h1>{{ event?.title || "Edit event" }}</h1>
+    <h1>
+      @if (event.title) {
+        {{ event.title }}
+      } @else {
+        Edit event
+      }
+    </h1>
     <span class="flex-spacer"></span>
-    <button mat-icon-button [matMenuTriggerFor]="manageEventMenu" aria-label="Menu for managing event">
+    <button
+      mat-icon-button
+      [matMenuTriggerFor]="manageEventMenu"
+      aria-label="Menu for managing event"
+    >
       <mat-icon>more_vert</mat-icon>
     </button>
     <mat-menu #manageEventMenu="matMenu">

@@ -3,11 +3,39 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { EventService } from '../event.service';
 import { Event } from '../event';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatButton } from '@angular/material/button';
+import { MatOption } from '@angular/material/core';
+import { MatSelect } from '@angular/material/select';
+import { MatIcon } from '@angular/material/icon';
+import { MatInput } from '@angular/material/input';
+import {
+  MatFormField,
+  MatLabel,
+  MatSuffix,
+  MatHint,
+} from '@angular/material/form-field';
+import { FormsModule } from '@angular/forms';
+import { NgIf, NgFor } from '@angular/common';
 
 @Component({
   selector: 'app-create-event-form',
   templateUrl: './create-event-form.component.html',
   styleUrls: ['./create-event-form.component.css'],
+  standalone: true,
+  imports: [
+    NgIf,
+    FormsModule,
+    MatFormField,
+    MatLabel,
+    MatInput,
+    MatIcon,
+    MatSuffix,
+    MatHint,
+    MatSelect,
+    NgFor,
+    MatOption,
+    MatButton,
+  ],
 })
 export class CreateEventFormComponent implements OnInit {
   submitted = false;
@@ -51,7 +79,7 @@ export class CreateEventFormComponent implements OnInit {
     private route: ActivatedRoute,
     private eventService: EventService,
     private snackBar: MatSnackBar,
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.route.paramMap.subscribe((params) => {
@@ -88,29 +116,36 @@ export class CreateEventFormComponent implements OnInit {
       this.event.endDateTime = new Date(this.event.endDateTime).toISOString();
     }
 
-    if (this.isEditMode) {
+    if (this.isEditMode && this.event.id) {
       this.eventService.updateEvent(this.event.id, this.event).subscribe({
         next: (updatedEvent) => {
           console.log('Event updated successfully:', updatedEvent);
-          this.router.navigate(['/event', updatedEvent.id], { queryParams: { eventUpdated: 'true' } });
-
+          this.router.navigate(['/event', updatedEvent.id], {
+            queryParams: { eventUpdated: 'true' },
+          });
         },
         error: (error) => {
           console.error('Error updating event:', error);
-          this.snackBar.open('Error updating event', 'Close', { duration: 3000 });
-          this.submitted = false; // Reset submitted status to allow retry
+          this.snackBar.open('Error updating event', 'Close', {
+            duration: 3000,
+          });
+          this.submitted = false;
         },
       });
     } else {
       this.eventService.createEvent(this.event).subscribe({
         next: (createdEvent) => {
           console.log('Event created successfully:', createdEvent);
-          this.router.navigate(['/event', createdEvent.id], { queryParams: { eventCreated: 'true' } });
+          this.router.navigate(['/event', createdEvent.id], {
+            queryParams: { eventCreated: 'true' },
+          });
         },
         error: (error) => {
           console.error('Error creating event:', error);
-          this.snackBar.open('Error creating event', 'Close', { duration: 3000 });
-          this.submitted = false; // Reset submitted status to allow retry
+          this.snackBar.open('Error creating event', 'Close', {
+            duration: 3000,
+          });
+          this.submitted = false;
         },
       });
     }

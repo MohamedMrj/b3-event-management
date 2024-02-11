@@ -1,83 +1,101 @@
-<div *ngIf="event; else noEventTemplate" class="event-detail-container">
-  <button mat-button appBackButton (click)="goBack()" class="back-button">
-    <mat-icon>arrow_back</mat-icon>Go back
-  </button>
-  <div class="event-detail-header">
-    <h1>{{ event.title }}</h1>
-    <span class="flex-spacer"></span>
-    <button mat-icon-button [matMenuTriggerFor]="manageEventMenu" aria-label="Menu for managing event">
-      <mat-icon>more_vert</mat-icon>
+<mat-progress-bar *ngIf="isLoading" mode="indeterminate"></mat-progress-bar>
+
+<div *ngIf="!isLoading">
+  <div *ngIf="event; else noEventTemplate" class="event-detail-container">
+    <button mat-button appBackButton (click)="goBack()" class="back-button">
+      <mat-icon>arrow_back</mat-icon>Go back
     </button>
-    <mat-menu #manageEventMenu="matMenu">
-      <button mat-menu-item (click)="navigateToEditEvent()">
-        <mat-icon>edit</mat-icon>
-        <span>Edit event</span>
+    <div class="event-detail-header">
+      <h1>{{ event.title }}</h1>
+      <span class="flex-spacer"></span>
+      <button
+        mat-icon-button
+        [matMenuTriggerFor]="manageEventMenu"
+        aria-label="Menu for managing event"
+      >
+        <mat-icon>more_vert</mat-icon>
       </button>
-      <button mat-menu-item (click)="deleteEvent()">
-        <mat-icon color="warn">delete</mat-icon>
-        <span>Delete event</span>
-      </button>
-    </mat-menu>
-  </div>
-  <div class="event-detail-body">
-    <div class="event-detail-body-right">
-      <div class="event-detail-body-right-item">
-        <div class="event-info-row">
-          <mat-icon>person</mat-icon>
-          <span><strong>Organizer:</strong> {{ event.organizer }}</span>
+      <mat-menu #manageEventMenu="matMenu">
+        <button mat-menu-item (click)="navigateToEditEvent()">
+          <mat-icon>edit</mat-icon>
+          <span>Edit event</span>
+        </button>
+        <button mat-menu-item (click)="deleteEvent()">
+          <mat-icon color="warn">delete</mat-icon>
+          <span>Delete event</span>
+        </button>
+      </mat-menu>
+    </div>
+    <div class="event-detail-body">
+      <div class="event-detail-body-right">
+        <div class="event-detail-body-right-item">
+          <div class="event-info-row">
+            <mat-icon>person</mat-icon>
+            <span><strong>Organizer:</strong> {{ event.organizer }}</span>
+          </div>
         </div>
-      </div>
-      <div class="event-detail-body-right-item">
-        <div class="event-info-row">
-          <mat-icon>event</mat-icon>
-          <span>
-            <strong>Start:</strong>
-            {{ event.startDateTime | date: 'longDate' }}
-            {{ event.startDateTime | date: 'shortTime' }}<br />
-            <strong>End:</strong>
-            <span style="display: none" #startDate>{{
-              event.startDateTime | date: 'shortDate'
+        <div class="event-detail-body-right-item">
+          <div class="event-info-row">
+            <mat-icon>event</mat-icon>
+            <span>
+              <strong>Start:</strong>
+              {{ event.startDateTime | date: 'longDate' }}
+              {{ event.startDateTime | date: 'shortTime' }}<br />
+              <strong>End:</strong>
+              <span style="display: none" #startDate>{{
+                event.startDateTime | date: 'shortDate'
               }}</span>
-            <span style="display: none" #endDate>{{
-              event.endDateTime | date: 'shortDate'
+              <span style="display: none" #endDate>{{
+                event.endDateTime | date: 'shortDate'
               }}</span>
-            <ng-container *ngIf="startDate.innerText !== endDate.innerText">
-              {{ event.endDateTime | date: 'longDate' }}
-            </ng-container>
-            {{ event.endDateTime | date: 'shortTime' }}
-          </span>
+              <ng-container *ngIf="startDate.innerText !== endDate.innerText">
+                {{ event.endDateTime | date: 'longDate' }}
+              </ng-container>
+              {{ event.endDateTime | date: 'shortTime' }}
+            </span>
+          </div>
         </div>
-      </div>
-      <div class="event-detail-body-right-item">
-        <div class="event-info-row">
-          <mat-icon>location_on</mat-icon>
-          <a [href]="event | googleMapsUrl" target="_blank">{{
-            event | locationFormat
+        <div class="event-detail-body-right-item">
+          <div class="event-info-row">
+            <mat-icon>location_on</mat-icon>
+            <a [href]="event | googleMapsUrl" target="_blank">{{
+              event | locationFormat
             }}</a>
+          </div>
+          <div class="googleMapsEmbed">
+            <iframe
+              [src]="event | googleMapsEmbedUrl | safe"
+              loading="lazy"
+              width="100%"
+              height="250"
+              frameborder="0"
+              allowfullscreen
+            ></iframe>
+          </div>
         </div>
-        <div class="googleMapsEmbed">
-          <iframe [src]="event | googleMapsEmbedUrl | safe" loading="lazy" width="100%" height="250" frameborder="0"
-            allowfullscreen></iframe>
+      </div>
+      <div class="event-detail-body-left">
+        <div class="event-detail-body-left-item">
+          <p>{{ event.shortDescription }}</p>
         </div>
-      </div>
-    </div>
-    <div class="event-detail-body-left">
-      <div class="event-detail-body-left-item">
-        <p>{{ event.shortDescription }}</p>
-      </div>
-      <div class="event-detail-body-left-item">
-        <img [src]="event.imageUrl" [alt]="event.imageAlt" class="event-image" />
-      </div>
-      <div class="event-detail-body-left-item">
-        <h2>More info</h2>
-        <div [innerHTML]="event.longDescription | markdown | async"></div>
+        <div class="event-detail-body-left-item">
+          <img
+            [src]="event.imageUrl"
+            [alt]="event.imageAlt"
+            class="event-image"
+          />
+        </div>
+        <div class="event-detail-body-left-item">
+          <h2>More info</h2>
+          <div [innerHTML]="event.longDescription | markdown | async"></div>
+        </div>
       </div>
     </div>
   </div>
+  <ng-template #noEventTemplate>
+    <div class="noEventContainer">
+      <h1 aria-hidden="true">¯\(ツ)/¯</h1>
+      <p>Sorry, there is no such event.</p>
+    </div>
+  </ng-template>
 </div>
-<ng-template #noEventTemplate>
-  <div class="noEventContainer">
-    <h1 aria-hidden="true">¯\(ツ)/¯</h1>
-    <p>Sorry, there is no such event.</p>
-  </div>
-</ng-template>

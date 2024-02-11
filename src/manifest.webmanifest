@@ -1,7 +1,7 @@
 {
   "name": "B3 Events",
   "short_name": "B3 Events",
-  "theme_color": "#e31c6c",
+  "theme_color": "#000000",
   "background_color": "#e6e6e6",
   "display": "standalone",
   "scope": "./",

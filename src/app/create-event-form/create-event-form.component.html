@@ -2,43 +2,86 @@
   <div class="form-group">
     <mat-form-field>
       <mat-label>Title</mat-label>
-      <input matInput type="text" class="form-control" id="title" required [maxlength]="titleMaxLength"
-        [(ngModel)]="event.title" name="title" #title="ngModel" placeholder="Title" />
+      <input
+        matInput
+        type="text"
+        class="form-control"
+        id="title"
+        required
+        [maxlength]="titleMaxLength"
+        [(ngModel)]="event.title"
+        name="title"
+        #title="ngModel"
+        placeholder="Title"
+      />
       <mat-icon matSuffix>title</mat-icon>
-      <mat-hint align="end">{{ title?.value?.length || 0 }}/{{ titleMaxLength }}</mat-hint>
+      <mat-hint align="end"
+        >{{ title?.value?.length || 0 }}/{{ titleMaxLength }}</mat-hint
+      >
     </mat-form-field>
   </div>
   <div class="form-group">
     <mat-form-field>
       <mat-label>Short description</mat-label>
-      <input matInput type="text" class="form-control" id="shortDescription" required maxlength="100"
-        [(ngModel)]="event.shortDescription" name="shortDescription" #shortDescription="ngModel"
-        placeholder="Short description" />
+      <input
+        matInput
+        type="text"
+        class="form-control"
+        id="shortDescription"
+        required
+        maxlength="100"
+        [(ngModel)]="event.shortDescription"
+        name="shortDescription"
+        #shortDescription="ngModel"
+        placeholder="Short description"
+      />
       <mat-icon matSuffix>short_text</mat-icon>
-      <mat-hint align="end">{{ shortDescription?.value?.length || 0 }}/{{
-        shortDescriptionMaxLength
-        }}</mat-hint>
+      <mat-hint align="end"
+        >{{ shortDescription?.value?.length || 0 }}/{{
+          shortDescriptionMaxLength
+        }}</mat-hint
+      >
     </mat-form-field>
   </div>
   <div class="form-group">
     <mat-form-field>
       <mat-label>Start Date</mat-label>
-      <input matInput type="datetime-local" class="form-control" id="startDateTime" required
-        [(ngModel)]="event.startDateTime" name="startDateTime" />
+      <input
+        matInput
+        type="datetime-local"
+        class="form-control"
+        id="startDateTime"
+        required
+        [(ngModel)]="event.startDateTime"
+        name="startDateTime"
+      />
       <mat-icon matSuffix>event</mat-icon>
     </mat-form-field>
     <mat-form-field>
       <mat-label>End Date</mat-label>
-      <input matInput type="datetime-local" class="form-control" id="endDateTime" required
-        [(ngModel)]="event.endDateTime" name="endDateTime" />
+      <input
+        matInput
+        type="datetime-local"
+        class="form-control"
+        id="endDateTime"
+        required
+        [(ngModel)]="event.endDateTime"
+        name="endDateTime"
+      />
       <mat-icon matSuffix>event</mat-icon>
     </mat-form-field>
     <mat-form-field>
       <mat-label>Timezone</mat-label>
-      <mat-select class="form-control" id="timezone" required [(ngModel)]="event.timezone" name="timezone">
+      <mat-select
+        class="form-control"
+        id="timezone"
+        required
+        [(ngModel)]="event.timezone"
+        name="timezone"
+      >
         <mat-option *ngFor="let tz of timezones" [value]="tz">{{
           tz
-          }}</mat-option>
+        }}</mat-option>
       </mat-select>
       <mat-icon matSuffix>language</mat-icon>
     </mat-form-field>
@@ -46,54 +89,124 @@
   <div class="form-group">
     <mat-form-field>
       <mat-label>Street</mat-label>
-      <input matInput type="text" class="form-control" id="street" maxlength="30" [(ngModel)]="event.locationStreet"
-        name="street" #locationStreet="ngModel" placeholder="Street" data-1p-ignore />
+      <input
+        matInput
+        type="text"
+        class="form-control"
+        id="street"
+        maxlength="30"
+        [(ngModel)]="event.locationStreet"
+        name="street"
+        #locationStreet="ngModel"
+        placeholder="Street"
+        data-1p-ignore
+      />
       <mat-icon matSuffix>signpost</mat-icon>
     </mat-form-field>
     <mat-form-field>
       <mat-label>City</mat-label>
-      <input matInput type="text" class="form-control" id="city" required maxlength="30"
-        [(ngModel)]="event.locationCity" name="city" #locationCity="ngModel" placeholder="City" data-1p-ignore />
+      <input
+        matInput
+        type="text"
+        class="form-control"
+        id="city"
+        required
+        maxlength="30"
+        [(ngModel)]="event.locationCity"
+        name="city"
+        #locationCity="ngModel"
+        placeholder="City"
+        data-1p-ignore
+      />
       <mat-icon matSuffix>locationCity</mat-icon>
     </mat-form-field>
     <mat-form-field>
       <mat-label>Country</mat-label>
-      <input matInput type="text" class="form-control" id="country" required maxlength="50"
-        [(ngModel)]="event.locationCountry" name="country" #locationCountry="ngModel" placeholder="Country"
-        data-1p-ignore />
+      <input
+        matInput
+        type="text"
+        class="form-control"
+        id="country"
+        required
+        maxlength="50"
+        [(ngModel)]="event.locationCountry"
+        name="country"
+        #locationCountry="ngModel"
+        placeholder="Country"
+        data-1p-ignore
+      />
       <mat-icon matSuffix>public</mat-icon>
     </mat-form-field>
   </div>
   <div class="form-group">
     <mat-form-field>
       <mat-label>Event image URL</mat-label>
-      <input matInput type="text" class="form-control" id="imageUrl" required [(ngModel)]="event.imageUrl"
-        name="imageUrl" placeholder="Event image URL" />
+      <input
+        matInput
+        type="text"
+        class="form-control"
+        id="imageUrl"
+        required
+        [(ngModel)]="event.imageUrl"
+        name="imageUrl"
+        placeholder="Event image URL"
+      />
       <mat-icon matSuffix>image</mat-icon>
     </mat-form-field>
     <mat-form-field>
       <mat-label>Event image alt</mat-label>
       <mat-hint>Enter a description for the event image</mat-hint>
-      <input matInput type="text" class="form-control" id="imageAlt" required maxlength="100"
-        [(ngModel)]="event.imageAlt" name="imageAlt" #imageAlt="ngModel" placeholder="Event image alt" />
+      <input
+        matInput
+        type="text"
+        class="form-control"
+        id="imageAlt"
+        required
+        maxlength="100"
+        [(ngModel)]="event.imageAlt"
+        name="imageAlt"
+        #imageAlt="ngModel"
+        placeholder="Event image alt"
+      />
       <mat-icon matSuffix>accessibility_new</mat-icon>
-      <mat-hint align="end">{{ imageAlt?.value?.length || 0 }}/{{ imageAltMaxLength }}</mat-hint>
+      <mat-hint align="end"
+        >{{ imageAlt?.value?.length || 0 }}/{{ imageAltMaxLength }}</mat-hint
+      >
     </mat-form-field>
   </div>
   <div class="form-group">
     <mat-form-field>
-      <mat-hint><a href="https://www.markdownguide.org/basic-syntax/" target="_blank">Markdown</a>
-        is supported</mat-hint>
+      <mat-hint
+        ><a href="https://www.markdownguide.org/basic-syntax/" target="_blank"
+          >Markdown</a
+        >
+        is supported</mat-hint
+      >
       <mat-label>Full description</mat-label>
-      <textarea matInput class="form-control" id="longDescription" maxlength="10000" [(ngModel)]="event.longDescription"
-        name="longDescription" #longDescription="ngModel" placeholder="Full description"></textarea>
-      <mat-hint align="end">{{ longDescription?.value?.length || 0 }}/{{
-        longDescriptionMaxLength
-        }}</mat-hint>
+      <textarea
+        matInput
+        class="form-control"
+        id="longDescription"
+        maxlength="10000"
+        [(ngModel)]="event.longDescription"
+        name="longDescription"
+        #longDescription="ngModel"
+        placeholder="Full description"
+      ></textarea>
+      <mat-hint align="end"
+        >{{ longDescription?.value?.length || 0 }}/{{
+          longDescriptionMaxLength
+        }}</mat-hint
+      >
     </mat-form-field>
   </div>
   <div class="form-group">
-    <button mat-raised-button color="primary" type="submit" [disabled]="!createEventForm.form.valid">
+    <button
+      mat-raised-button
+      color="primary"
+      type="submit"
+      [disabled]="!createEventForm.form.valid"
+    >
       {{ isEditMode ? 'Update Event' : 'Create Event' }}
     </button>
   </div>
