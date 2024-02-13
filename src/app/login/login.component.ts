@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { LoginInfo, LoginService } from '../login.service';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -7,6 +6,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -20,7 +20,11 @@ export class LoginComponent {
   password: string = '';
   loginError: boolean = false;
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient,
+    private router: Router
+    
+    ) { }
 
   onLoginClick(): void {
     const loginInfo = {
@@ -34,7 +38,7 @@ export class LoginComponent {
           // Handle successful login
           console.log('Login successful');
           this.loginError = false;
-          // Add further logic such as navigating to another page, etc.
+          this.router.navigate(['/']);
         },
         error => {
           // Handle login error
