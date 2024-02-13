@@ -1,7 +1,7 @@
 <form *ngIf="event" (ngSubmit)="onSubmit()" #createEventForm="ngForm">
   <div class="form-group">
     <mat-form-field>
-      <mat-label>Title</mat-label>
+      <mat-label>Titel</mat-label>
       <input matInput type="text" class="form-control" id="title" required [maxlength]="titleMaxLength"
         [(ngModel)]="event.title" name="title" #title="ngModel" placeholder="Title" />
       <mat-icon matSuffix>title</mat-icon>
@@ -10,7 +10,7 @@
   </div>
   <div class="form-group">
     <mat-form-field>
-      <mat-label>Short description</mat-label>
+      <mat-label>Kort beskrivning</mat-label>
       <input matInput type="text" class="form-control" id="shortDescription" required maxlength="100"
         [(ngModel)]="event.shortDescription" name="shortDescription" #shortDescription="ngModel"
         placeholder="Short description" />
@@ -22,13 +22,13 @@
   </div>
   <div class="form-group">
     <mat-form-field>
-      <mat-label>Start Date</mat-label>
+      <mat-label>Startdatum</mat-label>
       <input matInput type="datetime-local" class="form-control" id="startDateTime" required
         [(ngModel)]="event.startDateTime" name="startDateTime" />
       <mat-icon matSuffix>event</mat-icon>
     </mat-form-field>
     <mat-form-field>
-      <mat-label>End Date</mat-label>
+      <mat-label>Slutdatum</mat-label>
       <input matInput type="datetime-local" class="form-control" id="endDateTime" required
         [(ngModel)]="event.endDateTime" name="endDateTime" />
       <mat-icon matSuffix>event</mat-icon>
@@ -36,19 +36,19 @@
   </div>
   <div class="form-group">
     <mat-form-field>
-      <mat-label>Street</mat-label>
+      <mat-label>Adress</mat-label>
       <input matInput type="text" class="form-control" id="street" maxlength="30" [(ngModel)]="event.locationStreet"
         name="street" #locationStreet="ngModel" placeholder="Street" data-1p-ignore />
       <mat-icon matSuffix>signpost</mat-icon>
     </mat-form-field>
     <mat-form-field>
-      <mat-label>City</mat-label>
+      <mat-label>Stad</mat-label>
       <input matInput type="text" class="form-control" id="city" required maxlength="30"
         [(ngModel)]="event.locationCity" name="city" #locationCity="ngModel" placeholder="City" data-1p-ignore />
       <mat-icon matSuffix>locationCity</mat-icon>
     </mat-form-field>
     <mat-form-field>
-      <mat-label>Country</mat-label>
+      <mat-label>Land</mat-label>
       <input matInput type="text" class="form-control" id="country" required maxlength="50"
         [(ngModel)]="event.locationCountry" name="country" #locationCountry="ngModel" placeholder="Country"
         data-1p-ignore />
@@ -57,13 +57,13 @@
   </div>
   <div class="form-group">
     <mat-form-field>
-      <mat-label>Event image URL</mat-label>
+      <mat-label>Bild</mat-label>
       <input matInput type="text" class="form-control" id="image" required [(ngModel)]="event.image" name="image"
         placeholder="Event image" />
       <mat-icon matSuffix>image</mat-icon>
     </mat-form-field>
     <mat-form-field>
-      <mat-label>Event image alt</mat-label>
+      <mat-label>Beskrivning av bild</mat-label>
       <mat-hint>Enter a description for the event image</mat-hint>
       <input matInput type="text" class="form-control" id="imageAlt" required maxlength="100"
         [(ngModel)]="event.imageAlt" name="imageAlt" #imageAlt="ngModel" placeholder="Event image alt" />
@@ -75,7 +75,7 @@
     <mat-form-field>
       <mat-hint>Stöd för <a href="https://www.markdownguide.org/basic-syntax/" target="_blank">Markdown</a>
         finns.</mat-hint>
-      <mat-label>Full description</mat-label>
+      <mat-label>Fullständig beskrivning</mat-label>
       <textarea matInput class="form-control" id="longDescription" maxlength="10000" [(ngModel)]="event.longDescription"
         name="longDescription" #longDescription="ngModel" placeholder="Full description"></textarea>
       <mat-hint align="end">{{ longDescription?.value?.length || 0 }}/{{

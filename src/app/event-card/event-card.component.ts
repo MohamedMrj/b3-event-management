@@ -42,12 +42,12 @@ import {
 export class EventCardComponent {
   @Input() event!: Event;
 
-  constructor(private snackBar: MatSnackBar) {}
+  constructor(private snackBar: MatSnackBar) { }
 
   copyToClipboard(eventId: string | undefined): void {
     if (!eventId) {
       console.error('Event ID is undefined');
-      this.snackBar.open('Event ID is missing', 'Close', { duration: 3000 });
+      this.snackBar.open('Event ID saknas.', 'Stäng', { duration: 3000 });
       return;
     }
 
@@ -55,7 +55,7 @@ export class EventCardComponent {
     navigator.clipboard
       .writeText(url)
       .then(() =>
-        this.snackBar.open('Copied to clipboard!', 'Close', { duration: 3000 }),
+        this.snackBar.open('Kopierad till urklipp.', 'Stäng', { duration: 3000 }),
       )
       .catch((error) => console.error('Failed to copy to clipboard: ', error));
   }
@@ -63,15 +63,15 @@ export class EventCardComponent {
   rsvp(eventId: string | undefined): void {
     if (!eventId) {
       console.error('Event ID is undefined');
-      this.snackBar.open('RSVP feature unavailable', 'Close', {
+      this.snackBar.open('Event kunde inte hittas.', 'Stäng', {
         duration: 3000,
       });
       return;
     }
 
     this.snackBar.open(
-      `RSVP not implemented yet! Event id: ${eventId}`,
-      'Close',
+      `RSVP funktion inte implementerad ännu. Event ID: ${eventId}`,
+      'Stäng',
       {},
     );
   }
