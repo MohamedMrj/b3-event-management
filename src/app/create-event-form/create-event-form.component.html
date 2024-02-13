@@ -3,7 +3,7 @@
     <mat-form-field>
       <mat-label>Titel</mat-label>
       <input matInput type="text" class="form-control" id="title" required [maxlength]="titleMaxLength"
-        [(ngModel)]="event.title" name="title" #title="ngModel" placeholder="Title" />
+        [(ngModel)]="event.title" name="title" #title="ngModel" placeholder="Titel" />
       <mat-icon matSuffix>title</mat-icon>
       <mat-hint align="end">{{ title?.value?.length || 0 }}/{{ titleMaxLength }}</mat-hint>
     </mat-form-field>
@@ -13,7 +13,7 @@
       <mat-label>Kort beskrivning</mat-label>
       <input matInput type="text" class="form-control" id="shortDescription" required maxlength="100"
         [(ngModel)]="event.shortDescription" name="shortDescription" #shortDescription="ngModel"
-        placeholder="Short description" />
+        placeholder="Kort beskrivning" />
       <mat-icon matSuffix>short_text</mat-icon>
       <mat-hint align="end">{{ shortDescription?.value?.length || 0 }}/{{
         shortDescriptionMaxLength
@@ -38,19 +38,19 @@
     <mat-form-field>
       <mat-label>Adress</mat-label>
       <input matInput type="text" class="form-control" id="street" maxlength="30" [(ngModel)]="event.locationStreet"
-        name="street" #locationStreet="ngModel" placeholder="Street" data-1p-ignore />
+        name="street" #locationStreet="ngModel" placeholder="Adress" data-1p-ignore />
       <mat-icon matSuffix>signpost</mat-icon>
     </mat-form-field>
     <mat-form-field>
       <mat-label>Stad</mat-label>
       <input matInput type="text" class="form-control" id="city" required maxlength="30"
-        [(ngModel)]="event.locationCity" name="city" #locationCity="ngModel" placeholder="City" data-1p-ignore />
+        [(ngModel)]="event.locationCity" name="city" #locationCity="ngModel" placeholder="Stad" data-1p-ignore />
       <mat-icon matSuffix>locationCity</mat-icon>
     </mat-form-field>
     <mat-form-field>
       <mat-label>Land</mat-label>
       <input matInput type="text" class="form-control" id="country" required maxlength="50"
-        [(ngModel)]="event.locationCountry" name="country" #locationCountry="ngModel" placeholder="Country"
+        [(ngModel)]="event.locationCountry" name="country" #locationCountry="ngModel" placeholder="Land"
         data-1p-ignore />
       <mat-icon matSuffix>public</mat-icon>
     </mat-form-field>
@@ -59,14 +59,14 @@
     <mat-form-field>
       <mat-label>Bild</mat-label>
       <input matInput type="text" class="form-control" id="image" required [(ngModel)]="event.image" name="image"
-        placeholder="Event image" />
+        placeholder="Bild" />
       <mat-icon matSuffix>image</mat-icon>
     </mat-form-field>
     <mat-form-field>
       <mat-label>Beskrivning av bild</mat-label>
       <mat-hint>Enter a description for the event image</mat-hint>
       <input matInput type="text" class="form-control" id="imageAlt" required maxlength="100"
-        [(ngModel)]="event.imageAlt" name="imageAlt" #imageAlt="ngModel" placeholder="Event image alt" />
+        [(ngModel)]="event.imageAlt" name="imageAlt" #imageAlt="ngModel" placeholder="Beskrivning av bild" />
       <mat-icon matSuffix>accessibility_new</mat-icon>
       <mat-hint align="end">{{ imageAlt?.value?.length || 0 }}/{{ imageAltMaxLength }}</mat-hint>
     </mat-form-field>
@@ -77,7 +77,7 @@
         finns.</mat-hint>
       <mat-label>Fullständig beskrivning</mat-label>
       <textarea matInput class="form-control" id="longDescription" maxlength="10000" [(ngModel)]="event.longDescription"
-        name="longDescription" #longDescription="ngModel" placeholder="Full description"></textarea>
+        name="longDescription" #longDescription="ngModel" placeholder="Fullständig beskrivning"></textarea>
       <mat-hint align="end">{{ longDescription?.value?.length || 0 }}/{{
         longDescriptionMaxLength
         }}</mat-hint>
