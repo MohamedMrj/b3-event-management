@@ -3,7 +3,7 @@
 <div *ngIf="!isLoading">
   <div *ngIf="event; else noEventTemplate" class="event-detail-container">
     <button mat-button appBackButton (click)="goBack()" class="back-button">
-      <mat-icon>arrow_back</mat-icon>Go back
+      <mat-icon>arrow_back</mat-icon>Tillbaka
     </button>
     <div class="event-detail-header">
       <h1>{{ event.title }}</h1>
@@ -18,7 +18,7 @@
         </button>
         <button mat-menu-item (click)="deleteEvent()">
           <mat-icon color="warn">delete</mat-icon>
-          <span>Delete event</span>
+          <span>Radera event</span>
         </button>
       </mat-menu>
     </div>

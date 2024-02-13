@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { Title } from '@angular/platform-browser';
 import { Location } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
@@ -16,12 +15,9 @@ import { MatButton } from '@angular/material/button';
 })
 export class EventCreateComponent {
   constructor(
-    private titleService: Title,
     private pageLocation: Location,
     private dialog: MatDialog,
-  ) {
-    this.titleService.setTitle('Create Event');
-  }
+  ) { }
 
   goBack() {
     this.pageLocation.back();
@@ -29,7 +25,7 @@ export class EventCreateComponent {
 
   confirmDiscardChanges() {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      data: { message: 'Do you want to discard the changes?' },
+      data: { title: 'Lämna sidan', message: 'Vill du lämna sidan? Ändringar har inte sparats.' },
     });
 
     dialogRef.afterClosed().subscribe((result) => {

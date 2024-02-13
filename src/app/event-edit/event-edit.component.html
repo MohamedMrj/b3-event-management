@@ -1,28 +1,24 @@
 <div class="container">
   <button mat-button (click)="confirmDiscardChanges()" class="back-button">
     <mat-icon>arrow_back</mat-icon>
-    Go back
+    Tillbaka
   </button>
   <div class="editEvent-header">
     <h1>
       @if (event.title) {
-        {{ event.title }}
+      {{ event.title }}
       } @else {
-        Edit event
+      Redigera event
       }
     </h1>
     <span class="flex-spacer"></span>
-    <button
-      mat-icon-button
-      [matMenuTriggerFor]="manageEventMenu"
-      aria-label="Menu for managing event"
-    >
+    <button mat-icon-button [matMenuTriggerFor]="manageEventMenu" aria-label="Menu for managing event">
       <mat-icon>more_vert</mat-icon>
     </button>
     <mat-menu #manageEventMenu="matMenu">
       <button mat-menu-item (click)="deleteEvent()">
         <mat-icon color="warn">delete</mat-icon>
-        <span>Delete event</span>
+        <span>Radera event</span>
       </button>
     </mat-menu>
   </div>

@@ -9,19 +9,20 @@ import {
 import { MatButton } from '@angular/material/button';
 
 export interface DialogData {
+  title: string
   message: string;
 }
 
 @Component({
   selector: 'app-confirm-dialog',
   template: `
-    <h1 mat-dialog-title>Confirm</h1>
+    <h1 mat-dialog-title>{{ data.title }}</h1>
     <div mat-dialog-content>
       <p>{{ data.message }}</p>
     </div>
     <div mat-dialog-actions>
-      <button mat-button (click)="onDismiss()">Cancel</button>
-      <button mat-button (click)="onConfirm()">Discard</button>
+      <button mat-button (click)="onDismiss()">Avbryt</button>
+      <button mat-button (click)="onConfirm()">Bekräfta</button>
     </div>
   `,
   standalone: true,
@@ -31,7 +32,7 @@ export class ConfirmDialogComponent {
   constructor(
     public dialogRef: MatDialogRef<ConfirmDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
-  ) {}
+  ) { }
 
   onConfirm(): void {
     this.dialogRef.close(true);

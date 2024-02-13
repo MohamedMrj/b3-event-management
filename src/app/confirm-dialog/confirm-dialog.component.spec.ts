@@ -11,6 +11,7 @@ describe('ConfirmDialogComponent', () => {
   };
 
   const mockDialogData: DialogData = {
+    title: 'Confirm',
     message: 'Are you sure?',
   };
 

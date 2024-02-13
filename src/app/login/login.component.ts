@@ -21,15 +21,15 @@ export class LoginComponent {
 
   constructor(
     private loginService: LoginService
-  ) {}
+  ) { }
 
   onLoginClick(): void {
     console.log("insideinfo");
-    let l: LoginInfo = {
+    const l: LoginInfo = {
       username: this.username,
       password: this.password
     }
-  
+
     this.loginService.login(l);
     // Implement your login logic here
     // if (this.username === 'validUsername' && this.password === 'validPassword') {
