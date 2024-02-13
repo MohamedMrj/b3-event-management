@@ -5,11 +5,10 @@ export interface Event {
   shortDescription: string;
   startDateTime: string;
   endDateTime: string;
-  timezone: string;
   locationStreet?: string;
   locationCity: string;
   locationCountry: string;
   organizer: string;
-  imageUrl: string;
+  image: string;
   imageAlt: string;
 }

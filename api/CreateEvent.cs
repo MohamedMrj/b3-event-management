@@ -40,8 +40,7 @@ namespace B3.Complete.Eventwebb
         ["CreatorUserID"] = eventData.GetProperty("organizer").GetString(),
         ["StartDateTime"] = eventData.GetProperty("startDateTime").GetString(),
         ["EndDateTime"] = eventData.GetProperty("endDateTime").GetString(),
-        ["Timezone"] = eventData.GetProperty("timezone").GetString(),
-        ["ImageUrl"] = eventData.GetProperty("imageUrl").GetString(),
+        ["Image"] = eventData.GetProperty("image").GetString(),
         ["ImageAlt"] = eventData.GetProperty("imageAlt").GetString(),
       };
 
@@ -68,8 +67,7 @@ namespace B3.Complete.Eventwebb
         organizer = newEvent["CreatorUserID"],
         startDateTime = newEvent["StartDateTime"],
         endDateTime = newEvent["EndDateTime"],
-        timezone = newEvent["Timezone"],
-        imageUrl = newEvent["ImageUrl"],
+        image = newEvent["Image"],
         imageAlt = newEvent["ImageAlt"],
       };
 

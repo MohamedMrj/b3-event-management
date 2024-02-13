@@ -36,8 +36,7 @@ describe('ApiTestComponent', () => {
       locationCountry: '',
       startDateTime: '',
       endDateTime: '',
-      timezone: '',
-      imageUrl: '',
+      image: '',
       imageAlt: '',
     };
 
@@ -54,8 +53,7 @@ describe('ApiTestComponent', () => {
       locationCountry: 'Test Country',
       startDateTime: '2022-01-01T00:00:00Z',
       endDateTime: '2022-01-02T00:00:00Z',
-      timezone: 'GMT',
-      imageUrl: 'https://example.com/image.jpg',
+      image: 'https://example.com/image.jpg',
       imageAlt: 'An example image',
     };
 

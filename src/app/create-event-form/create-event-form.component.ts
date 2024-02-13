@@ -42,13 +42,6 @@ export class CreateEventFormComponent implements OnInit {
   isEditMode = false;
   eventId: string = '';
 
-  timezones: string[] = [
-    'Europe/Stockholm',
-    'Europe/London',
-    'Europe/Paris',
-    'America/New_York',
-  ];
-
   event: Event = {
     id: '',
     title: '',
@@ -60,8 +53,7 @@ export class CreateEventFormComponent implements OnInit {
     organizer: '',
     startDateTime: '',
     endDateTime: '',
-    timezone: '',
-    imageUrl: '',
+    image: '',
     imageAlt: '',
   };
 
@@ -79,7 +71,7 @@ export class CreateEventFormComponent implements OnInit {
     private route: ActivatedRoute,
     private eventService: EventService,
     private snackBar: MatSnackBar,
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.route.paramMap.subscribe((params) => {

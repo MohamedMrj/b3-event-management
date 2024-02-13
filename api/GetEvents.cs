@@ -63,8 +63,7 @@ namespace B3.Complete.Eventwebb
         organizer = eventResult["CreatorUserID"],
         startDateTime = eventResult["StartDateTime"].ToString(),
         endDateTime = eventResult["EndDateTime"].ToString(),
-        timezone = eventResult["Timezone"],
-        imageUrl = eventResult["ImageUrl"],
+        image = eventResult["Image"],
         imageAlt = eventResult["ImageAlt"],
       };
 

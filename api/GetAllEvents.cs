@@ -36,8 +36,7 @@ namespace B3.Complete.Eventwebb
           organizer = entity["CreatorUserID"],
           startDateTime = entity["StartDateTime"].ToString(),
           endDateTime = entity["EndDateTime"].ToString(),
-          timezone = entity["Timezone"],
-          imageUrl = entity["ImageUrl"],
+          image = entity["Image"],
           imageAlt = entity["ImageAlt"],
         };
 

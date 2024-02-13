@@ -21,11 +21,10 @@ const eventServiceMock = {
       organizer: 'Mock Organizer',
       startDateTime: new Date().toISOString(),
       endDateTime: new Date().toISOString(),
-      timezone: 'UTC',
       locationStreet: '123 Mock St',
       locationCity: 'Mock City',
       locationCountry: 'Mockland',
-      imageUrl: 'https://example.com/mock-image.jpg',
+      image: 'https://example.com/mock-image.jpg',
       imageAlt: 'A mock event image',
     }),
 };
