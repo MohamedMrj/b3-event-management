@@ -6,6 +6,7 @@ import { MatInputModule } from '@angular/material/input';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-login',
@@ -15,33 +16,31 @@ import { MatIconModule } from '@angular/material/icon';
   imports: [MatCardModule, MatFormFieldModule, MatInputModule, FormsModule, ReactiveFormsModule, MatIconModule, MatButtonModule]
 })
 export class LoginComponent {
-  username: string = '';
+  email: string = '';
   password: string = '';
   loginError: boolean = false;
 
-  constructor(
-    private loginService: LoginService
-  ) { }
+  constructor(private http: HttpClient) { }
 
   onLoginClick(): void {
-    console.log("insideinfo");
-    const l: LoginInfo = {
-      username: this.username,
+    const loginInfo = {
+      email: this.email,
       password: this.password
-    }
+    };
 
-    this.loginService.login(l);
-    // Implement your login logic here
-    // if (this.username === 'validUsername' && this.password === 'validPassword') {
-    //   // Authentication successful
-    //   console.log('Login successful');
-    //   this.loginError = false;
-    //   // Add further logic such as navigating to another page, etc.
-    // } else {
-    //   // Authentication failed
-    //   console.log('Login failed');
-    //   this.loginError = true;
-    // }
+    this.http.post<any>('http://localhost:7071/api/login', loginInfo)
+      .subscribe(
+        response => {
+          // Handle successful login
+          console.log('Login successful');
+          this.loginError = false;
+          // Add further logic such as navigating to another page, etc.
+        },
+        error => {
+          // Handle login error
+          console.error('Login failed:', error);
+          this.loginError = true;
+        }
+      );
   }
-
 }
