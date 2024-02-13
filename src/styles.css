@@ -1,6 +1,7 @@
 :root {
-  --pink: #ff4281; /* Use for dark mode */
-  --pink-dark: #e31c6c; /* Use for light mode */
+  --pink-light: #ff79a7; /* Use on dark bg */
+  --pink: #ff4081;
+  --pink-dark: #df004c; /* Use on light bg */
   --cyan: hsl(180, 89%, 42%);
   --black: #000000;
   --white: #ffffff;
@@ -56,31 +57,4 @@ app-root {
 
 mat-icon {
   flex-shrink: 0;
-}
-
-.menu-item {
-  color: #fff;
-  text-transform: uppercase;
-  text-decoration: none;
-  letter-spacing: 0.15em;
-  
-  display: inline-block;
-  padding: 15px 20px;
-  position: relative;
-}
-.menu-item:after {    
-  background: none repeat scroll 0 0 transparent;
-  bottom: 0;
-  content: "";
-  display: block;
-  height: 2px;
-  left: 50%;
-  position: absolute;
-  background: #fff;
-  transition: width 0.3s ease 0s, left 0.3s ease 0s;
-  width: 0;
-}
-.menu-item:hover:after { 
-  width: 100%; 
-  left: 0; 
 }
