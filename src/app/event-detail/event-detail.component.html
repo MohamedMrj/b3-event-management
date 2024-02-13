@@ -14,7 +14,7 @@
       <mat-menu #manageEventMenu="matMenu">
         <button mat-menu-item (click)="navigateToEditEvent()">
           <mat-icon>edit</mat-icon>
-          <span>Edit event</span>
+          <span>Redigera event</span>
         </button>
         <button mat-menu-item (click)="deleteEvent()">
           <mat-icon color="warn">delete</mat-icon>
@@ -27,17 +27,17 @@
         <div class="event-detail-body-right-item">
           <div class="event-info-row">
             <mat-icon>person</mat-icon>
-            <span><strong>Organizer:</strong> {{ event.creatorUserId }}</span>
+            <span><strong>Organizatör:</strong> {{ event.creatorUserId }}</span>
           </div>
         </div>
         <div class="event-detail-body-right-item">
           <div class="event-info-row">
             <mat-icon>event</mat-icon>
             <span>
-              <strong>Start:</strong>
+              <strong>Startar:</strong>
               {{ event.startDateTime | date: 'longDate' }}
               {{ event.startDateTime | date: 'shortTime' }}<br />
-              <strong>End:</strong>
+              <strong>Slutar:</strong>
               <span style="display: none" #startDate>{{
                 event.startDateTime | date: 'shortDate'
                 }}</span>
@@ -72,7 +72,7 @@
           <img [src]="event.image" [alt]="event.imageAlt" class="event-image" />
         </div>
         <div class="event-detail-body-left-item">
-          <h2>More info</h2>
+          <h2>Mer information</h2>
           <div [innerHTML]="event.longDescription | markdown | async"></div>
         </div>
       </div>
@@ -81,7 +81,7 @@
   <ng-template #noEventTemplate>
     <div class="noEventContainer">
       <h1 aria-hidden="true">¯\(ツ)/¯</h1>
-      <p>Sorry, there is no such event.</p>
+      <p>Beklagar, eventet kunde inte hittas.</p>
     </div>
   </ng-template>
 </div>
