@@ -18,7 +18,7 @@ const eventServiceMock = {
       title: 'Mock Event',
       longDescription: 'This is a long description for a mock event.',
       shortDescription: 'This is a short description.',
-      organizer: 'Mock Organizer',
+      creatorUserId: 'Mock Organizer',
       startDateTime: new Date().toISOString(),
       endDateTime: new Date().toISOString(),
       locationStreet: '123 Mock St',

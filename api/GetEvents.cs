@@ -60,7 +60,7 @@ namespace B3.Complete.Eventwebb
         locationStreet = eventResult["LocationStreet"],
         locationCity = eventResult["LocationCity"],
         locationCountry = eventResult["LocationCountry"],
-        organizer = eventResult["CreatorUserID"],
+        creatorUserId = eventResult["CreatorUserID"],
         startDateTime = eventResult["StartDateTime"].ToString(),
         endDateTime = eventResult["EndDateTime"].ToString(),
         image = eventResult["Image"],

@@ -8,7 +8,7 @@ export interface Event {
   locationStreet?: string;
   locationCity: string;
   locationCountry: string;
-  organizer: string;
+  creatorUserId: string;
   image: string;
   imageAlt: string;
 }

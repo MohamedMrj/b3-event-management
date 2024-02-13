@@ -48,7 +48,7 @@ namespace B3.Complete.Eventwebb
       eventEntity["LocationStreet"] = updatedEventData.GetProperty("locationStreet").GetString();
       eventEntity["LocationCity"] = updatedEventData.GetProperty("locationCity").GetString();
       eventEntity["LocationCountry"] = updatedEventData.GetProperty("locationCountry").GetString();
-      eventEntity["CreatorUserID"] = updatedEventData.GetProperty("organizer").GetString();
+      eventEntity["CreatorUserID"] = updatedEventData.GetProperty("creatorUserId").GetString();
       eventEntity["StartDateTime"] = updatedEventData.GetProperty("startDateTime").GetString();
       eventEntity["EndDateTime"] = updatedEventData.GetProperty("endDateTime").GetString();
       eventEntity["Image"] = updatedEventData.GetProperty("image").GetString();
@@ -74,7 +74,7 @@ namespace B3.Complete.Eventwebb
           locationStreet = eventEntity["LocationStreet"],
           locationCity = eventEntity["LocationCity"],
           locationCountry = eventEntity["LocationCountry"],
-          organizer = eventEntity["CreatorUserID"],
+          creatorUserId = eventEntity["CreatorUserID"],
           startDateTime = eventEntity["StartDateTime"],
           endDateTime = eventEntity["EndDateTime"],
           image = eventEntity["Image"],
