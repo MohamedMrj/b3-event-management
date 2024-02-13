@@ -33,18 +33,17 @@ export class LoginComponent {
     };
 
     this.http.post<any>('http://localhost:7071/api/login', loginInfo)
-      .subscribe(
-        response => {
-          // Handle successful login
-          console.log('Login successful');
-          this.loginError = false;
-          this.router.navigate(['/']);
-        },
-        error => {
-          // Handle login error
-          console.error('Login failed:', error);
-          this.loginError = true;
-        }
-      );
+  .subscribe(
+    response => {
+      // Store token in local storage
+      localStorage.setItem('token', response.token);
+      // Redirect to desired route (e.g., dashboard)
+      this.router.navigate(['/dashboard']);
+    },
+    error => {
+      console.error('Login failed:', error);
+      this.loginError = true;
+    }
+  );
   }
 }
