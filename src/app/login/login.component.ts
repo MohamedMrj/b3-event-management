@@ -48,7 +48,7 @@ export class LoginComponent {
             localStorage.setItem('token', response.token);
 
             // Redirect to desired route (e.g., dashboard)
-            this.router.navigate(['/']);
+            this.router.navigate(['event']);
           } else {
             console.error('Invalid response format:', response);
             this.loginError = true;

@@ -123,7 +123,7 @@ export class EventDetailComponent implements OnInit {
       this.eventService.deleteEvent(this.event.id).subscribe({
         next: () => {
           console.log(`Event: ${this.event.id} deleted successfully.`);
-          this.router.navigate(['/'], {
+          this.router.navigate(['/event'], {
             queryParams: { eventDeleted: 'true' },
           });
         },
@@ -138,6 +138,6 @@ export class EventDetailComponent implements OnInit {
   }
 
   goBack() {
-    this.pageLocation.back();
+    this.router.navigate(['/event']);
   }
 }
