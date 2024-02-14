@@ -23,15 +23,13 @@
 }
 
 .form-group button {
-    margin: 0 auto;
-  }
+  margin: 0 auto;
+}
 
 .form-group mat-form-field {
   width: 100%;
 }
 
-
-/* Adjustments for larger screens */
 @media (min-width: 640px) {
   .form-group {
     flex-direction: row;
