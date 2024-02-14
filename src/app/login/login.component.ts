@@ -32,7 +32,7 @@ export class LoginComponent {
       password: this.password
     };
 
-    this.http.post<any>('http://localhost:4280/api/login', loginInfo)
+    this.http.post<any>('api/login', loginInfo)
       .subscribe(
         response => {
           
