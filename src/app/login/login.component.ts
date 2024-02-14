@@ -1,11 +1,13 @@
 import { Component } from '@angular/core';
-import { LoginInfo, LoginService } from '../login.service';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-login',
@@ -15,33 +17,47 @@ import { MatIconModule } from '@angular/material/icon';
   imports: [MatCardModule, MatFormFieldModule, MatInputModule, FormsModule, ReactiveFormsModule, MatIconModule, MatButtonModule]
 })
 export class LoginComponent {
-  username: string = '';
+  email: string = '';
   password: string = '';
   loginError: boolean = false;
 
   constructor(
-    private loginService: LoginService
+    private http: HttpClient,
+    private router: Router
   ) { }
 
   onLoginClick(): void {
-    console.log("insideinfo");
-    const l: LoginInfo = {
-      username: this.username,
+    const loginInfo = {
+      email: this.email,
       password: this.password
-    }
+    };
 
-    this.loginService.login(l);
-    // Implement your login logic here
-    // if (this.username === 'validUsername' && this.password === 'validPassword') {
-    //   // Authentication successful
-    //   console.log('Login successful');
-    //   this.loginError = false;
-    //   // Add further logic such as navigating to another page, etc.
-    // } else {
-    //   // Authentication failed
-    //   console.log('Login failed');
-    //   this.loginError = true;
-    // }
+    this.http.post<any>('http://localhost:4280/api/login', loginInfo)
+      .subscribe(
+        response => {
+          
+          console.log('Response:', response);
+          localStorage.setItem('token', response.token);
+          
+          // Check if the response contains a token
+          if (response && response.token) {
+            // Log the token to the console
+            console.log('Token:', response.token);
+            
+            // Store token in local storage
+            localStorage.setItem('token', response.token);
+
+            // Redirect to desired route (e.g., dashboard)
+            this.router.navigate(['/']);
+          } else {
+            console.error('Invalid response format:', response);
+            this.loginError = true;
+          }
+        },
+        error => {
+          console.error('Login failed:', error);
+          this.loginError = true;
+        }
+      );
   }
-
 }
