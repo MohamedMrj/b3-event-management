@@ -8,6 +8,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -23,8 +24,7 @@ export class LoginComponent {
   constructor(
     private http: HttpClient,
     private router: Router
-    
-    ) { }
+  ) { }
 
   onLoginClick(): void {
     const loginInfo = {
@@ -32,18 +32,32 @@ export class LoginComponent {
       password: this.password
     };
 
-    this.http.post<any>('http://localhost:7071/api/login', loginInfo)
-  .subscribe(
-    response => {
-      // Store token in local storage
-      localStorage.setItem('token', response.token);
-      // Redirect to desired route (e.g., dashboard)
-      this.router.navigate(['/dashboard']);
-    },
-    error => {
-      console.error('Login failed:', error);
-      this.loginError = true;
-    }
-  );
+    this.http.post<any>('http://localhost:4280/api/login', loginInfo)
+      .subscribe(
+        response => {
+          
+          console.log('Response:', response);
+          localStorage.setItem('token', response.token);
+          
+          // Check if the response contains a token
+          if (response && response.token) {
+            // Log the token to the console
+            console.log('Token:', response.token);
+            
+            // Store token in local storage
+            localStorage.setItem('token', response.token);
+
+            // Redirect to desired route (e.g., dashboard)
+            this.router.navigate(['/']);
+          } else {
+            console.error('Invalid response format:', response);
+            this.loginError = true;
+          }
+        },
+        error => {
+          console.error('Login failed:', error);
+          this.loginError = true;
+        }
+      );
   }
 }
