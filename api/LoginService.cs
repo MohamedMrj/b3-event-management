@@ -29,8 +29,6 @@ namespace B3.Complete.Eventwebb
             [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "login")] HttpRequest req,
             ILogger log)
         {
-            log.LogInformation("C# HTTP trigger function processed a request.");
-
             try
             {
                 // Read the request body to get email and password
@@ -38,8 +36,6 @@ namespace B3.Complete.Eventwebb
                 dynamic data = JsonConvert.DeserializeObject(requestBody);
                 string email = data?.email;
                 string password = data?.password;
-
-                log.LogInformation($"Received request with email: {email}");
 
                 if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
                 {
