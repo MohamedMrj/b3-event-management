@@ -17,6 +17,9 @@ namespace B3.Complete.Eventwebb
       ILogger log
     )
     {
+      // Print out the request headers and body
+      log.LogInformation("C# HTTP trigger function processed a request. Authorization: {authorization}", req.Headers["Authorization"]);
+
       var client = new TableClient(DatabaseConfig.ConnectionString, DatabaseConfig.TableName);
       var queryResults = client.QueryAsync<TableEntity>();
 
