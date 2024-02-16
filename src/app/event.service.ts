@@ -49,6 +49,6 @@ export class EventService {
 
   // Helper method to retrieve the token
   private getToken(): string {
-    return localStorage.getItem('token') || '';
+    return sessionStorage.getItem('token') || '';
   }
 }

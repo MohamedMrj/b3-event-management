@@ -14,7 +14,7 @@ export class AuthService {
     return this.http.post<LoginResponse>('api/login', loginInfo).pipe(
       map(response => {
         if (response.token) {
-          localStorage.setItem('token', response.token);
+          sessionStorage.setItem('token', response.token);
           return true;
         }
         return false;
@@ -28,6 +28,6 @@ export class AuthService {
   }
 
   isLoggedIn(): boolean {
-    return !!localStorage.getItem('token');
+    return !!sessionStorage.getItem('token');
   }
 }
