@@ -7,14 +7,15 @@ import { ApiTestComponent } from './api-test/api-test.component';
 import { LoginComponent } from './login/login.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { MyEventsComponent } from './my-events/my-events.component';
+import { AuthGuardService } from './auth.guard';
 
 export const routes: Routes = [
-  { path: '', component: LoginComponent, title: 'Logga In' },
-  { path: 'event/create', component: EventCreateComponent, title: 'Skapa Event' },
-  { path: 'event/update/:eventid', component: EventEditComponent, title: 'Redigera Event' },
-  { path: 'event/:eventid', component: EventDetailComponent },
-  { path: 'api-test', component: ApiTestComponent, title: 'API Test' },
-  { path: 'event', component: EventListComponent, title: 'Event' },
-  { path: 'my-events', component: MyEventsComponent, title: 'Mina Event' },
+  { path: 'login', component: LoginComponent, title: 'Logga In' },
+  { path: 'event/create', component: EventCreateComponent, title: 'Skapa Event', canActivate: [AuthGuardService] },
+  { path: 'event/update/:eventid', component: EventEditComponent, title: 'Redigera Event', canActivate: [AuthGuardService] },
+  { path: 'event/:eventid', component: EventDetailComponent, canActivate: [AuthGuardService] },
+  { path: 'api-test', component: ApiTestComponent, title: 'API Test', canActivate: [AuthGuardService] },
+  { path: 'my-events', component: MyEventsComponent, title: 'Mina Event', canActivate: [AuthGuardService] },
+  { path: '', component: EventListComponent, title: 'Event', canActivate: [AuthGuardService] },
   { path: '**', component: PageNotFoundComponent, title: 'Sidan kunde inte hittas' },
 ];
