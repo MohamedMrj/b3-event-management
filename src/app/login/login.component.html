@@ -23,9 +23,7 @@
             </mat-form-field>
         </div>
         <div class="form-group">
-            <button mat-raised-button color="accent" type="submit" [disabled]="!loginForm.form.valid">
-                Logga In
-            </button>
+            <button mat-raised-button color="accent" type="submit" [disabled]="!loginForm.form.valid" (click)="onLoginClick()">Logga In</button>
         </div>
     </form>
 </div>
