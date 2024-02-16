@@ -21,20 +21,18 @@ mat-toolbar {
   gap: 1rem;
 }
 
-.logo {
+.logo-container {
   display: flex;
   gap: 1rem;
   align-items: center;
-  height: 100%;
-  padding: 1rem 0;
   color: var(--white);
 }
 
-.logo:hover {
+.logo-container:hover {
   text-decoration: none;
 }
 
-.logo img {
+.logo-container img {
   height: 100%;
   width: auto;
 }
