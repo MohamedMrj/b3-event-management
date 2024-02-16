@@ -36,9 +36,7 @@ export class LoginComponent {
 
     this.http.post<LoginResponse>('api/login', loginInfo).subscribe({
       next: (response) => {
-        console.log('Response:', response);
         if (response.token) {
-          console.log('Token:', response.token);
           localStorage.setItem('token', response.token);
           this.router.navigate(['event']);
         } else {
