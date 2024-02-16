@@ -50,7 +50,7 @@ export class EventDetailComponent implements OnInit {
     private titleService: Title,
     private pageLocation: Location,
     private snackBar: MatSnackBar,
-  ) {}
+  ) { }
 
   ngOnInit() {
     // Check if user is redirected after creating or updating an event
@@ -123,7 +123,7 @@ export class EventDetailComponent implements OnInit {
       this.eventService.deleteEvent(this.event.id).subscribe({
         next: () => {
           console.log(`Event: ${this.event.id} deleted successfully.`);
-          this.router.navigate(['/event'], {
+          this.router.navigate(['/'], {
             queryParams: { eventDeleted: 'true' },
           });
         },
@@ -138,6 +138,6 @@ export class EventDetailComponent implements OnInit {
   }
 
   goBack() {
-    this.router.navigate(['/event']);
+    this.router.navigate(['/']);
   }
 }
