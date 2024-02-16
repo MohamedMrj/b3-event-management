@@ -3,25 +3,28 @@
         <h1>Logga In</h1>
         <span class="flex-spacer"></span>
     </div>
-    <form>
+    <form #loginForm="ngForm">
         <div class="form-group">
             <mat-form-field>
                 <mat-label>Ange e-postadress</mat-label>
                 <input matInput type="email" class="form-control" id="email" required name="email"
-                    placeholder="epost@exempel.com" [(ngModel)]="email" />
+                    placeholder="epost@exempel.com" [(ngModel)]="email" (keyup.enter)="onLoginClick()" />
                 <mat-icon matSuffix>face</mat-icon>
             </mat-form-field>
         </div>
         <div class="form-group">
             <mat-form-field>
                 <mat-label>Ange lösenord</mat-label>
-                <input matInput type="password" class="form-control" id="password" required name="password"
-                    placeholder="Lösenord" [(ngModel)]="password" />
+                <input matInput type="password" class="form-control" id="password" required
+                    [maxlength]="passwordMinLength" name="password" placeholder="Lösenord" #password="ngModel"
+                    [(ngModel)]="password" (keyup.enter)="onLoginClick()" />
                 <mat-icon matSuffix>password</mat-icon>
+                <mat-hint align="end">{{ password?.value?.length || 0 }}/{{ passwordMinLength }}</mat-hint>
             </mat-form-field>
         </div>
         <div class="form-group">
-            <button mat-raised-button color="accent" type="button" (click)="onLoginClick()">
+            <button mat-raised-button color="accent" type="button" type="submit" [disabled]="!loginForm.form.valid"
+                (click)="onLoginClick()">
                 Logga In
             </button>
         </div>

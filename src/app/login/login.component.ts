@@ -28,6 +28,8 @@ export class LoginComponent {
     private snackBar: MatSnackBar,
   ) { }
 
+  passwordMinLength: number = 3;
+
   onLoginClick(): void {
     const loginInfo: LoginInfo = {
       email: this.email,
