@@ -39,7 +39,7 @@ export class LoginComponent {
     this.authService.login(loginInfo).subscribe({
       next: (success) => {
         if (success) {
-          this.router.navigate(['/']); // Ensure 'event' is the correct route
+          this.router.navigate(['/']);
         } else {
           this.loginError = true;
           this.snackBar.open('Login failed. Please try again.', 'Close', {
