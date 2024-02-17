@@ -21,7 +21,20 @@ namespace B3.Complete.Eventwebb
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = null)] HttpRequest req,
             ILogger log)
         {
+            
+        // Retrieve the JWT token from the request headers
+            if (!req.Headers.TryGetValue("Authorization", out var token))
+            {
+                log.LogError("Authorization token not found in request headers.");
+                return new UnauthorizedResult();
+            }
 
+
+            // Validate the JWT token
+            if (!ValidateToken(token, out var claims))
+            {
+                return new UnauthorizedResult();
+            }
 
 
             // Proceed with the function logic
