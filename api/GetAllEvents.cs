@@ -24,14 +24,20 @@ namespace B3.Complete.Eventwebb
             // Retrieve the JWT token from the request headers
             if (!req.Headers.TryGetValue("Authorization", out var token))
             {
+                log.LogError("Authorization token not found in request headers.");
                 return new UnauthorizedResult();
             }
+
+            log.LogInformation($"Received token: {token}");
 
             // Validate the JWT token
             if (!ValidateToken(token, out var claims))
             {
+                log.LogError("Token validation failed.");
                 return new UnauthorizedResult();
             }
+
+            log.LogInformation("Token validation successful.");
 
             // Proceed with the function logic
             var client = new TableClient(DatabaseConfig.ConnectionString, DatabaseConfig.TableName);
@@ -87,7 +93,7 @@ namespace B3.Complete.Eventwebb
                 claims = tokenHandler.ValidateToken(token.Replace("Bearer ", ""), validationParameters, out _);
                 return true;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 claims = null;
                 return false;
