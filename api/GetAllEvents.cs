@@ -6,11 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
-using System;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
 
 namespace B3.Complete.Eventwebb
 {
@@ -21,25 +16,8 @@ namespace B3.Complete.Eventwebb
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = null)] HttpRequest req,
             ILogger log)
         {
-            // Retrieve the JWT token from the request headers
-            if (!req.Headers.TryGetValue("Authorization", out var token))
-            {
-                log.LogError("Authorization token not found in request headers.");
-                return new UnauthorizedResult();
-            }
+            // Proceed with the function logic without token validation
 
-            log.LogInformation($"Received token: {token}");
-
-            // Validate the JWT token
-            if (!ValidateToken(token, out var claims))
-            {
-                log.LogError("Token validation failed.");
-                return new UnauthorizedResult();
-            }
-
-            log.LogInformation("Token validation successful.");
-
-            // Proceed with the function logic
             var client = new TableClient(DatabaseConfig.ConnectionString, DatabaseConfig.TableName);
             var queryResults = client.QueryAsync<TableEntity>();
 
@@ -72,32 +50,6 @@ namespace B3.Complete.Eventwebb
             }
 
             return new OkObjectResult(eventsList);
-        }
-
-        private static bool ValidateToken(string token, out ClaimsPrincipal claims)
-        {
-            try
-            {
-                var tokenHandler = new JwtSecurityTokenHandler();
-                var validationParameters = new TokenValidationParameters
-                {
-                    // Set your token validation parameters (issuer, audience, etc.)
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidateLifetime = true,
-                    ValidIssuer = "your_issuer",
-                    ValidAudience = "your_audience",
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("your_new_key_with_at_least_128_bits"))
-                };
-
-                claims = tokenHandler.ValidateToken(token.Replace("Bearer ", ""), validationParameters, out _);
-                return true;
-            }
-            catch (Exception ex)
-            {
-                claims = null;
-                return false;
-            }
         }
     }
 }
