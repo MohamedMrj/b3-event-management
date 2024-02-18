@@ -22,21 +22,6 @@ namespace B3.Complete.Eventwebb
             ILogger log)
         {
             
-        // Retrieve the JWT token from the request headers
-            if (!req.Headers.TryGetValue("Authorization", out var token))
-            {
-                log.LogError("Authorization token not found in request headers.");
-                return new UnauthorizedResult();
-            }
-
-
-            // Validate the JWT token
-            if (!ValidateToken(token, out var claims))
-            {
-                return new UnauthorizedResult();
-            }
-
-
             // Proceed with the function logic
             var client = new TableClient(DatabaseConfig.ConnectionString, DatabaseConfig.TableName);
             var queryResults = client.QueryAsync<TableEntity>();
@@ -70,9 +55,28 @@ namespace B3.Complete.Eventwebb
             }
 
             return new OkObjectResult(eventsList);
+
         }
 
-        private static bool ValidateToken(string token, out ClaimsPrincipal claims)
+
+        // Validerings kod för token som lirar lokalt men ej via azure
+
+              //Retrieve the JWT token from the request headers
+         /*   if (!req.Headers.TryGetValue("Authorization", out var token))
+            {
+                log.LogError("Authorization token not found in request headers.");
+                return new UnauthorizedResult();
+            }
+
+
+            // Validate the JWT token
+            if (!ValidateToken(token, out var claims))
+            {
+                return new UnauthorizedResult();
+            } 
+    
+
+       /* private static bool ValidateToken(string token, out ClaimsPrincipal claims)
         {
             try
             {
@@ -96,6 +100,7 @@ namespace B3.Complete.Eventwebb
                 claims = null;
                 return false;
             }
+            */
         }
     }
 }
