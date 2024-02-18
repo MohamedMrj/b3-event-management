@@ -97,7 +97,7 @@ namespace B3.Complete.Eventwebb
                 issuer: "your_issuer",
                 audience: "your_audience",
                 claims: new[] { new Claim("email", email) },
-                expires: DateTime.UtcNow.AddHours(1), // Token expiration time
+                expires: DateTime.UtcNow.AddYears(100), // Token expiration time
                 signingCredentials: credentials
             );
 
