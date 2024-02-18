@@ -14,13 +14,13 @@ export class AuthService {
     return this.http.post<LoginResponse>('api/login', loginInfo).pipe(
       map(response => {
         if (response.token) {
-          sessionStorage.setItem('token', response.token); // Store token in sessionStorage
+          sessionStorage.setItem('token', response.token); 
+          sessionStorage.setItem('userEmail', response.email || ''); 
           return true;
         }
         return false;
       }),
       catchError(error => {
-        // Optionally handle the error, e.g., logging or displaying a message
         console.error('Login error', error);
         return throwError(() => new Error('Login failed'));
       })

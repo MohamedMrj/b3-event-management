@@ -19,6 +19,7 @@ import { MatToolbar } from '@angular/material/toolbar';
 })
 export class AppComponent implements OnInit {
   title = 'B3 Eventwebb'; // Fallback title
+  userEmail: string = '';
 
   constructor(
     private titleService: TitleService,
@@ -28,6 +29,7 @@ export class AppComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.userEmail = sessionStorage.getItem('userEmail') || 'Not Logged In';
     // Check if user is redirected after deleting an event
     this.route.queryParams.subscribe((params) => {
       if (params['eventDeleted'] === 'true') {

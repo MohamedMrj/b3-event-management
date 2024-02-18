@@ -56,7 +56,7 @@ namespace B3.Complete.Eventwebb
                         string token = GenerateJwtToken(email);
 
                         // Return token in the response
-                        return new OkObjectResult(new { token });
+                        return new OkObjectResult(new { token, email });
                     }
                 }
 

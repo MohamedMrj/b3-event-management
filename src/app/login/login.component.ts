@@ -39,6 +39,7 @@ export class LoginComponent {
     this.authService.login(loginInfo).subscribe({
       next: (success) => {
         if (success) {
+          // Fullösning för att ladda rätt användare
           this.router.navigate(['/']);
         } else {
           this.loginError = true;
