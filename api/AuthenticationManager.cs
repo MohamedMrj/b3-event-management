@@ -133,56 +133,51 @@ namespace B3.Complete.Eventwebb
                 return new BadRequestObjectResult(new { error = "Missing Authorization header." });
 
             var token = req.Headers["Authorization"].ToString().Replace("Bearer ", "");
-            var validationResponse = TryValidateTokenDetailed(token);
-
-            if (!validationResponse.IsValid)
+            try
             {
-                // Construct a detailed error response
+                var principal = ValidateJwtToken(token);
+                if (principal == null)
+                {
+                    return new BadRequestObjectResult(new { error = "Invalid token." });
+                }
+
+                return new OkObjectResult(new { valid = true, message = "Token is valid." });
+            }
+            catch (SecurityTokenExpiredException ex)
+            {
+                // If you need to show token expiration details, consider decoding the token manually
+                // to extract the "exp" claim, rather than relying on exception properties.
                 return new BadRequestObjectResult(new
                 {
                     error = "Invalid token.",
-                    reason = validationResponse.Error,
-                    serverTime = DateTime.UtcNow.ToString("o"), // ISO 8601 format for clarity
-                    debugInfo = new
-                    {
-                        secretKeyUsedForValidation = secretKey, // Warning: Highly sensitive, remove before production!
-                        tokenReceived = token // Consider the security implications of returning the token
-                    }
+                    reason = "Token expired.",
+                    serverTime = DateTime.UtcNow,
+                    // Omitting NotBefore and Expires since they're not accessible here
+                    // Instead, focus on providing useful, general debug information
+                    detailedError = ex.Message,
                 });
             }
-
-            return new OkObjectResult(new { valid = true, message = "Token is valid." });
-        }
-
-        // This method attempts to validate the token and returns detailed information about the attempt
-        private static (bool IsValid, string Error) TryValidateTokenDetailed(string token)
-        {
-            if (string.IsNullOrEmpty(token))
-                return (false, "Token is null or empty.");
-
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(secretKey);
-
-            try
+            catch (SecurityTokenException ex)
             {
-                var principal = tokenHandler.ValidateToken(token, new TokenValidationParameters
+                return new BadRequestObjectResult(new
                 {
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(key),
-                    ValidateIssuer = false,
-                    ValidateAudience = false,
-                    ClockSkew = TimeSpan.Zero
-                }, out SecurityToken validatedToken);
-
-                return (true, null); // Token is valid
+                    error = "Invalid token.",
+                    reason = ex.Message,
+                    serverTime = DateTime.UtcNow,
+                });
             }
             catch (Exception ex)
             {
-                return (false, ex.Message); // Return the exception message for debugging
+                // General catch block for any other unexpected errors
+                return new BadRequestObjectResult(new
+                {
+                    error = "Invalid token.",
+                    reason = "General error.",
+                    errorMessage = ex.Message,
+                    serverTime = DateTime.UtcNow,
+                });
             }
         }
-
-        // ------------------- //
 
         private static bool VerifyPasswordHash(string password, string storedHash, string storedSalt)
         {
