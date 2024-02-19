@@ -199,5 +199,35 @@ namespace B3.Complete.Eventwebb
                 return null;
             }
         }
+
+        // Public method to validate token
+        public static bool TryValidateToken(string token, out ClaimsPrincipal principal)
+        {
+            principal = null;
+            if (string.IsNullOrEmpty(token))
+                return false;
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes(secretKey);
+            try
+            {
+                principal = tokenHandler.ValidateToken(token, new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ClockSkew = TimeSpan.Zero
+                }, out SecurityToken validatedToken);
+
+                // Token is valid
+                return true;
+            }
+            catch
+            {
+                // Token validation failed
+                return false;
+            }
+        }
     }
 }
