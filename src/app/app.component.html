@@ -8,7 +8,7 @@
       <span>Events</span>
     </a>
     <span class="flex-spacer"></span>
-    <nav *ngIf="authService.isLoggedIn()">
+    <nav *ngIf="authService.validateToken()">
       <a [routerLink]=" ['/']" class="menu-item">
         <span>Alla Event</span>
       </a>
@@ -17,6 +17,8 @@
       </a>
     </nav>
     <span id="currentUser">Inloggad som: {{ getUsernameFromEmail() }}</span>
+    <button *ngIf="authService.validateToken()" mat-raised-button color="warn" (click)="authService.logout()">Logga
+      ut</button>
   </div>
 </mat-toolbar>
 

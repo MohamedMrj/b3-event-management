@@ -18,7 +18,7 @@ import { MatIconModule } from '@angular/material/icon';
   imports: [MatCardModule, MatFormFieldModule, MatInputModule, FormsModule, ReactiveFormsModule, MatButtonModule, MatIconModule]
 })
 export class LoginComponent {
-  email: string = '';
+  username: string = '';
   password: string = '';
   loginError: boolean = false;
 
@@ -32,7 +32,7 @@ export class LoginComponent {
 
   onLoginClick(): void {
     const loginInfo: LoginInfo = {
-      email: this.email,
+      username: this.username,
       password: this.password
     };
 

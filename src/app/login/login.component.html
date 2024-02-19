@@ -7,8 +7,8 @@
         <div class="form-group">
             <mat-form-field>
                 <mat-label>Ange e-postadress</mat-label>
-                <input matInput type="email" name="email" id="email" class="form-control" required
-                    placeholder="epost@exempel.com" [(ngModel)]="email" email />
+                <input matInput type="username" name="username" id="username" class="form-control" required
+                    placeholder="epost@exempel.com" [(ngModel)]="username" username />
                 <mat-icon matSuffix>face</mat-icon>
             </mat-form-field>
         </div>
@@ -23,7 +23,8 @@
             </mat-form-field>
         </div>
         <div class="form-group">
-            <button mat-raised-button color="accent" type="submit" [disabled]="!loginForm.form.valid" (click)="onLoginClick()">Logga In</button>
+            <button mat-raised-button color="accent" type="submit" [disabled]="!loginForm.form.valid"
+                (click)="onLoginClick()">Logga In</button>
         </div>
     </form>
 </div>
