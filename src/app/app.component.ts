@@ -1,19 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { TitleService } from './title.service';
-import {
-  ActivatedRoute,
-  Router,
-  RouterLink,
-  RouterLinkActive,
-  RouterOutlet,
-} from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatToolbar } from '@angular/material/toolbar';
+import { TitleService } from './title.service';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, MatToolbar, RouterLink, RouterLinkActive],
+  imports: [RouterOutlet, MatToolbarModule, RouterLink, RouterLinkActive],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
@@ -31,7 +27,7 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.userEmail = sessionStorage.getItem('userEmail') || 'Not Logged In';
     // Check if user is redirected after deleting an event
-    this.route.queryParams.subscribe((params) => {
+    this.route.queryParams.subscribe((params: Record<string, string | undefined>) => {
       if (params['eventDeleted'] === 'true') {
         this.snackBar.open('Event deleted successfully!', 'Close', {
           duration: 3000,
@@ -56,4 +52,13 @@ export class AppComponent implements OnInit {
       this.title = customTitle;
     }
   }
+  
+  isLoginPage() {
+    return this.router.url === '/login';
 }
+  // New method to extract username from email
+  getUsernameFromEmail(): string {
+    return this.userEmail.split('@')[0];
+  }
+}
+

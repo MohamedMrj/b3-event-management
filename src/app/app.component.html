@@ -8,16 +8,15 @@
         <span>Events</span>
       </a>
       <span class="flex-spacer"></span>
-      <!-- User Email Display -->
-      <a class="menu-item" style="cursor: default; pointer-events: none;">
-        <span>{{ userEmail }}</span>
-      </a>
-      <a [routerLink]="['/']" class="menu-item">
-        <span [routerLinkActive]="'active'" [routerLinkActiveOptions]="{exact: true}">Alla Event</span>
-      </a>
-      <a [routerLink]="['/my-events']" class="menu-item">
-        <span [routerLinkActive]="'active'">Mina Event</span>
-      </a>
+    <a class="menu-item" style="cursor: default; pointer-events: none;">
+      <span>Inloggad som: {{ getUsernameFromEmail() }}</span>
+    </a>      
+    <a [routerLink]="['/']" class="menu-item">
+      <span>Alla Event</span>
+    </a>
+    <a [routerLink]="['/my-events']" class="menu-item">
+      <span>Mina Event</span>
+    </a>
     </div>
   </mat-toolbar>
 
