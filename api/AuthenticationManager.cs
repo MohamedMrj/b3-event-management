@@ -133,14 +133,50 @@ namespace B3.Complete.Eventwebb
                 return new BadRequestObjectResult(new { error = "Missing Authorization header." });
 
             var token = req.Headers["Authorization"].ToString().Replace("Bearer ", "");
-            var principal = ValidateJwtToken(token);
-            if (principal == null)
+            try
             {
-                return new BadRequestObjectResult(new { error = "Invalid token." });
-            }
+                var principal = ValidateJwtToken(token);
+                if (principal == null)
+                {
+                    return new BadRequestObjectResult(new { error = "Invalid token." });
+                }
 
-            // Return a JSON response
-            return new OkObjectResult(new { valid = true, message = "Token is valid." });
+                return new OkObjectResult(new { valid = true, message = "Token is valid." });
+            }
+            catch (SecurityTokenExpiredException ex)
+            {
+                return new BadRequestObjectResult(new
+                {
+                    error = "Invalid token.",
+                    reason = "Token expired.",
+                    serverTime = DateTime.UtcNow,
+                    validFrom = ex.NotBefore,
+                    validTo = ex.Expires,
+                    secretKey = secretKey, // Extremely sensitive, remove as soon as possible
+                });
+            }
+            catch (SecurityTokenException ex)
+            {
+                return new BadRequestObjectResult(new
+                {
+                    error = "Invalid token.",
+                    reason = ex.Message,
+                    serverTime = DateTime.UtcNow,
+                    secretKey = secretKey, // Extremely sensitive, remove as soon as possible
+                });
+            }
+            catch (Exception ex)
+            {
+                // General catch block for any other unexpected errors
+                return new BadRequestObjectResult(new
+                {
+                    error = "Invalid token.",
+                    reason = "General error.",
+                    errorMessage = ex.Message,
+                    serverTime = DateTime.UtcNow,
+                    secretKey = secretKey, // Extremely sensitive, remove as soon as possible
+                });
+            }
         }
 
         private static bool VerifyPasswordHash(string password, string storedHash, string storedSalt)
