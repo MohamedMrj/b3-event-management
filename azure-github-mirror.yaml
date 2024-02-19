@@ -1,0 +1,22 @@
+trigger:
+  branches:
+    include:
+    - '*'
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+  - checkout: self
+    fetchDepth: 0
+
+  - script: |
+      git config --global user.email "h21sebda@du.se"
+      git config --global user.name "Azure Bot"
+      git remote add github https://github.com/sebdanielsson/B3_Eventwebb.git || true
+      git fetch --all
+      git push github --all --force
+      git push github --tags --force
+    displayName: 'Mirror to GitHub'
+    env:
+      GITHUB_TOKEN: $(github_token)
