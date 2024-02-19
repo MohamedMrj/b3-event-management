@@ -14,8 +14,8 @@ export class AuthService {
     return this.http.post<LoginResponse>('api/login', loginInfo).pipe(
       map(response => {
         if (response.token) {
-          sessionStorage.setItem('token', response.token); 
-          sessionStorage.setItem('userEmail', response.email || ''); 
+          sessionStorage.setItem('token', response.token);
+          sessionStorage.setItem('userEmail', response.email || '');
           return true;
         }
         return false;
@@ -28,10 +28,10 @@ export class AuthService {
   }
 
   isLoggedIn(): boolean {
-    return !!sessionStorage.getItem('token'); // Check for token in sessionStorage
+    return !!sessionStorage.getItem('token');
   }
 
   logout(): void {
-    sessionStorage.removeItem('token'); // Remove token from sessionStorage on logout
+    sessionStorage.removeItem('token');
   }
 }

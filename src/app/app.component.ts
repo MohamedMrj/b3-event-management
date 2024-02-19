@@ -4,12 +4,13 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { TitleService } from './title.service';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
-
+import { AuthService } from './auth.service';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, MatToolbarModule, RouterLink, RouterLinkActive],
+  imports: [NgIf, RouterOutlet, MatToolbarModule, RouterLink, RouterLinkActive],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
@@ -22,7 +23,8 @@ export class AppComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private snackBar: MatSnackBar,
-  ) {}
+    public authService: AuthService
+  ) { }
 
   ngOnInit() {
     this.userEmail = sessionStorage.getItem('userEmail') || 'Not Logged In';
@@ -52,10 +54,10 @@ export class AppComponent implements OnInit {
       this.title = customTitle;
     }
   }
-  
+
   isLoginPage() {
     return this.router.url === '/login';
-}
+  }
   // New method to extract username from email
   getUsernameFromEmail(): string {
     return this.userEmail.split('@')[0];
