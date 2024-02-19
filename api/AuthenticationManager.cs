@@ -145,14 +145,16 @@ namespace B3.Complete.Eventwebb
             }
             catch (SecurityTokenExpiredException ex)
             {
+                // If you need to show token expiration details, consider decoding the token manually
+                // to extract the "exp" claim, rather than relying on exception properties.
                 return new BadRequestObjectResult(new
                 {
                     error = "Invalid token.",
                     reason = "Token expired.",
                     serverTime = DateTime.UtcNow,
-                    validFrom = ex.NotBefore,
-                    validTo = ex.Expires,
-                    secretKey = secretKey, // Extremely sensitive, remove as soon as possible
+                    // Omitting NotBefore and Expires since they're not accessible here
+                    // Instead, focus on providing useful, general debug information
+                    detailedError = ex.Message,
                 });
             }
             catch (SecurityTokenException ex)
@@ -162,7 +164,6 @@ namespace B3.Complete.Eventwebb
                     error = "Invalid token.",
                     reason = ex.Message,
                     serverTime = DateTime.UtcNow,
-                    secretKey = secretKey, // Extremely sensitive, remove as soon as possible
                 });
             }
             catch (Exception ex)
@@ -174,7 +175,6 @@ namespace B3.Complete.Eventwebb
                     reason = "General error.",
                     errorMessage = ex.Message,
                     serverTime = DateTime.UtcNow,
-                    secretKey = secretKey, // Extremely sensitive, remove as soon as possible
                 });
             }
         }
