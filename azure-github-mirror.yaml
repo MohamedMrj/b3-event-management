@@ -18,10 +18,8 @@ steps:
   - script: |
       git config --global user.email "h21sebda@du.se"
       git config --global user.name "Azure Bot"
-      git remote add github https://$(GITHUB_TOKEN):x-oauth-basic@github.com/sebdanielsson/B3_Eventwebb.git
-      git fetch --all
-      git push github --all --force
-      git push github --tags --force
+      git remote add github https://$(GITHUB_TOKEN)@github.com/sebdanielsson/B3_Eventwebb.git
+      git push --mirror github
     displayName: 'Mirror to GitHub'
     env:
       GITHUB_TOKEN: $(github_token)
