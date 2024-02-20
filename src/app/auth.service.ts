@@ -36,15 +36,8 @@ export class AuthService {
       return throwError(() => new Error('No token found'));
     }
 
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Authorization': `Bearer ${token}`
-      })
-    };
-
-    console.log('Sending token validation request', httpOptions)
-
-    return this.http.get<{ valid: boolean }>('api/validateToken', httpOptions).pipe(
+    // Adjusting for sending token as JSON in the request body
+    return this.http.post<{ valid: boolean }>('api/validateToken', { token: token }).pipe(
       map(response => {
         return response.valid;
       }),
