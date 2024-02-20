@@ -34,20 +34,18 @@ export class AuthService {
     window.location.href = '/login';
   }
 
-  validateToken(): Observable<{ valid: boolean, error?: string, message?: string }> {
+  validateToken(): Observable<{ valid: boolean, error?: string }> {
     const token = sessionStorage.getItem('token');
     if (!token) {
-      return throwError(() => ({ valid: false, error: 'Missing token.' }));
+      return of({ valid: false, error: 'Missing token' });
     }
 
-    // Adjusting for sending token as JSON in the request body
-    return this.http.post<{ valid: boolean, error?: string, message?: string }>('api/validateToken', { token: token }).pipe(
-      map(response => {
-        return response;
-      }),
+    return this.http.post<{ valid: boolean, error?: string }>('api/validateToken', { token: token }).pipe(
+      map(response => response),
       catchError(error => {
-        console.error('Token validation error', error);
-        return throwError(() => ({ valid: false, error: 'Token validation failed.' }));
+        // Instead of throwing an error, return a response indicating the token is invalid
+        console.error('Token validation error', error); // Consider removing or adjusting this log based on your decision
+        return of({ valid: false, error: 'Token validation failed' });
       })
     );
   }
@@ -55,11 +53,10 @@ export class AuthService {
   decodeToken(): Observable<any> {
     const token = sessionStorage.getItem('token');
     if (!token) {
-      return throwError(() => new Error('No token found in session storage.'));
+      return of(null);
     }
     try {
       const decoded = jwtDecode(token);
-      console.log('Decoded token', decoded);
       return of(decoded);
     } catch (error) {
       console.error('Error decoding token', error);
@@ -70,14 +67,20 @@ export class AuthService {
   decodeTokenAndStore(): void {
     this.decodeToken().subscribe({
       next: (decodedToken) => {
-        const user = {
-          username: decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"],
-        };
-        this.currentUserSubject.next(user);
+        if (decodedToken) { // Check if decodedToken is not null
+          const user = {
+            username: decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"],
+            // Include other properties as needed
+          };
+          this.currentUserSubject.next(user); // Store the mapped user data
+        } else {
+          // Handle the case when decodedToken is null (e.g., user not logged in)
+          this.currentUserSubject.next(null); // You might choose to do nothing or set to null
+        }
       },
       error: (err) => {
         console.error('Error decoding token:', err);
-        this.currentUserSubject.next(null);
+        this.currentUserSubject.next(null); // Reset on error
       }
     });
   }

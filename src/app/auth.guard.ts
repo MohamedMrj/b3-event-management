@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router, UrlTree } from '@angular/router';
 import { AuthService } from './auth.service';
-import { Observable, of } from 'rxjs'; // Make sure to import `of` here
-import { map, catchError } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { catchError, map, switchMap } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class AuthGuardService implements CanActivate {
@@ -13,18 +13,17 @@ export class AuthGuardService implements CanActivate {
     state: RouterStateSnapshot
   ): Observable<boolean | UrlTree> {
     return this.authService.validateToken().pipe(
-      map(isValid => {
-        if (isValid) {
-          return true;
+      map(response => {
+        if (response.valid) {
+          return true; // Token is valid, proceed with navigation
         } else {
-          // Redirect to login if token is not valid
-          return this.router.parseUrl('/login');
+          // Token is invalid or missing, redirect to login without logging an error
+          return this.router.createUrlTree(['/login']);
         }
       }),
       catchError((err) => {
-        console.error(err);
-        // Use `of` to wrap the UrlTree in an Observable
-        return of(this.router.parseUrl('/login'));
+        // Handle truly unexpected errors, if any remain
+        return of(this.router.createUrlTree(['/login']));
       })
     );
   }
