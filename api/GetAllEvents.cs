@@ -1,18 +1,16 @@
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using Azure.Data.Tables;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
 using System.Security.Claims;
+using Microsoft.Azure.Functions.Worker;
+using Microsoft.Azure.Functions.Worker.Http;
 
 namespace B3.Complete.Eventwebb
 {
     public static class GetAllEvents
     {
-        [FunctionName("GetAllEvents")]
+        [Function(nameof(GetAllEvents))]
         public static async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = null)] HttpRequest req,
             ILogger log)
@@ -24,9 +22,9 @@ namespace B3.Complete.Eventwebb
             }
 
             var token = req.Headers["Authorization"].ToString().Replace("Bearer ", "");
-            if (!AuthenticationManager.TryValidateToken(token, out ClaimsPrincipal principal))
+            if (!AuthenticationManager.TryValidateToken(token, out ClaimsPrincipal? principal) || principal == null)
             {
-                return new UnauthorizedResult(); // Invalid token
+                return new UnauthorizedResult(); // Invalid token or principal is null
             }
 
             // Token is valid, proceed with fetching events
@@ -37,31 +35,30 @@ namespace B3.Complete.Eventwebb
 
             await foreach (var entity in queryResults)
             {
-                var transformedEventData = new
-                {
-                    id = entity.RowKey,
-                    title = entity["Title"],
-                    longDescription = entity["LongDescription"],
-                    shortDescription = entity["ShortDescription"],
-                    locationStreet = entity["LocationStreet"],
-                    locationCity = entity["LocationCity"],
-                    locationCountry = entity["LocationCountry"],
-                    creatorUserId = entity["CreatorUserID"],
-                    startDateTime = entity["StartDateTime"].ToString(),
-                    endDateTime = entity["EndDateTime"].ToString(),
-                    image = entity["Image"],
-                    imageAlt = entity["ImageAlt"],
-                };
-
+                var transformedEventData = TransformEntityToEvent(entity);
                 eventsList.Add(transformedEventData);
             }
 
-            if (eventsList.Count == 0)
-            {
-                return new NotFoundResult();
-            }
+            return eventsList.Count > 0 ? new OkObjectResult(eventsList) : new NotFoundResult();
+        }
 
-            return new OkObjectResult(eventsList);
+        private static object TransformEntityToEvent(TableEntity entity)
+        {
+            return new
+            {
+                id = entity.RowKey,
+                title = entity["Title"],
+                longDescription = entity["LongDescription"],
+                shortDescription = entity["ShortDescription"],
+                locationStreet = entity["LocationStreet"],
+                locationCity = entity["LocationCity"],
+                locationCountry = entity["LocationCountry"],
+                creatorUserId = entity["CreatorUserID"],
+                startDateTime = entity["StartDateTime"].ToString(),
+                endDateTime = entity["EndDateTime"].ToString(),
+                image = entity["Image"],
+                imageAlt = entity["ImageAlt"],
+            };
         }
     }
 }

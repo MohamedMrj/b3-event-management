@@ -5,15 +5,16 @@ using System.Threading.Tasks;
 using Azure.Data.Tables;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
+using System.Security.Claims;
+using Microsoft.Azure.Functions.Worker;
+using Microsoft.Azure.Functions.Worker.Http;
 
 namespace B3.Complete.Eventwebb
 {
   public static class UpdateEvent
   {
-    [FunctionName("UpdateEvent")]
+    [Function(nameof(UpdateEvent))]
     public static async Task<IActionResult> Run(
       [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "event/{id}")] HttpRequest req,
       string id,
@@ -27,7 +28,7 @@ namespace B3.Complete.Eventwebb
 
       var filter = $"RowKey eq '{id}'";
       var queryResults = client.QueryAsync<TableEntity>(filter);
-      TableEntity eventEntity = null;
+      TableEntity? eventEntity = null;
 
       await foreach (var entity in queryResults)
       {

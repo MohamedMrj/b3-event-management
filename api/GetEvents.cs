@@ -4,15 +4,15 @@ using System.Threading.Tasks;
 using Azure.Data.Tables;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
+using Microsoft.Azure.Functions.Worker;
+using Microsoft.Azure.Functions.Worker.Http;
 
 namespace B3.Complete.Eventwebb
 {
   public static class GetEvent
   {
-    [FunctionName("GetEvent")]
+    [Function(nameof(GetEvent))]
     public static async Task<IActionResult> Run(
       [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "event/{id}")] HttpRequest req,
       string id,

@@ -5,15 +5,15 @@ using System.Threading.Tasks;
 using Azure.Data.Tables;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
+using Microsoft.Azure.Functions.Worker;
+using Microsoft.Azure.Functions.Worker.Http;
 
 namespace B3.Complete.Eventwebb
 {
   public static class CreateEvent
   {
-    [FunctionName("CreateEvent")]
+    [Function(nameof(CreateEvent))]
     public static async Task<IActionResult> Run(
       [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "event")] HttpRequest req,
       ILogger log

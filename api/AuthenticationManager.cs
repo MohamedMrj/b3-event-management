@@ -1,25 +1,32 @@
+using Azure;
+using Azure.Data.Tables;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Extensions.Http;
+
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
-using System.Threading.Tasks;
-using Microsoft.WindowsAzure.Storage;
-using Microsoft.WindowsAzure.Storage.Table;
 using System.Security.Cryptography;
 using System.Text;
-using System;
-using System.IO;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.Azure.Functions.Worker;
+using Microsoft.Azure.Functions.Worker.Http;
 
-public class UserEntityTest : TableEntity
+public class UserEntityTest : ITableEntity
 {
-    public string Username { get; set; }
-    public string PasswordHash { get; set; }
-    public string Salt { get; set; }
+    public required string Username { get; set; }
+    public required string PasswordHash { get; set; }
+    public required string Salt { get; set; }
+    public required string PartitionKey { get; set; }
+    public required string RowKey { get; set; }
+    public DateTimeOffset? Timestamp { get; set; }
+    public ETag ETag { get; set; }
+}
+
+public class UserCredentials
+{
+    public required string Username { get; set; }
+    public required string Password { get; set; }
 }
 
 namespace B3.Complete.Eventwebb
@@ -27,36 +34,36 @@ namespace B3.Complete.Eventwebb
     public static class AuthenticationManager
     {
         private static readonly string secretKey = "ZczdEdVxhn78Y3dF7v67HfzhVT8fzDF6ddGT4UeTC6zRK9gL7Kxrt6VMogqmCwQw"; // Consider using Azure Key Vault
-        private static readonly string storageConnectionString = DatabaseConfig.ConnectionString;
-        private static CloudTableClient tableClient;
-        private static CloudTable usersTable;
+        private static readonly TableClient usersTable;
 
         static AuthenticationManager()
         {
-            var storageAccount = CloudStorageAccount.Parse(storageConnectionString);
-            tableClient = storageAccount.CreateCloudTableClient();
-            usersTable = tableClient.GetTableReference(DatabaseConfig.TableNameUsersTest);
+            usersTable = new TableClient(DatabaseConfig.ConnectionString, DatabaseConfig.TableNameUsersTest);
         }
 
-        [FunctionName("CreateUser")]
-        public static async Task<IActionResult> CreateUser(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "createUser")] HttpRequest req)
+        [Function(nameof(CreateUser))]
+        public static async Task<IActionResult> CreateUser([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "createUser")] HttpRequest req)
         {
             string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-            dynamic data = JsonConvert.DeserializeObject(requestBody);
-            string username = data?.username;
-            string password = data?.password;
+            var data = JsonConvert.DeserializeObject<UserCredentials>(requestBody);
 
-            if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
+            if (data == null || string.IsNullOrEmpty(data.Username) || string.IsNullOrEmpty(data.Password))
             {
                 return new BadRequestObjectResult("Missing information.");
             }
 
+            // Use data.Username and data.Password here
+            string username = data.Username;
+            string password = data.Password;
+
             // Check if user already exists
-            TableQuery<UserEntityTest> query = new TableQuery<UserEntityTest>()
-                .Where(TableQuery.GenerateFilterCondition("Username", QueryComparisons.Equal, username));
-            var queryResult = await usersTable.ExecuteQuerySegmentedAsync(query, null);
-            var existingUser = queryResult.Results.FirstOrDefault();
+            UserEntityTest? existingUser = null;
+            await foreach (var user in usersTable.QueryAsync<UserEntityTest>($"PartitionKey eq 'User' and Username eq '{username}'"))
+            {
+                existingUser = user;
+                break; // Break after finding the first user
+            }
+
             if (existingUser != null)
             {
                 return new BadRequestObjectResult("User already exists.");
@@ -75,39 +82,36 @@ namespace B3.Complete.Eventwebb
                 Salt = salt
             };
 
-            TableOperation insertOperation = TableOperation.Insert(newUser);
-            await usersTable.ExecuteAsync(insertOperation);
+            await usersTable.AddEntityAsync(newUser);
 
             return new OkObjectResult("User created successfully.");
         }
-
-        private static (string, string) CreatePasswordHash(string password)
+        [Function(nameof(SignIn))]
+        public static async Task<IActionResult> SignIn([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] HttpRequest req)
         {
-            using (var hmac = new HMACSHA512())
-            {
-                var salt = Convert.ToBase64String(hmac.Key);
-                var hash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
-                var passwordHash = Convert.ToBase64String(hash);
-                return (passwordHash, salt);
-            }
-        }
-
-        [FunctionName("SignIn")]
-        public static async Task<IActionResult> SignIn(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] HttpRequest req)
-        {
+            // Read the request body and deserialize it to the UserCredentials object
             string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-            dynamic data = JsonConvert.DeserializeObject(requestBody);
-            string username = data?.username;
-            string password = data?.password;
+            var data = JsonConvert.DeserializeObject<UserCredentials>(requestBody);
 
-            // Query to find the user by username
-            TableQuery<UserEntityTest> query = new TableQuery<UserEntityTest>()
-                .Where(TableQuery.GenerateFilterCondition("Username", QueryComparisons.Equal, username));
+            // Check if the deserialized data or its critical properties are null or empty
+            if (data == null || string.IsNullOrEmpty(data.Username) || string.IsNullOrEmpty(data.Password))
+            {
+                return new BadRequestObjectResult("Missing information.");
+            }
 
-            // Execute the query
-            var queryResult = await usersTable.ExecuteQuerySegmentedAsync(query, null);
-            var userEntity = queryResult.Results.FirstOrDefault();
+            // Now that data is confirmed to be non-null, access the username and password through it
+            string username = data.Username;
+            string password = data.Password;
+
+            // Continue with your logic to verify the user's identity
+            // Explicitly declare userEntity as nullable
+            UserEntityTest? userEntity = null;
+            await foreach (var user in usersTable.QueryAsync<UserEntityTest>($"PartitionKey eq 'User' and Username eq '{username}'"))
+            {
+                userEntity = user;
+                break; // Break after finding the first matching user
+            }
+
             if (userEntity == null)
             {
                 return new BadRequestObjectResult("User not found.");
@@ -122,10 +126,12 @@ namespace B3.Complete.Eventwebb
             // Generate JWT token
             var token = GenerateJwtToken(userEntity.RowKey); // Or use a unique identifier other than RowKey
 
+            // Return success response with the token
             return new OkObjectResult(new { token = token });
         }
 
-        [FunctionName("ValidateToken")]
+
+        [Function(nameof(ValidateToken))]
         public static IActionResult ValidateToken(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "validateToken")] HttpRequest req)
         {
@@ -141,6 +147,17 @@ namespace B3.Complete.Eventwebb
 
             // Return a JSON response
             return new OkObjectResult(new { valid = true, message = "Token is valid." });
+        }
+
+        private static (string, string) CreatePasswordHash(string password)
+        {
+            using (var hmac = new HMACSHA512())
+            {
+                var salt = Convert.ToBase64String(hmac.Key);
+                var hash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
+                var passwordHash = Convert.ToBase64String(hash);
+                return (passwordHash, salt);
+            }
         }
 
         private static bool VerifyPasswordHash(string password, string storedHash, string storedSalt)
@@ -175,7 +192,7 @@ namespace B3.Complete.Eventwebb
             return tokenHandler.WriteToken(token);
         }
 
-        private static ClaimsPrincipal ValidateJwtToken(string token)
+        private static ClaimsPrincipal? ValidateJwtToken(string token)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(secretKey);
@@ -191,8 +208,8 @@ namespace B3.Complete.Eventwebb
                 }, out SecurityToken validatedToken);
 
                 return validatedToken is JwtSecurityToken jwtSecurityToken
-                ? new ClaimsPrincipal(new ClaimsIdentity(jwtSecurityToken.Claims))
-                : null;
+                    ? new ClaimsPrincipal(new ClaimsIdentity(jwtSecurityToken.Claims))
+                    : null;
             }
             catch
             {
@@ -200,8 +217,9 @@ namespace B3.Complete.Eventwebb
             }
         }
 
+
         // Public method to validate token
-        public static bool TryValidateToken(string token, out ClaimsPrincipal principal)
+        public static bool TryValidateToken(string token, out ClaimsPrincipal? principal)
         {
             principal = null;
             if (string.IsNullOrEmpty(token))
@@ -226,8 +244,10 @@ namespace B3.Complete.Eventwebb
             catch
             {
                 // Token validation failed
+                principal = null; // Explicitly null for clarity, though it's already set above
                 return false;
             }
         }
+
     }
 }
