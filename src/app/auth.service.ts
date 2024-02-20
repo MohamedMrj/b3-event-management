@@ -28,22 +28,23 @@ export class AuthService {
 
   logout(): void {
     sessionStorage.removeItem('token');
+    window.location.href = '/login';
   }
 
-  validateToken(): Observable<boolean> {
+  validateToken(): Observable<{ valid: boolean, error?: string, message?: string }> {
     const token = sessionStorage.getItem('token');
     if (!token) {
-      return throwError(() => new Error('No token found'));
+      return throwError(() => ({ valid: false, error: 'Missing token.' }));
     }
 
     // Adjusting for sending token as JSON in the request body
-    return this.http.post<{ valid: boolean }>('api/validateToken', { token: token }).pipe(
+    return this.http.post<{ valid: boolean, error?: string, message?: string }>('api/validateToken', { token: token }).pipe(
       map(response => {
-        return response.valid;
+        return response;
       }),
       catchError(error => {
         console.error('Token validation error', error);
-        return throwError(() => new Error('Token validation failed'));
+        return throwError(() => ({ valid: false, error: 'Token validation failed.' }));
       })
     );
   }

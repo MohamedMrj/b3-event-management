@@ -8,17 +8,29 @@
       <span>Events</span>
     </a>
     <span class="flex-spacer"></span>
-    <nav *ngIf="authService.validateToken()">
-      <a [routerLink]=" ['/']" class="menu-item">
-        <span>Alla Event</span>
-      </a>
-      <a [routerLink]="['/my-events']" class="menu-item">
-        <span>Mina Event</span>
-      </a>
-    </nav>
-    <span id="currentUser">Inloggad som: {{ getUsernameFromEmail() }}</span>
-    <button *ngIf="authService.validateToken()" mat-raised-button color="warn" (click)="authService.logout()">Logga
-      ut</button>
+    <div class="signed-in-user">
+      <nav *ngIf="isValidToken">
+        <a [routerLink]=" ['/']" class="menu-item">
+          <span>Alla Event</span>
+        </a>
+        <a [routerLink]="['/my-events']" class="menu-item">
+          <span>Mina Event</span>
+        </a>
+      </nav>
+      <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+        <mat-icon>account_circle</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item disabled id="currentUser">
+          <mat-icon>account_circle</mat-icon>
+          <span>{{ getUsernameFromEmail() }}</span>
+        </button>
+        <button mat-menu-item *ngIf="authService.validateToken()" (click)="authService.logout()">
+          <mat-icon>logout</mat-icon>
+          <span>Logga ut</span>
+        </button>
+      </mat-menu>
+    </div>
   </div>
 </mat-toolbar>
 

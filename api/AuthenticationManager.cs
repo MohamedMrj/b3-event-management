@@ -136,7 +136,7 @@ namespace B3.Complete.Eventwebb
             if (tokenRequest == null || string.IsNullOrEmpty(tokenRequest.Token))
             {
                 response.StatusCode = HttpStatusCode.BadRequest;
-                var errorResponse = JsonConvert.SerializeObject(new { error = "Missing token." });
+                var errorResponse = JsonConvert.SerializeObject(new { valid = false, error = "Missing token." });
                 await response.WriteStringAsync(errorResponse);
                 return response;
             }
@@ -145,7 +145,7 @@ namespace B3.Complete.Eventwebb
             if (!isValid)
             {
                 response.StatusCode = HttpStatusCode.BadRequest;
-                var errorResponse = JsonConvert.SerializeObject(new { error = "Invalid token." });
+                var errorResponse = JsonConvert.SerializeObject(new { valid = false, error = "Invalid token." });
                 await response.WriteStringAsync(errorResponse);
                 return response;
             }
