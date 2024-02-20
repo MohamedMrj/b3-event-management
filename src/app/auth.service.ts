@@ -1,14 +1,17 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, throwError, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { LoginInfo, LoginResponse } from './login';
+import { jwtDecode } from "jwt-decode";
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   constructor(private http: HttpClient) { }
+
+  private currentUserSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
 
   login(loginInfo: LoginInfo): Observable<boolean> {
     return this.http.post<LoginResponse>('api/SignIn', loginInfo).pipe(
@@ -47,5 +50,39 @@ export class AuthService {
         return throwError(() => ({ valid: false, error: 'Token validation failed.' }));
       })
     );
+  }
+
+  decodeToken(): Observable<any> {
+    const token = sessionStorage.getItem('token');
+    if (!token) {
+      return throwError(() => new Error('No token found in session storage.'));
+    }
+    try {
+      const decoded = jwtDecode(token);
+      console.log('Decoded token', decoded);
+      return of(decoded);
+    } catch (error) {
+      console.error('Error decoding token', error);
+      return throwError(() => new Error('Error decoding token'));
+    }
+  }
+
+  decodeTokenAndStore(): void {
+    this.decodeToken().subscribe({
+      next: (decodedToken) => {
+        const user = {
+          username: decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"],
+        };
+        this.currentUserSubject.next(user);
+      },
+      error: (err) => {
+        console.error('Error decoding token:', err);
+        this.currentUserSubject.next(null);
+      }
+    });
+  }
+
+  getCurrentUser(): Observable<any> {
+    return this.currentUserSubject.asObservable();
   }
 }

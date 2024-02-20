@@ -1,6 +1,3 @@
-
-
-
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -11,20 +8,20 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { AuthService } from './auth.service';
-import { NgIf } from '@angular/common';
-import { map } from 'rxjs/operators';
+import { NgIf, AsyncPipe } from '@angular/common';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [NgIf, RouterOutlet, MatToolbarModule, MatIconModule, MatMenuModule, MatButtonModule, RouterLink, RouterLinkActive],
+  imports: [NgIf, AsyncPipe, RouterOutlet, MatToolbarModule, MatIconModule, MatMenuModule, MatButtonModule, RouterLink, RouterLinkActive],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent implements OnInit {
-  title = 'B3 Eventwebb'; // Fallback title
-  userEmail: string = '';
-  isValidToken: boolean = false; // Add this line
+  title = 'B3 Eventwebb';
+  isValidToken: boolean = false;
+  currentUser$: Observable<any>; // Use the $ suffix to denote an observable
 
   constructor(
     private titleService: TitleService,
@@ -32,10 +29,12 @@ export class AppComponent implements OnInit {
     private router: Router,
     private snackBar: MatSnackBar,
     public authService: AuthService,
-  ) { }
+  ) {
+    this.currentUser$ = this.authService.getCurrentUser();
+  }
 
   ngOnInit() {
-    this.userEmail = sessionStorage.getItem('userEmail') || 'Not Logged In';
+    this.authService.decodeTokenAndStore(); // Decode token and store user data
 
     // Validate token and update isValidToken
     this.authService.validateToken().subscribe({
@@ -58,8 +57,8 @@ export class AppComponent implements OnInit {
         this.router.navigate([], {
           relativeTo: this.route,
           queryParams: queryParams,
-          queryParamsHandling: '', // remove to keep other query params
-          replaceUrl: true, // does not add this navigation to history
+          queryParamsHandling: '',
+          replaceUrl: true,
         });
       }
     });
@@ -68,13 +67,5 @@ export class AppComponent implements OnInit {
     if (customTitle) {
       this.title = customTitle;
     }
-  }
-
-  isLoginPage() {
-    return this.router.url === '/login';
-  }
-
-  getUsernameFromEmail(): string {
-    return this.userEmail.split('@')[0];
   }
 }

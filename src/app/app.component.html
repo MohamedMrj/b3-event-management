@@ -8,7 +8,7 @@
       <span>Events</span>
     </a>
     <span class="flex-spacer"></span>
-    <div *ngIf="isValidToken" class="signed-in-user">
+    <div *ngIf="currentUser$ | async as currentUser" class="signed-in-user">
       <nav>
         <a [routerLink]=" ['/']" class="menu-item">
           <span>Alla Event</span>
@@ -23,7 +23,7 @@
       <mat-menu #menu="matMenu">
         <button mat-menu-item disabled id="currentUser">
           <mat-icon>account_circle</mat-icon>
-          <span>{{ getUsernameFromEmail() }}</span>
+          <span>{{ currentUser.username }}</span>
         </button>
         <button mat-menu-item *ngIf="authService.validateToken()" (click)="authService.logout()">
           <mat-icon>logout</mat-icon>

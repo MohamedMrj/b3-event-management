@@ -118,12 +118,11 @@ namespace B3.Complete.Eventwebb
                 return response;
             }
 
-            var token = GenerateJwtToken(userEntity.RowKey!);
+            var token = GenerateJwtToken(userEntity.RowKey!, data.Username);
             var tokenResponse = JsonConvert.SerializeObject(new { token = token });
             await response.WriteStringAsync(tokenResponse);
             return response;
         }
-
 
         [Function(nameof(ValidateToken))]
         public static async Task<HttpResponseData> ValidateToken([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "validateToken")] HttpRequestData req, FunctionContext context)
@@ -179,7 +178,7 @@ namespace B3.Complete.Eventwebb
             return null;
         }
 
-        private static string GenerateJwtToken(string userId)
+        private static string GenerateJwtToken(string userId, string username)
         {
             var tokenHandler = new JsonWebTokenHandler();
             var key = Encoding.ASCII.GetBytes(secretKey);
@@ -187,7 +186,8 @@ namespace B3.Complete.Eventwebb
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-            new Claim(ClaimTypes.NameIdentifier, userId)
+            new Claim(ClaimTypes.NameIdentifier, userId),
+            new Claim(ClaimTypes.Name, username)
                 }),
                 Expires = DateTime.UtcNow.AddHours(2),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
