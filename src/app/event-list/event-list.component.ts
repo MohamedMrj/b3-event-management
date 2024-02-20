@@ -9,13 +9,14 @@ import { NgFor } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
 import { MatFabButton } from '@angular/material/button';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatTabsModule } from '@angular/material/tabs';
 
 @Component({
   selector: 'app-event-list',
   templateUrl: './event-list.component.html',
   styleUrls: ['./event-list.component.css'],
   standalone: true,
-  imports: [MatFabButton, MatIcon, NgFor, EventCardComponent, MatPaginator],
+  imports: [MatFabButton, MatIcon, NgFor, EventCardComponent, MatPaginator, MatTabsModule],
 })
 export class EventListComponent implements OnInit {
   eventList: Event[] = [];

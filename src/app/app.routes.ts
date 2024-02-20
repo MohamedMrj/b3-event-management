@@ -6,7 +6,7 @@ import { EventEditComponent } from './event-edit/event-edit.component';
 import { ApiTestComponent } from './api-test/api-test.component';
 import { LoginComponent } from './login/login.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
-import { MyEventsComponent } from './my-events/my-events.component';
+/* import { MyEventsComponent } from './my-events/my-events.component'; */
 import { AuthGuardService } from './auth.guard';
 
 export const routes: Routes = [
@@ -15,7 +15,7 @@ export const routes: Routes = [
   { path: 'event/update/:eventid', component: EventEditComponent, title: 'Redigera Event', canActivate: [AuthGuardService] },
   { path: 'event/:eventid', component: EventDetailComponent, canActivate: [AuthGuardService] },
   { path: 'api-test', component: ApiTestComponent, title: 'API Test', canActivate: [AuthGuardService] },
-  { path: 'my-events', component: MyEventsComponent, title: 'Mina Event', canActivate: [AuthGuardService] },
+  /* { path: 'my-events', component: MyEventsComponent, title: 'Mina Event', canActivate: [AuthGuardService] }, */
   { path: '', component: EventListComponent, title: 'Event', canActivate: [AuthGuardService] },
   { path: '**', component: PageNotFoundComponent, title: 'Sidan kunde inte hittas' },
 ];
