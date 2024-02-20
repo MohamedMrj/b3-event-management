@@ -3,85 +3,106 @@ using System.IO;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Azure.Data.Tables;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using System.Security.Claims;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
+using Microsoft.Extensions.Logging;
 
 namespace B3.Complete.Eventwebb
 {
   public static class UpdateEvent
   {
     [Function(nameof(UpdateEvent))]
-    public static async Task<IActionResult> Run(
-      [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "event/{id}")] HttpRequest req,
-      string id,
-      ILogger log
-    )
+    public static async Task<HttpResponseData> Run(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "event/{id}")] HttpRequestData req,
+        string id,
+        FunctionContext executionContext)
     {
+      var log = executionContext.GetLogger("UpdateEvent");
+      log.LogInformation($"Updating event with ID: {id}");
+
       var requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-      var updatedEventData = JsonSerializer.Deserialize<JsonElement>(requestBody);
+      JsonElement updatedEventData;
+      try
+      {
+        updatedEventData = JsonSerializer.Deserialize<JsonElement>(requestBody);
+      }
+      catch (JsonException ex)
+      {
+        log.LogError($"Error parsing request body: {ex.Message}");
+        var badRequestResponse = req.CreateResponse(System.Net.HttpStatusCode.BadRequest);
+        await badRequestResponse.WriteStringAsync("Invalid JSON format.");
+        return badRequestResponse;
+      }
 
       var client = new TableClient(DatabaseConfig.ConnectionString, DatabaseConfig.TableName);
-
-      var filter = $"RowKey eq '{id}'";
-      var queryResults = client.QueryAsync<TableEntity>(filter);
-      TableEntity? eventEntity = null;
+      var queryResults = client.QueryAsync<TableEntity>(filter: $"RowKey eq '{id}'");
 
       await foreach (var entity in queryResults)
       {
-        eventEntity = entity;
-        break;
-      }
-
-      if (eventEntity == null)
-      {
-        return new NotFoundResult();
-      }
-
-      eventEntity["Title"] = updatedEventData.GetProperty("title").GetString();
-      eventEntity["LongDescription"] = updatedEventData.GetProperty("longDescription").GetString();
-      eventEntity["ShortDescription"] = updatedEventData
-        .GetProperty("shortDescription")
-        .GetString();
-      eventEntity["LocationStreet"] = updatedEventData.GetProperty("locationStreet").GetString();
-      eventEntity["LocationCity"] = updatedEventData.GetProperty("locationCity").GetString();
-      eventEntity["LocationCountry"] = updatedEventData.GetProperty("locationCountry").GetString();
-      eventEntity["CreatorUserID"] = updatedEventData.GetProperty("creatorUserId").GetString();
-      eventEntity["StartDateTime"] = updatedEventData.GetProperty("startDateTime").GetString();
-      eventEntity["EndDateTime"] = updatedEventData.GetProperty("endDateTime").GetString();
-      eventEntity["Image"] = updatedEventData.GetProperty("image").GetString();
-      eventEntity["ImageAlt"] = updatedEventData.GetProperty("imageAlt").GetString();
-
-      try
-      {
-        await client.UpdateEntityAsync(eventEntity, Azure.ETag.All, TableUpdateMode.Replace);
-      }
-      catch (Exception ex)
-      {
-        log.LogError($"Could not update event: {ex.Message}");
-        return new BadRequestObjectResult("Error updating the event.");
-      }
-
-      return new OkObjectResult(
-        new
+        UpdateEntityProperties(entity, updatedEventData);
+        try
         {
-          id = eventEntity.RowKey,
-          title = eventEntity["Title"],
-          longDescription = eventEntity["LongDescription"],
-          shortDescription = eventEntity["ShortDescription"],
-          locationStreet = eventEntity["LocationStreet"],
-          locationCity = eventEntity["LocationCity"],
-          locationCountry = eventEntity["LocationCountry"],
-          creatorUserId = eventEntity["CreatorUserID"],
-          startDateTime = eventEntity["StartDateTime"],
-          endDateTime = eventEntity["EndDateTime"],
-          image = eventEntity["Image"],
-          imageAlt = eventEntity["ImageAlt"],
+          await client.UpdateEntityAsync(entity, Azure.ETag.All, TableUpdateMode.Merge);
         }
-      );
+        catch (Exception ex)
+        {
+          log.LogError($"Could not update event: {ex.Message}");
+          var errorResponse = req.CreateResponse(System.Net.HttpStatusCode.BadRequest);
+          await errorResponse.WriteStringAsync("Error updating the event.");
+          return errorResponse;
+        }
+        var okResponse = req.CreateResponse(System.Net.HttpStatusCode.OK);
+        await okResponse.WriteAsJsonAsync(new { message = "Event updated successfully." });
+        return okResponse;
+      }
+
+      var notFoundResponse = req.CreateResponse(System.Net.HttpStatusCode.NotFound);
+      await notFoundResponse.WriteStringAsync("Event not found.");
+      return notFoundResponse;
+    }
+
+    private static void UpdateEntityProperties(TableEntity entity, JsonElement updatedData)
+    {
+      foreach (var prop in updatedData.EnumerateObject())
+      {
+        switch (prop.Name.ToLowerInvariant())
+        {
+          case "title":
+            entity["Title"] = prop.Value.GetString();
+            break;
+          case "longdescription":
+            entity["LongDescription"] = prop.Value.GetString();
+            break;
+          case "shortdescription":
+            entity["ShortDescription"] = prop.Value.GetString();
+            break;
+          case "locationstreet":
+            entity["LocationStreet"] = prop.Value.GetString();
+            break;
+          case "locationcity":
+            entity["LocationCity"] = prop.Value.GetString();
+            break;
+          case "locationcountry":
+            entity["LocationCountry"] = prop.Value.GetString();
+            break;
+          case "creatoruserid":
+            entity["CreatorUserID"] = prop.Value.GetString();
+            break;
+          case "startdatetime":
+            entity["StartDateTime"] = prop.Value.GetString();
+            break;
+          case "enddatetime":
+            entity["EndDateTime"] = prop.Value.GetString();
+            break;
+          case "image":
+            entity["Image"] = prop.Value.GetString();
+            break;
+          case "imagealt":
+            entity["ImageAlt"] = prop.Value.GetString();
+            break;
+            // Add additional cases as needed for other properties
+        }
+      }
     }
   }
 }

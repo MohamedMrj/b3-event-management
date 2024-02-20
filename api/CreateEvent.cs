@@ -3,34 +3,47 @@ using System.IO;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Azure.Data.Tables;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
+using Microsoft.Extensions.Logging;
 
 namespace B3.Complete.Eventwebb
 {
   public static class CreateEvent
   {
     [Function(nameof(CreateEvent))]
-    public static async Task<IActionResult> Run(
-      [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "event")] HttpRequest req,
-      ILogger log
-    )
+    public static async Task<HttpResponseData> Run(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "event")] HttpRequestData req,
+        FunctionContext executionContext)
     {
-      var requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-      var eventData = JsonSerializer.Deserialize<JsonElement>(requestBody);
+      var log = executionContext.GetLogger("CreateEvent");
+      log.LogInformation("Creating a new event");
+
+      string requestBody;
+      using (var reader = new StreamReader(req.Body))
+      {
+        requestBody = await reader.ReadToEndAsync();
+      }
+
+      JsonElement eventData;
+      try
+      {
+        eventData = JsonSerializer.Deserialize<JsonElement>(requestBody);
+      }
+      catch (JsonException ex)
+      {
+        log.LogError($"JSON parsing error: {ex.Message}");
+        var badRequestResponse = req.CreateResponse(System.Net.HttpStatusCode.BadRequest);
+        await badRequestResponse.WriteStringAsync("Invalid JSON format.");
+        return badRequestResponse;
+      }
 
       var client = new TableClient(DatabaseConfig.ConnectionString, DatabaseConfig.TableName);
-
-      // Retrieve the highest RowKey value
-      int maxRowKey = await GetMaxRowKey(client, log) + 1;
 
       var newEvent = new TableEntity
       {
         PartitionKey = DateTime.UtcNow.ToString("yyyyMM"),
-        RowKey = maxRowKey.ToString(), // Use the next RowKey value
+        RowKey = Guid.NewGuid().ToString(), // Use GUID for RowKey
         ["Title"] = eventData.GetProperty("title").GetString(),
         ["LongDescription"] = eventData.GetProperty("longDescription").GetString(),
         ["ShortDescription"] = eventData.GetProperty("shortDescription").GetString(),
@@ -51,10 +64,11 @@ namespace B3.Complete.Eventwebb
       catch (Exception ex)
       {
         log.LogError($"Could not insert new event: {ex.Message}");
-        return new BadRequestObjectResult("Error creating the event.");
+        var errorResponse = req.CreateResponse(System.Net.HttpStatusCode.BadRequest);
+        await errorResponse.WriteStringAsync("Error creating the event.");
+        return errorResponse;
       }
 
-      // Prepare the response entity to match the specified fields
       var responseEntity = new
       {
         id = newEvent.RowKey,
@@ -71,20 +85,9 @@ namespace B3.Complete.Eventwebb
         imageAlt = newEvent["ImageAlt"],
       };
 
-      return new OkObjectResult(responseEntity);
-    }
-
-    private static async Task<int> GetMaxRowKey(TableClient client, ILogger log)
-    {
-      int maxRowKey = 0;
-      await foreach (var entity in client.QueryAsync<TableEntity>(select: new[] { "RowKey" }))
-      {
-        if (int.TryParse(entity.RowKey, out int currentKey) && currentKey > maxRowKey)
-        {
-          maxRowKey = currentKey;
-        }
-      }
-      return maxRowKey;
+      var okResponse = req.CreateResponse(System.Net.HttpStatusCode.OK);
+      await okResponse.WriteAsJsonAsync(responseEntity);
+      return okResponse;
     }
   }
 }

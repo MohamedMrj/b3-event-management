@@ -1,58 +1,46 @@
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Azure.Data.Tables;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
+using Microsoft.Extensions.Logging;
 
 namespace B3.Complete.Eventwebb
 {
   public static class DeleteEvent
   {
     [Function(nameof(DeleteEvent))]
-    public static async Task<IActionResult> Run(
-      [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "event/{id}")] HttpRequest req,
-      string id,
-      ILogger log
-    )
+    public static async Task<HttpResponseData> Run(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "event/{id}")] HttpRequestData req,
+        string id,
+        FunctionContext executionContext)
     {
+      var log = executionContext.GetLogger("DeleteEvent");
+      log.LogInformation($"Deleting event with ID: {id}");
+
       var client = new TableClient(DatabaseConfig.ConnectionString, DatabaseConfig.TableName);
+      var queryResults = client.QueryAsync<TableEntity>(filter: $"RowKey eq '{id}'");
 
-      // Parse the id from the URL route
-      if (!int.TryParse(id, out int eventId))
+      await foreach (var entity in queryResults)
       {
-        return new BadRequestObjectResult("Invalid event ID");
-      }
-
-      // Construct the filter to retrieve a specific row based on RowKey only
-      var filter = TableClient.CreateQueryFilter($"RowKey eq '{eventId}'");
-
-      var queryResults = client.QueryAsync<TableEntity>(filter);
-
-      var result = new List<TableEntity>();
-
-      await foreach (var page in queryResults.AsPages())
-      {
-        foreach (var entity in page.Values)
+        try
         {
-          result.Add(entity); //https://dev.azure.com/B3Complete/H%C3%B6gskolan%20Dalarna/_git/B3_Eventwebb/pushes <-- Vad är detta?
+          await client.DeleteEntityAsync(entity.PartitionKey, entity.RowKey, Azure.ETag.All);
+          var okResponse = req.CreateResponse(System.Net.HttpStatusCode.OK);
+          await okResponse.WriteStringAsync($"Event with ID: {id} deleted successfully.");
+          return okResponse;
+        }
+        catch (Exception ex)
+        {
+          log.LogError($"Could not delete event: {ex.Message}");
+          var errorResponse = req.CreateResponse(System.Net.HttpStatusCode.InternalServerError);
+          await errorResponse.WriteStringAsync("Error deleting the event.");
+          return errorResponse;
         }
       }
 
-      // Since we're querying based on RowKey only, we expect only one result
-      var eventResult = result.FirstOrDefault();
-
-      if (eventResult == null)
-      {
-        return new NotFoundResult();
-      }
-
-      await client.DeleteEntityAsync(eventResult.PartitionKey, eventResult.RowKey);
-
-      return new OkResult();
+      var notFoundResponse = req.CreateResponse(System.Net.HttpStatusCode.NotFound);
+      await notFoundResponse.WriteStringAsync("Event not found.");
+      return notFoundResponse;
     }
   }
 }
