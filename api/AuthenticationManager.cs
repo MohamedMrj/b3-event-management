@@ -29,6 +29,11 @@ public class UserCredentials
     public required string Password { get; set; }
 }
 
+public class TokenRequest
+{
+    public string Token { get; set; } = string.Empty;
+}
+
 namespace B3.Complete.Eventwebb
 {
     public static class AuthenticationManager
@@ -132,20 +137,23 @@ namespace B3.Complete.Eventwebb
 
 
         [Function(nameof(ValidateToken))]
-        public static IActionResult ValidateToken(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "validateToken")] HttpRequest req)
+        public static async Task<IActionResult> ValidateToken([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "validateToken")] HttpRequest req)
         {
-            if (!req.Headers.ContainsKey("Authorization"))
-                return new BadRequestObjectResult(new { error = "Missing Authorization header." });
+            string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+            var tokenRequest = JsonConvert.DeserializeObject<TokenRequest>(requestBody);
 
-            var token = req.Headers["Authorization"].ToString().Replace("Bearer ", "");
-            var principal = ValidateJwtToken(token);
+            if (tokenRequest == null || string.IsNullOrEmpty(tokenRequest.Token))
+            {
+                return new BadRequestObjectResult(new { error = "Missing token." });
+            }
+
+            var principal = ValidateJwtToken(tokenRequest.Token);
             if (principal == null)
             {
                 return new BadRequestObjectResult(new { error = "Invalid token." });
             }
 
-            // Return a JSON response
+            // Return a JSON response indicating the token is valid
             return new OkObjectResult(new { valid = true, message = "Token is valid." });
         }
 

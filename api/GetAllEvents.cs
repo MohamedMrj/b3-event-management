@@ -1,8 +1,6 @@
 using Azure.Data.Tables;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System.Security.Claims;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 
@@ -15,35 +13,27 @@ namespace B3.Complete.Eventwebb
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = null)] HttpRequest req,
             ILogger log)
         {
-            // Extract and validate the JWT token from the Authorization header
-            if (!req.Headers.ContainsKey("Authorization"))
-            {
-                return new UnauthorizedResult(); // No token provided
-            }
-
-            var token = req.Headers["Authorization"].ToString().Replace("Bearer ", "");
-            if (!AuthenticationManager.TryValidateToken(token, out ClaimsPrincipal? principal) || principal == null)
-            {
-                return new UnauthorizedResult(); // Invalid token or principal is null
-            }
-
-            // Token is valid, proceed with fetching events
+            // Initialize connection to the table storage
             var client = new TableClient(DatabaseConfig.ConnectionString, DatabaseConfig.TableName);
             var queryResults = client.QueryAsync<TableEntity>();
 
+            // List to hold all events
             var eventsList = new List<object>();
 
+            // Iterate through the results and transform each entity to a desired format
             await foreach (var entity in queryResults)
             {
                 var transformedEventData = TransformEntityToEvent(entity);
                 eventsList.Add(transformedEventData);
             }
 
+            // Return the list of events; if no events found, return a NotFound result
             return eventsList.Count > 0 ? new OkObjectResult(eventsList) : new NotFoundResult();
         }
 
         private static object TransformEntityToEvent(TableEntity entity)
         {
+            // Transform each TableEntity to a more friendly object for the response
             return new
             {
                 id = entity.RowKey,
