@@ -19,6 +19,7 @@ mat-toolbar {
   margin: 0 auto;
   align-items: center;
   gap: 1rem;
+  padding: 1rem 0;
 }
 
 .logo-container {
@@ -68,6 +69,7 @@ mat-toolbar {
   display: flex;
   flex-direction: row;
   align-items: center;
+  height: 100%;
 }
 
 /* Footer */

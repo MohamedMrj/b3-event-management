@@ -8,8 +8,8 @@
       <span>Events</span>
     </a>
     <span class="flex-spacer"></span>
-    <div class="signed-in-user">
-      <nav *ngIf="isValidToken">
+    <div *ngIf="isValidToken" class="signed-in-user">
+      <nav>
         <a [routerLink]=" ['/']" class="menu-item">
           <span>Alla Event</span>
         </a>

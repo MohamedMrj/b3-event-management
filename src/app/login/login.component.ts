@@ -39,11 +39,15 @@ export class LoginComponent {
     this.authService.login(loginInfo).subscribe({
       next: (success) => {
         if (success) {
-          // Fullösning för att ladda rätt användare
-          this.router.navigate(['/']);
+          this.loginError = false;
+          this.snackBar.open('Inloggning lyckades!', 'Stäng', {
+            duration: 3000,
+          });
+          // Redirect to home page with a full page refresh
+          this.router.navigate(['/'], { replaceUrl: true });
         } else {
           this.loginError = true;
-          this.snackBar.open('Login failed. Please try again.', 'Close', {
+          this.snackBar.open('Inloggning misslyckades. Försök igen.', 'Stäng', {
             duration: 5000,
           });
         }
