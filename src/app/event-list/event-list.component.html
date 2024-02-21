@@ -15,11 +15,20 @@
       </app-event-card>
     </div>
   </mat-tab>
-
   <mat-tab>
     <ng-template mat-tab-label>
       <mat-icon class="my-events-tab">calendar_month</mat-icon>
       Mina event
+    </ng-template>
+    <div class="events-container">
+      <app-event-card *ngFor="let event of eventList" [event]="event">
+      </app-event-card>
+    </div>
+  </mat-tab>
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <mat-icon class="my-created-events-tab">dashboard</mat-icon>
+      Administrera event
     </ng-template>
     <div class="events-container">
       <app-event-card *ngFor="let event of eventList" [event]="event">
