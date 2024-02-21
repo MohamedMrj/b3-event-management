@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, throwError, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { LoginInfo, LoginResponse } from './login';
@@ -9,15 +9,50 @@ import { jwtDecode } from "jwt-decode";
   providedIn: 'root',
 })
 export class AuthService {
-  constructor(private http: HttpClient) { }
-
   private currentUserSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  public currentUser$: Observable<any> = this.currentUserSubject.asObservable();
+
+  constructor(private http: HttpClient) {
+    this.initializeCurrentUser();
+  }
+
+  private initializeCurrentUser(): void {
+    const token = sessionStorage.getItem('token');
+    if (token) {
+      try {
+        const decodedToken = jwtDecode(token) as any;
+        const user = {
+          expirationTime: decodedToken['exp'],
+          userId: decodedToken['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'],
+          username: decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"],
+          issuedAt: decodedToken['iat'],
+          notValidBefore: decodedToken['nbf'],
+        };
+        this.currentUserSubject.next(user);
+      } catch (error) {
+        console.error('Error initializing user from token', error);
+        sessionStorage.removeItem('token');
+        this.currentUserSubject.next(null);
+      }
+    } else {
+      this.currentUserSubject.next(null);
+    }
+  }
 
   login(loginInfo: LoginInfo): Observable<boolean> {
     return this.http.post<LoginResponse>('api/SignIn', loginInfo).pipe(
       map(response => {
         if (response.token) {
           sessionStorage.setItem('token', response.token);
+          const decodedToken = jwtDecode(response.token) as any;
+          const user = {
+            expirationTime: decodedToken['exp'],
+            userId: decodedToken['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'],
+            username: decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"],
+            issuedAt: decodedToken['iat'],
+            notValidBefore: decodedToken['nbf'],
+          };
+          this.currentUserSubject.next(user);
           return true;
         }
         return false;
@@ -31,6 +66,7 @@ export class AuthService {
 
   logout(): void {
     sessionStorage.removeItem('token');
+    this.currentUserSubject.next(null);
     window.location.href = '/login';
   }
 
@@ -43,8 +79,7 @@ export class AuthService {
     return this.http.post<{ valid: boolean, error?: string }>('api/validateToken', { token: token }).pipe(
       map(response => response),
       catchError(error => {
-        // Instead of throwing an error, return a response indicating the token is invalid
-        console.error('Token validation error', error); // Consider removing or adjusting this log based on your decision
+        console.error('Token validation error', error);
         return of({ valid: false, error: 'Token validation failed' });
       })
     );
@@ -62,27 +97,6 @@ export class AuthService {
       console.error('Error decoding token', error);
       return throwError(() => new Error('Error decoding token'));
     }
-  }
-
-  decodeTokenAndStore(): void {
-    this.decodeToken().subscribe({
-      next: (decodedToken) => {
-        if (decodedToken) { // Check if decodedToken is not null
-          const user = {
-            username: decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"],
-            // Include other properties as needed
-          };
-          this.currentUserSubject.next(user); // Store the mapped user data
-        } else {
-          // Handle the case when decodedToken is null (e.g., user not logged in)
-          this.currentUserSubject.next(null); // You might choose to do nothing or set to null
-        }
-      },
-      error: (err) => {
-        console.error('Error decoding token:', err);
-        this.currentUserSubject.next(null); // Reset on error
-      }
-    });
   }
 
   getCurrentUser(): Observable<any> {

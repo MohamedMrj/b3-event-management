@@ -21,7 +21,7 @@ import { Observable } from 'rxjs';
 export class AppComponent implements OnInit {
   title = 'B3 Eventwebb';
   isValidToken: boolean = false;
-  currentUser$: Observable<any>; // Use the $ suffix to denote an observable
+  currentUser$: Observable<any>;
 
   constructor(
     private titleService: TitleService,
@@ -34,8 +34,6 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.authService.decodeTokenAndStore(); // Decode token and store user data
-
     // Validate token and update isValidToken
     this.authService.validateToken().subscribe({
       next: (response) => this.isValidToken = response.valid,
