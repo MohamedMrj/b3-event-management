@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth.service';
@@ -21,6 +21,7 @@ export class LoginComponent {
   username: string = '';
   password: string = '';
   loginError: boolean = false;
+  passwordMinLength: number = 3;
 
   constructor(
     private authService: AuthService,
@@ -28,7 +29,24 @@ export class LoginComponent {
     private snackBar: MatSnackBar,
   ) { }
 
-  passwordMinLength: number = 3;
+  ngOnInit(): void {
+    this.checkIfLoggedIn();
+  }
+
+  private checkIfLoggedIn(): void {
+    this.authService.validateToken().subscribe({
+      next: (response) => {
+        if (response.valid) {
+          // If the token is valid, redirect to the home page
+          this.router.navigate(['/']);
+        }
+        // If the token is not valid, do nothing and allow the login form to be displayed
+      },
+      error: () => {
+        // Handle error, if needed
+      }
+    });
+  }
 
   onLoginClick(): void {
     const loginInfo: LoginInfo = {
