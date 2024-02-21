@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Location, NgIf, AsyncPipe, DatePipe } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Title, Meta } from '@angular/platform-browser';
+import { Title } from '@angular/platform-browser';
 import { EventService } from '../event.service';
 import { Event } from '../event';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -50,7 +50,6 @@ export class EventDetailComponent implements OnInit {
     private titleService: Title,
     private pageLocation: Location,
     private snackBar: MatSnackBar,
-    private meta: Meta,
   ) { }
 
   ngOnInit() {
@@ -104,22 +103,6 @@ export class EventDetailComponent implements OnInit {
         this.isLoading = false;
         this.titleService.setTitle(foundEvent.title);
         this.eventNotFound = false;
-        this.meta.updateTag({
-          name: 'og:title',
-          content: foundEvent.title,
-        });
-        this.meta.updateTag({
-          name: 'og:url',
-          content: this.pageLocation.path(),
-        });
-        this.meta.updateTag({
-          name: 'og:description',
-          content: foundEvent.shortDescription,
-        });
-        this.meta.updateTag({
-          name: 'og:image',
-          content: foundEvent.image,
-        });
       },
       error: () => {
         this.eventNotFound = true;
