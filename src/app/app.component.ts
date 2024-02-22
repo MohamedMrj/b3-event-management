@@ -10,6 +10,7 @@ import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { AuthService } from './auth.service';
 import { NgIf, AsyncPipe } from '@angular/common';
 import { Observable } from 'rxjs';
+import { UserDetails } from './auth.interfaces';
 
 @Component({
   selector: 'app-root',
@@ -31,7 +32,7 @@ import { Observable } from 'rxjs';
 export class AppComponent implements OnInit {
   title = 'B3 Eventwebb';
   isValidToken: boolean = false;
-  currentUser$: Observable<any>;
+  currentUser$: Observable<UserDetails | null>;
 
   constructor(
     private titleService: TitleService,

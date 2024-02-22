@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Event } from '../event';
+import { Event, OrganizerInfo } from '../event';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { GoogleMapsUrlPipe } from '../google-maps-url.pipe';
 import { LocationFormatPipe } from '../location-format.pipe';
@@ -44,7 +44,7 @@ import { EventService } from '../event.service';
 })
 export class EventCardComponent implements OnInit {
   @Input() event!: Event;
-  organizerInfo$!: Observable<any>;
+  organizerInfo$!: Observable<OrganizerInfo>;
 
   constructor(
     private snackBar: MatSnackBar,

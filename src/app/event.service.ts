@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Event } from './event';
+import { Event, OrganizerInfo } from './event';
 
 @Injectable({
   providedIn: 'root',
 })
 export class EventService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   // Fetch all events
   fetchAllEvents(): Observable<Event[]> {
@@ -40,12 +40,12 @@ export class EventService {
   }
 
   // Fetch the organizer's contact information
-  getOrganizerContactInfo(userId: string): Observable<any> {
+  getOrganizerContactInfo(userId: string): Observable<OrganizerInfo> {
     const headers = new HttpHeaders({
       Authorization: 'Bearer your-auth-token',
     });
 
-    return this.http.get<any>(`/api/user/${userId}`, { headers });
+    return this.http.get<OrganizerInfo>(`/api/user/${userId}`, { headers });
   }
 
   // Helper method to generate HttpHeaders with the Authorization token

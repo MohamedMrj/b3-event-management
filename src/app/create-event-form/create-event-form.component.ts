@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
 import { EventService } from '../event.service';
 import { Event } from '../event';
+import { UserDetails } from '../auth.interfaces';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatButton } from '@angular/material/button';
 import { MatOption } from '@angular/material/core';
@@ -44,7 +45,7 @@ export class CreateEventFormComponent implements OnInit {
   submitted = false;
   isEditMode = false;
   eventId: string = '';
-  currentUser$: Observable<any>;
+  currentUser$: Observable<UserDetails | null>;
 
   event: Event = {
     id: '',
@@ -120,7 +121,7 @@ export class CreateEventFormComponent implements OnInit {
       // Since currentUser$ is an Observable, subscribe to it to get the current user
       // Note: Assuming currentUser$ emits an object that includes userId
       this.currentUser$.subscribe((currentUser) => {
-        this.event.creatorUserId = currentUser.userId; // Assign userId to creatorUserId
+        this.event.creatorUserId = currentUser!.userId; // Assign userId to creatorUserId
 
         // Call createEvent with the modified event object
         this.eventService.createEvent(this.event).subscribe({

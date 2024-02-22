@@ -12,3 +12,8 @@ export interface Event {
   image: string;
   imageAlt: string;
 }
+
+export interface OrganizerInfo {
+  id: string;
+  username: string;
+}

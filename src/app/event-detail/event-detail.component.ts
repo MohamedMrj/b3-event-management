@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { Location, NgIf, AsyncPipe, DatePipe } from '@angular/common';
+import { NgIf, AsyncPipe, DatePipe } from '@angular/common';
 import { switchMap } from 'rxjs/operators';
 import { of, Observable, catchError } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { EventService } from '../event.service';
-import { Event } from '../event';
+import { Event, OrganizerInfo } from '../event';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { GoogleMapsEmbedUrlPipe } from '../google-maps-embed-url.pipe';
 import { SafePipe } from '../safe.pipe';
@@ -44,14 +44,13 @@ export class EventDetailComponent implements OnInit {
   event!: Event;
   isLoading: boolean = true;
   eventNotFound: boolean = false;
-  organizerInfo$!: Observable<any>;
+  organizerInfo$!: Observable<OrganizerInfo | null>;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private eventService: EventService,
     private titleService: Title,
-    private pageLocation: Location,
     private snackBar: MatSnackBar,
   ) { }
 
