@@ -20,9 +20,9 @@ namespace B3.Complete.Eventwebb
 
             var client = new TableClient(DatabaseConfig.ConnectionString, DatabaseConfig.EventTable);
             var filter = $"RowKey eq '{id}'";
-            var queryResults = client.QueryAsync<TableEntity>(filter: filter);
+            var queryResults = client.QueryAsync<EventEntity>(filter: filter);
 
-            TableEntity? eventEntity = null;
+            EventEntity? eventEntity = null;
             await foreach (var entity in queryResults)
             {
                 eventEntity = entity;
@@ -36,31 +36,10 @@ namespace B3.Complete.Eventwebb
                 return notFoundResponse;
             }
 
-            var transformedEventData = TransformEntityToEvent(eventEntity);
-
             var okResponse = req.CreateResponse(System.Net.HttpStatusCode.OK);
-            await okResponse.WriteAsJsonAsync(transformedEventData);
+            await okResponse.WriteAsJsonAsync(eventEntity);
 
             return okResponse;
-        }
-
-        private static object TransformEntityToEvent(TableEntity entity)
-        {
-            return new
-            {
-                id = entity.RowKey,
-                title = entity["Title"],
-                longDescription = entity["LongDescription"],
-                shortDescription = entity["ShortDescription"],
-                locationStreet = entity["LocationStreet"],
-                locationCity = entity["LocationCity"],
-                locationCountry = entity["LocationCountry"],
-                creatorUserId = entity["CreatorUserId"],
-                startDateTime = entity["StartDateTime"].ToString(),
-                endDateTime = entity["EndDateTime"].ToString(),
-                image = entity["Image"],
-                imageAlt = entity["ImageAlt"],
-            };
         }
     }
 }

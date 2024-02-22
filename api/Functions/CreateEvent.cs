@@ -3,7 +3,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using System.Threading.Tasks;
-using System.Collections.Generic;
+using System.IO;
 using System.Text.Json;
 
 namespace B3.Complete.Eventwebb
@@ -18,16 +18,20 @@ namespace B3.Complete.Eventwebb
             var log = executionContext.GetLogger("CreateEvent");
             log.LogInformation("Creating a new event");
 
-            string requestBody;
-            using (var reader = new StreamReader(req.Body))
-            {
-                requestBody = await reader.ReadToEndAsync();
-            }
-
-            JsonElement eventData;
+            EventEntity? newEvent;
             try
             {
-                eventData = JsonSerializer.Deserialize<JsonElement>(requestBody);
+                newEvent = await JsonSerializer.DeserializeAsync<EventEntity>(req.Body);
+
+                if (newEvent == null)
+                {
+                    var badRequestResponse = req.CreateResponse(System.Net.HttpStatusCode.BadRequest);
+                    await badRequestResponse.WriteStringAsync("Request body is empty or invalid.");
+                    return badRequestResponse;
+                }
+
+                newEvent.PartitionKey = DateTime.UtcNow.ToString("yyyyMM");
+                newEvent.RowKey = Guid.NewGuid().ToString();
             }
             catch (JsonException ex)
             {
@@ -38,23 +42,6 @@ namespace B3.Complete.Eventwebb
             }
 
             var client = new TableClient(DatabaseConfig.ConnectionString, DatabaseConfig.EventTable);
-
-            var newEvent = new TableEntity
-            {
-                PartitionKey = DateTime.UtcNow.ToString("yyyyMM"),
-                RowKey = Guid.NewGuid().ToString(), // Use GUID for RowKey
-                ["Title"] = eventData.GetProperty("title").GetString(),
-                ["LongDescription"] = eventData.GetProperty("longDescription").GetString(),
-                ["ShortDescription"] = eventData.GetProperty("shortDescription").GetString(),
-                ["LocationStreet"] = eventData.GetProperty("locationStreet").GetString(),
-                ["LocationCity"] = eventData.GetProperty("locationCity").GetString(),
-                ["LocationCountry"] = eventData.GetProperty("locationCountry").GetString(),
-                ["CreatorUserId"] = eventData.GetProperty("creatorUserId").GetString(),
-                ["StartDateTime"] = eventData.GetProperty("startDateTime").GetString(),
-                ["EndDateTime"] = eventData.GetProperty("endDateTime").GetString(),
-                ["Image"] = eventData.GetProperty("image").GetString(),
-                ["ImageAlt"] = eventData.GetProperty("imageAlt").GetString(),
-            };
 
             try
             {
@@ -68,24 +55,8 @@ namespace B3.Complete.Eventwebb
                 return errorResponse;
             }
 
-            var responseEntity = new
-            {
-                id = newEvent.RowKey,
-                title = newEvent["Title"],
-                longDescription = newEvent["LongDescription"],
-                shortDescription = newEvent["ShortDescription"],
-                locationStreet = newEvent["LocationStreet"],
-                locationCity = newEvent["LocationCity"],
-                locationCountry = newEvent["LocationCountry"],
-                creatorUserId = newEvent["CreatorUserId"],
-                startDateTime = newEvent["StartDateTime"],
-                endDateTime = newEvent["EndDateTime"],
-                image = newEvent["Image"],
-                imageAlt = newEvent["ImageAlt"],
-            };
-
             var okResponse = req.CreateResponse(System.Net.HttpStatusCode.OK);
-            await okResponse.WriteAsJsonAsync(responseEntity);
+            await okResponse.WriteAsJsonAsync(newEvent);
             return okResponse;
         }
     }

@@ -20,39 +20,19 @@ namespace B3.Complete.Eventwebb
 
             var client = new TableClient(DatabaseConfig.ConnectionString, DatabaseConfig.EventTable);
 
-            var eventsList = new List<object>();
+            var eventsList = new List<EventEntity>();
             var filter = $"CreatorUserId eq '{creatorUserId}'";
-            var queryResults = client.QueryAsync<TableEntity>(filter: filter);
+            var queryResults = client.QueryAsync<EventEntity>(filter: filter);
 
             await foreach (var entity in queryResults)
             {
-                var transformedEventData = TransformEntityToEvent(entity);
-                eventsList.Add(transformedEventData);
+                eventsList.Add(entity);
             }
 
             var response = req.CreateResponse(System.Net.HttpStatusCode.OK);
             await response.WriteAsJsonAsync(eventsList);
 
             return response;
-        }
-
-        private static object TransformEntityToEvent(TableEntity entity)
-        {
-            return new
-            {
-                id = entity.RowKey,
-                title = entity["Title"],
-                longDescription = entity["LongDescription"],
-                shortDescription = entity["ShortDescription"],
-                locationStreet = entity["LocationStreet"],
-                locationCity = entity["LocationCity"],
-                locationCountry = entity["LocationCountry"],
-                creatorUserId = entity["CreatorUserId"],
-                startDateTime = entity["StartDateTime"].ToString(),
-                endDateTime = entity["EndDateTime"].ToString(),
-                image = entity["Image"],
-                imageAlt = entity["ImageAlt"],
-            };
         }
     }
 }

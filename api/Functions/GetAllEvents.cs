@@ -15,17 +15,16 @@ namespace B3.Complete.Eventwebb
             FunctionContext executionContext)
         {
             var log = executionContext.GetLogger(nameof(GetAllEvents));
-            log.LogInformation($"Getting all events.");
+            log.LogInformation("Getting all events.");
 
             var client = new TableClient(DatabaseConfig.ConnectionString, DatabaseConfig.EventTable);
-            var queryResults = client.QueryAsync<TableEntity>();
+            var queryResults = client.QueryAsync<EventEntity>();
 
-            var eventsList = new List<object>();
+            var eventsList = new List<EventEntity>();
 
             await foreach (var entity in queryResults)
             {
-                var transformedEventData = TransformEntityToEvent(entity);
-                eventsList.Add(transformedEventData);
+                eventsList.Add(entity);
             }
 
             var response = req.CreateResponse(System.Net.HttpStatusCode.OK);
@@ -40,25 +39,6 @@ namespace B3.Complete.Eventwebb
             }
 
             return response;
-        }
-
-        private static object TransformEntityToEvent(TableEntity entity)
-        {
-            return new
-            {
-                id = entity.RowKey,
-                title = entity["Title"],
-                longDescription = entity["LongDescription"],
-                shortDescription = entity["ShortDescription"],
-                locationStreet = entity["LocationStreet"],
-                locationCity = entity["LocationCity"],
-                locationCountry = entity["LocationCountry"],
-                creatorUserId = entity["CreatorUserId"],
-                startDateTime = entity["StartDateTime"].ToString(),
-                endDateTime = entity["EndDateTime"].ToString(),
-                image = entity["Image"],
-                imageAlt = entity["ImageAlt"],
-            };
         }
     }
 }
