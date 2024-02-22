@@ -38,7 +38,7 @@ namespace B3.Complete.Eventwebb
         return badRequestResponse;
       }
 
-      var client = new TableClient(DatabaseConfig.ConnectionString, DatabaseConfig.TableName);
+      var client = new TableClient(DatabaseConfig.ConnectionString, DatabaseConfig.EventTable);
 
       var newEvent = new TableEntity
       {

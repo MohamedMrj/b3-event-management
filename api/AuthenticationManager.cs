@@ -39,7 +39,7 @@ namespace B3.Complete.Eventwebb
     public static class AuthenticationManager
     {
         private static readonly string secretKey = "ZczdEdVxhn78Y3dF7v67HfzhVT8fzDF6ddGT4UeTC6zRK9gL7Kxrt6VMogqmCwQw";
-        private static readonly TableClient usersTable = new TableClient(DatabaseConfig.ConnectionString, DatabaseConfig.TableNameUsersTest);
+        private static readonly TableClient usersTable = new TableClient(DatabaseConfig.ConnectionString, DatabaseConfig.UserTable);
 
         [Function(nameof(CreateUser))]
         public static async Task<HttpResponseData> CreateUser([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "createUser")] HttpRequestData req, FunctionContext context)

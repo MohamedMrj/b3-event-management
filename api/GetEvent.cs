@@ -17,7 +17,7 @@ namespace B3.Complete.Eventwebb
       var log = executionContext.GetLogger(nameof(GetEvent));
       log.LogInformation($"Getting event with ID: {id}");
 
-      var client = new TableClient(DatabaseConfig.ConnectionString, DatabaseConfig.TableName);
+      var client = new TableClient(DatabaseConfig.ConnectionString, DatabaseConfig.EventTable);
 
       // Directly use the id in the filter without parsing it
       var filter = $"RowKey eq '{id}'";

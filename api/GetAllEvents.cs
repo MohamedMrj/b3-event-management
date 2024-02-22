@@ -15,7 +15,7 @@ namespace B3.Complete.Eventwebb
             ILogger log)
         {
             // Directly proceed with fetching events without token validation
-            var client = new TableClient(DatabaseConfig.ConnectionString, DatabaseConfig.TableName);
+            var client = new TableClient(DatabaseConfig.ConnectionString, DatabaseConfig.EventTable);
             var queryResults = client.QueryAsync<TableEntity>();
 
             var eventsList = new List<object>();

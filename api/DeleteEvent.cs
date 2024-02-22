@@ -17,7 +17,7 @@ namespace B3.Complete.Eventwebb
       var log = executionContext.GetLogger("DeleteEvent");
       log.LogInformation($"Deleting event with ID: {id}");
 
-      var client = new TableClient(DatabaseConfig.ConnectionString, DatabaseConfig.TableName);
+      var client = new TableClient(DatabaseConfig.ConnectionString, DatabaseConfig.EventTable);
       var queryResults = client.QueryAsync<TableEntity>(filter: $"RowKey eq '{id}'");
 
       await foreach (var entity in queryResults)
