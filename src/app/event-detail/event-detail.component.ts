@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Location, NgIf, AsyncPipe, DatePipe } from '@angular/common';
+import { switchMap } from 'rxjs/operators';
+import { of, Observable, catchError } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { EventService } from '../event.service';
@@ -42,7 +44,7 @@ export class EventDetailComponent implements OnInit {
   event!: Event;
   isLoading: boolean = true;
   eventNotFound: boolean = false;
-  organizerContactInfo: any;
+  organizerInfo$!: Observable<any>;
 
   constructor(
     private route: ActivatedRoute,
@@ -51,7 +53,7 @@ export class EventDetailComponent implements OnInit {
     private titleService: Title,
     private pageLocation: Location,
     private snackBar: MatSnackBar,
-  ) { }
+  ) {}
 
   ngOnInit() {
     // Check if user is redirected after creating or updating an event
@@ -80,8 +82,8 @@ export class EventDetailComponent implements OnInit {
         this.router.navigate([], {
           relativeTo: this.route,
           queryParams: queryParams,
-          queryParamsHandling: '', // remove to keep other query params
-          replaceUrl: true, // does not add this navigation to history
+          queryParamsHandling: '',
+          replaceUrl: true,
         });
       }
     });
@@ -98,18 +100,27 @@ export class EventDetailComponent implements OnInit {
 
   fetchEvent(eventId: string) {
     this.isLoading = true;
-    this.eventService.fetchEventById(eventId).subscribe({
-      next: (foundEvent) => {
-        this.event = foundEvent;
-        this.isLoading = false;
-        this.titleService.setTitle(foundEvent.title);
-        this.eventNotFound = false;
-      },
-      error: () => {
-        this.eventNotFound = true;
-        this.isLoading = false;
-      },
-    });
+    this.eventService
+      .fetchEventById(eventId)
+      .pipe(
+        switchMap((foundEvent) => {
+          this.event = foundEvent;
+          this.titleService.setTitle(foundEvent.title);
+          this.isLoading = false;
+          this.eventNotFound = false;
+          return this.eventService.getOrganizerContactInfo(
+            foundEvent.creatorUserId,
+          );
+        }),
+        catchError((error) => {
+          this.isLoading = false;
+          this.eventNotFound = true;
+          return of(null);
+        }),
+      )
+      .subscribe((info) => {
+        this.organizerInfo$ = of(info);
+      });
   }
 
   navigateToEditEvent() {

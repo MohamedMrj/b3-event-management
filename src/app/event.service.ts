@@ -39,9 +39,12 @@ export class EventService {
     return this.http.delete<void>(`/api/event/${eventId}`, { headers });
   }
 
-  // Get organizer contact information
+  // Fetch the organizer's contact information
   getOrganizerContactInfo(userId: string): Observable<any> {
-    const headers = this.getAuthHeaders();
+    const headers = new HttpHeaders({
+      Authorization: 'Bearer your-auth-token',
+    });
+
     return this.http.get<any>(`/api/user/${userId}`, { headers });
   }
 

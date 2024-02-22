@@ -31,7 +31,10 @@
         <div class="event-detail-body-right-item">
           <div class="event-info-row">
             <mat-icon>person</mat-icon>
-            <span><strong>Skapad av:</strong> {{ event.creatorUserId }}</span>
+            <span>
+              <strong>Skapad av:</strong>
+              {{ (organizerInfo$ | async)?.username }}
+            </span>
           </div>
         </div>
         <div class="event-detail-body-right-item">

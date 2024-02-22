@@ -10,7 +10,7 @@
     </mat-card-title>
     <mat-card-subtitle
       ><strong style="color: black">Skapad av:</strong>
-      {{ event.creatorUserId }}</mat-card-subtitle
+      {{ (organizerInfo$ | async)?.username }}</mat-card-subtitle
     >
   </mat-card-header>
   <mat-card-content>

@@ -1,11 +1,12 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 import { Event } from '../event';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { GoogleMapsUrlPipe } from '../google-maps-url.pipe';
 import { LocationFormatPipe } from '../location-format.pipe';
 import { MatButton } from '@angular/material/button';
 import { MatDivider } from '@angular/material/divider';
-import { NgIf, DatePipe } from '@angular/common';
+import { NgIf, DatePipe, AsyncPipe } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
 import {
@@ -16,6 +17,7 @@ import {
   MatCardContent,
   MatCardActions,
 } from '@angular/material/card';
+import { EventService } from '../event.service';
 
 @Component({
   selector: 'app-event-card',
@@ -24,6 +26,7 @@ import {
   standalone: true,
   imports: [
     MatCard,
+    AsyncPipe,
     RouterLink,
     MatCardHeader,
     MatCardTitle,
@@ -41,8 +44,20 @@ import {
 })
 export class EventCardComponent {
   @Input() event!: Event;
+  organizerInfo$!: Observable<any>;
 
-  constructor(private snackBar: MatSnackBar) {}
+  constructor(
+    private snackBar: MatSnackBar,
+    private eventService: EventService,
+  ) {}
+
+  ngOnInit() {
+    if (this.event && this.event.creatorUserId) {
+      this.organizerInfo$ = this.eventService.getOrganizerContactInfo(
+        this.event.creatorUserId,
+      );
+    }
+  }
 
   copyToClipboard(eventId: string | undefined): void {
     if (!eventId) {
