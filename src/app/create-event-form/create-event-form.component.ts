@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
 import { EventService } from '../event.service';
 import { Event } from '../event';
@@ -15,7 +16,8 @@ import {
   MatHint,
 } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
-import { NgIf, NgFor } from '@angular/common';
+import { NgIf, NgFor, AsyncPipe } from '@angular/common';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-create-event-form',
@@ -24,6 +26,7 @@ import { NgIf, NgFor } from '@angular/common';
   standalone: true,
   imports: [
     NgIf,
+    AsyncPipe,
     FormsModule,
     MatFormField,
     MatLabel,
@@ -41,6 +44,7 @@ export class CreateEventFormComponent implements OnInit {
   submitted = false;
   isEditMode = false;
   eventId: string = '';
+  currentUser$: Observable<any>;
 
   event: Event = {
     id: '',
@@ -71,7 +75,10 @@ export class CreateEventFormComponent implements OnInit {
     private route: ActivatedRoute,
     private eventService: EventService,
     private snackBar: MatSnackBar,
-  ) { }
+    public authService: AuthService,
+  ) {
+    this.currentUser$ = this.authService.getCurrentUser();
+  }
 
   ngOnInit() {
     this.route.paramMap.subscribe((params) => {
@@ -108,7 +115,33 @@ export class CreateEventFormComponent implements OnInit {
       this.event.endDateTime = new Date(this.event.endDateTime).toISOString();
     }
 
-    if (this.isEditMode && this.event.id) {
+    // Handle event creation
+    if (!this.isEditMode) {
+      // Since currentUser$ is an Observable, subscribe to it to get the current user
+      // Note: Assuming currentUser$ emits an object that includes userId
+      this.currentUser$.subscribe((currentUser) => {
+        this.event.creatorUserId = currentUser.userId; // Assign userId to creatorUserId
+
+        // Call createEvent with the modified event object
+        this.eventService.createEvent(this.event).subscribe({
+          next: (createdEvent) => {
+            console.log('Event created successfully:', createdEvent);
+            this.router.navigate(['/event', createdEvent.id], {
+              queryParams: { eventCreated: 'true' },
+            });
+          },
+          error: (error) => {
+            console.error('Error creating event:', error);
+            this.snackBar.open('Error creating event', 'Close', {
+              duration: 3000,
+            });
+            this.submitted = false;
+          },
+        });
+      });
+    }
+    // Handle event update
+    else if (this.isEditMode && this.event.id) {
       this.eventService.updateEvent(this.event.id, this.event).subscribe({
         next: (updatedEvent) => {
           console.log('Event updated successfully:', updatedEvent);
@@ -119,22 +152,6 @@ export class CreateEventFormComponent implements OnInit {
         error: (error) => {
           console.error('Error updating event:', error);
           this.snackBar.open('Error updating event', 'Close', {
-            duration: 3000,
-          });
-          this.submitted = false;
-        },
-      });
-    } else {
-      this.eventService.createEvent(this.event).subscribe({
-        next: (createdEvent) => {
-          console.log('Event created successfully:', createdEvent);
-          this.router.navigate(['/event', createdEvent.id], {
-            queryParams: { eventCreated: 'true' },
-          });
-        },
-        error: (error) => {
-          console.error('Error creating event:', error);
-          this.snackBar.open('Error creating event', 'Close', {
             duration: 3000,
           });
           this.submitted = false;

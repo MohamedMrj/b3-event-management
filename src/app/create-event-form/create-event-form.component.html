@@ -1,90 +1,199 @@
 <form *ngIf="event" (ngSubmit)="onSubmit()" #createEventForm="ngForm">
+  <span>{{ (currentUser$ | async)?.userId }}</span>
   <div class="form-group">
     <mat-form-field>
       <mat-label>Titel</mat-label>
-      <input matInput type="text" class="form-control" id="title" required [maxlength]="titleMaxLength"
-        [(ngModel)]="event.title" name="title" #title="ngModel" placeholder="Titel" />
+      <input
+        matInput
+        type="text"
+        class="form-control"
+        id="title"
+        required
+        [maxlength]="titleMaxLength"
+        [(ngModel)]="event.title"
+        name="title"
+        #title="ngModel"
+        placeholder="Titel"
+      />
       <mat-icon matSuffix>title</mat-icon>
-      <mat-hint align="end">{{ title?.value?.length || 0 }}/{{ titleMaxLength }}</mat-hint>
+      <mat-hint align="end"
+        >{{ title?.value?.length || 0 }}/{{ titleMaxLength }}</mat-hint
+      >
     </mat-form-field>
   </div>
   <div class="form-group">
     <mat-form-field>
       <mat-label>Kort beskrivning</mat-label>
-      <input matInput type="text" class="form-control" id="shortDescription" required maxlength="100"
-        [(ngModel)]="event.shortDescription" name="shortDescription" #shortDescription="ngModel"
-        placeholder="Kort beskrivning" />
+      <input
+        matInput
+        type="text"
+        class="form-control"
+        id="shortDescription"
+        required
+        maxlength="100"
+        [(ngModel)]="event.shortDescription"
+        name="shortDescription"
+        #shortDescription="ngModel"
+        placeholder="Kort beskrivning"
+      />
       <mat-icon matSuffix>short_text</mat-icon>
-      <mat-hint align="end">{{ shortDescription?.value?.length || 0 }}/{{
-        shortDescriptionMaxLength
-        }}</mat-hint>
+      <mat-hint align="end"
+        >{{ shortDescription?.value?.length || 0 }}/{{
+          shortDescriptionMaxLength
+        }}</mat-hint
+      >
     </mat-form-field>
   </div>
   <div class="form-group">
     <mat-form-field>
       <mat-label>Startdatum</mat-label>
-      <input matInput type="datetime-local" class="form-control" id="startDateTime" required
-        [(ngModel)]="event.startDateTime" name="startDateTime" />
+      <input
+        matInput
+        type="datetime-local"
+        class="form-control"
+        id="startDateTime"
+        required
+        [(ngModel)]="event.startDateTime"
+        name="startDateTime"
+      />
       <mat-icon matSuffix>event</mat-icon>
     </mat-form-field>
     <mat-form-field>
       <mat-label>Slutdatum</mat-label>
-      <input matInput type="datetime-local" class="form-control" id="endDateTime" required
-        [(ngModel)]="event.endDateTime" name="endDateTime" />
+      <input
+        matInput
+        type="datetime-local"
+        class="form-control"
+        id="endDateTime"
+        required
+        [(ngModel)]="event.endDateTime"
+        name="endDateTime"
+      />
       <mat-icon matSuffix>event</mat-icon>
     </mat-form-field>
   </div>
   <div class="form-group">
     <mat-form-field>
       <mat-label>Adress</mat-label>
-      <input matInput type="text" class="form-control" id="street" maxlength="30" [(ngModel)]="event.locationStreet"
-        name="street" #locationStreet="ngModel" placeholder="Adress" data-1p-ignore />
+      <input
+        matInput
+        type="text"
+        class="form-control"
+        id="street"
+        maxlength="30"
+        [(ngModel)]="event.locationStreet"
+        name="street"
+        #locationStreet="ngModel"
+        placeholder="Adress"
+        data-1p-ignore
+      />
       <mat-icon matSuffix>signpost</mat-icon>
     </mat-form-field>
     <mat-form-field>
       <mat-label>Stad</mat-label>
-      <input matInput type="text" class="form-control" id="city" required maxlength="30"
-        [(ngModel)]="event.locationCity" name="city" #locationCity="ngModel" placeholder="Stad" data-1p-ignore />
+      <input
+        matInput
+        type="text"
+        class="form-control"
+        id="city"
+        required
+        maxlength="30"
+        [(ngModel)]="event.locationCity"
+        name="city"
+        #locationCity="ngModel"
+        placeholder="Stad"
+        data-1p-ignore
+      />
       <mat-icon matSuffix>locationCity</mat-icon>
     </mat-form-field>
     <mat-form-field>
       <mat-label>Land</mat-label>
-      <input matInput type="text" class="form-control" id="country" required maxlength="50"
-        [(ngModel)]="event.locationCountry" name="country" #locationCountry="ngModel" placeholder="Land"
-        data-1p-ignore />
+      <input
+        matInput
+        type="text"
+        class="form-control"
+        id="country"
+        required
+        maxlength="50"
+        [(ngModel)]="event.locationCountry"
+        name="country"
+        #locationCountry="ngModel"
+        placeholder="Land"
+        data-1p-ignore
+      />
       <mat-icon matSuffix>public</mat-icon>
     </mat-form-field>
   </div>
   <div class="form-group">
     <mat-form-field>
       <mat-label>Bild</mat-label>
-      <input matInput type="text" class="form-control" id="image" required [(ngModel)]="event.image" name="image"
-        placeholder="Bild" />
+      <input
+        matInput
+        type="text"
+        class="form-control"
+        id="image"
+        required
+        [(ngModel)]="event.image"
+        name="image"
+        placeholder="Bild"
+      />
       <mat-icon matSuffix>image</mat-icon>
     </mat-form-field>
     <mat-form-field>
       <mat-label>Beskrivning av bild</mat-label>
       <mat-hint>Enter a description for the event image</mat-hint>
-      <input matInput type="text" class="form-control" id="imageAlt" required maxlength="100"
-        [(ngModel)]="event.imageAlt" name="imageAlt" #imageAlt="ngModel" placeholder="Beskrivning av bild" />
+      <input
+        matInput
+        type="text"
+        class="form-control"
+        id="imageAlt"
+        required
+        maxlength="100"
+        [(ngModel)]="event.imageAlt"
+        name="imageAlt"
+        #imageAlt="ngModel"
+        placeholder="Beskrivning av bild"
+      />
       <mat-icon matSuffix>accessibility_new</mat-icon>
-      <mat-hint align="end">{{ imageAlt?.value?.length || 0 }}/{{ imageAltMaxLength }}</mat-hint>
+      <mat-hint align="end"
+        >{{ imageAlt?.value?.length || 0 }}/{{ imageAltMaxLength }}</mat-hint
+      >
     </mat-form-field>
   </div>
   <div class="form-group">
     <mat-form-field>
-      <mat-hint>Stöd för <a href="https://www.markdownguide.org/basic-syntax/" target="_blank">Markdown</a>
-        finns.</mat-hint>
+      <mat-hint
+        >Stöd för
+        <a href="https://www.markdownguide.org/basic-syntax/" target="_blank"
+          >Markdown</a
+        >
+        finns.</mat-hint
+      >
       <mat-label>Fullständig beskrivning</mat-label>
-      <textarea matInput class="form-control" id="longDescription" maxlength="10000" [(ngModel)]="event.longDescription"
-        name="longDescription" #longDescription="ngModel" placeholder="Fullständig beskrivning"></textarea>
-      <mat-hint align="end">{{ longDescription?.value?.length || 0 }}/{{
-        longDescriptionMaxLength
-        }}</mat-hint>
+      <textarea
+        matInput
+        class="form-control"
+        id="longDescription"
+        maxlength="10000"
+        [(ngModel)]="event.longDescription"
+        name="longDescription"
+        #longDescription="ngModel"
+        placeholder="Fullständig beskrivning"
+      ></textarea>
+      <mat-hint align="end"
+        >{{ longDescription?.value?.length || 0 }}/{{
+          longDescriptionMaxLength
+        }}</mat-hint
+      >
     </mat-form-field>
   </div>
   <div class="form-group">
-    <button mat-raised-button color="primary" type="submit" [disabled]="!createEventForm.form.valid">
+    <button
+      mat-raised-button
+      color="primary"
+      type="submit"
+      [disabled]="!createEventForm.form.valid"
+    >
       {{ isEditMode ? 'Uppdatera event' : 'Skapa event' }}
     </button>
   </div>
