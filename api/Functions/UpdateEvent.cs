@@ -1,11 +1,10 @@
-using System;
-using System.IO;
-using System.Text.Json;
-using System.Threading.Tasks;
 using Azure.Data.Tables;
+using Microsoft.Extensions.Logging;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
-using Microsoft.Extensions.Logging;
+using System.Threading.Tasks;
+using System.Collections.Generic;
+using System.Text.Json;
 
 namespace B3.Complete.Eventwebb
 {
@@ -100,7 +99,6 @@ namespace B3.Complete.Eventwebb
                     case "imagealt":
                         entity["ImageAlt"] = prop.Value.GetString();
                         break;
-                        // Add additional cases as needed for other properties
                 }
             }
         }

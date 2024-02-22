@@ -7,10 +7,10 @@ using System.Collections.Generic;
 
 namespace B3.Complete.Eventwebb
 {
-    public class GetEventsByCreator
+    public static class GetEventsByCreator
     {
         [Function(nameof(GetEventsByCreator))]
-        public async Task<HttpResponseData> Run(
+        public static async Task<HttpResponseData> Run(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "events/creator/{creatorUserId}")] HttpRequestData req,
             string creatorUserId,
             FunctionContext executionContext)

@@ -1,16 +1,17 @@
-using Azure;
 using Azure.Data.Tables;
+using Microsoft.Extensions.Logging;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
-using Newtonsoft.Json;
-using Microsoft.IdentityModel.Tokens;
+using System.Threading.Tasks;
+using System.Collections.Generic;
+using Azure;
 using Microsoft.IdentityModel.JsonWebTokens;
+using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 using System.Net;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
-using System.IO;
 
 public class UserEntityTest : ITableEntity
 {
@@ -42,8 +43,13 @@ namespace B3.Complete.Eventwebb
         private static readonly TableClient usersTable = new TableClient(DatabaseConfig.ConnectionString, DatabaseConfig.UserTable);
 
         [Function(nameof(CreateUser))]
-        public static async Task<HttpResponseData> CreateUser([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "createUser")] HttpRequestData req, FunctionContext context)
+        public static async Task<HttpResponseData> CreateUser(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "createUser")] HttpRequestData req,
+            FunctionContext executionContext)
         {
+            var log = executionContext.GetLogger("AuthenticationManager");
+            log.LogInformation("Creating user.");
+
             var response = req.CreateResponse(HttpStatusCode.OK);
             string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
             var data = JsonConvert.DeserializeObject<UserCredentials>(requestBody);
@@ -77,8 +83,13 @@ namespace B3.Complete.Eventwebb
         }
 
         [Function(nameof(SignIn))]
-        public static async Task<HttpResponseData> SignIn([HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequestData req, FunctionContext context)
+        public static async Task<HttpResponseData> SignIn(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequestData req,
+            FunctionContext executionContext)
         {
+            var log = executionContext.GetLogger("AuthenticationManager");
+            log.LogInformation("Signing in user.");
+
             var response = req.CreateResponse(HttpStatusCode.OK);
             response.Headers.Add("Content-Type", "application/json");
             string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
@@ -125,8 +136,13 @@ namespace B3.Complete.Eventwebb
         }
 
         [Function(nameof(ValidateToken))]
-        public static async Task<HttpResponseData> ValidateToken([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "validateToken")] HttpRequestData req, FunctionContext context)
+        public static async Task<HttpResponseData> ValidateToken(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "validateToken")] HttpRequestData req,
+            FunctionContext executionContext)
         {
+            var log = executionContext.GetLogger("AuthenticationManager");
+            log.LogInformation("Validating user token.");
+
             var response = req.CreateResponse(HttpStatusCode.OK);
             response.Headers.Add("Content-Type", "application/json");
             string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
