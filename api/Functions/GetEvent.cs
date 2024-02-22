@@ -1,8 +1,9 @@
-using System.Threading.Tasks;
 using Azure.Data.Tables;
+using Microsoft.Extensions.Logging;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
-using Microsoft.Extensions.Logging;
+using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace B3.Complete.Eventwebb
 {
@@ -18,8 +19,6 @@ namespace B3.Complete.Eventwebb
       log.LogInformation($"Getting event with ID: {id}");
 
       var client = new TableClient(DatabaseConfig.ConnectionString, DatabaseConfig.EventTable);
-
-      // Directly use the id in the filter without parsing it
       var filter = $"RowKey eq '{id}'";
       var queryResults = client.QueryAsync<TableEntity>(filter: filter);
 
@@ -27,7 +26,7 @@ namespace B3.Complete.Eventwebb
       await foreach (var entity in queryResults)
       {
         eventEntity = entity;
-        break; // Break after getting the first result
+        break;
       }
 
       if (eventEntity == null)
@@ -41,6 +40,7 @@ namespace B3.Complete.Eventwebb
 
       var okResponse = req.CreateResponse(System.Net.HttpStatusCode.OK);
       await okResponse.WriteAsJsonAsync(transformedEventData);
+
       return okResponse;
     }
 
