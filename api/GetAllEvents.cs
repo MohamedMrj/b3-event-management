@@ -40,7 +40,7 @@ namespace B3.Complete.Eventwebb
                 locationStreet = entity["LocationStreet"],
                 locationCity = entity["LocationCity"],
                 locationCountry = entity["LocationCountry"],
-                creatorUserId = entity["CreatorUserID"],
+                creatorUserId = entity["CreatorUserId"],
                 startDateTime = entity["StartDateTime"].ToString(),
                 endDateTime = entity["EndDateTime"].ToString(),
                 image = entity["Image"],

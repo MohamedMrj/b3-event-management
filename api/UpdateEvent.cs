@@ -86,7 +86,7 @@ namespace B3.Complete.Eventwebb
             entity["LocationCountry"] = prop.Value.GetString();
             break;
           case "creatoruserid":
-            entity["CreatorUserID"] = prop.Value.GetString();
+            entity["CreatorUserId"] = prop.Value.GetString();
             break;
           case "startdatetime":
             entity["StartDateTime"] = prop.Value.GetString();
