@@ -61,9 +61,7 @@
         <div class="event-detail-body-right-item">
           <div class="event-info-row">
             <mat-icon>location_on</mat-icon>
-            <a [href]="event | googleMapsUrl" target="_blank">{{
-              event | locationFormat
-            }}</a>
+            <a [href]="event | googleMapsUrl" target="_blank">{{ event | locationFormat }}</a>
           </div>
           <div class="googleMapsEmbed">
             <iframe

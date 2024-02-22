@@ -22,12 +22,8 @@
         <strong>Startar:</strong> {{ event.startDateTime | date: 'longDate' }}
         {{ event.startDateTime | date: 'shortTime' }}<br />
         <strong>Slutar:</strong>
-        <span style="display: none" #startDate>{{
-          event.startDateTime | date: 'shortDate'
-        }}</span>
-        <span style="display: none" #endDate>{{
-          event.endDateTime | date: 'shortDate'
-        }}</span>
+        <span style="display: none" #startDate>{{ event.startDateTime | date: 'shortDate' }}</span>
+        <span style="display: none" #endDate>{{ event.endDateTime | date: 'shortDate' }}</span>
         <ng-container *ngIf="startDate.innerText !== endDate.innerText">
           {{ event.endDateTime | date: 'longDate' }}
         </ng-container>
@@ -36,9 +32,7 @@
     </div>
     <div class="event-card-info">
       <mat-icon>location_on</mat-icon>
-      <a [href]="event | googleMapsUrl" target="_blank">{{
-        event | locationFormat
-      }}</a>
+      <a [href]="event | googleMapsUrl" target="_blank">{{ event | locationFormat }}</a>
     </div>
   </mat-card-content>
   <mat-divider></mat-divider>

@@ -7,7 +7,7 @@ import { Event, OrganizerInfo } from './event';
   providedIn: 'root',
 })
 export class EventService {
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   // Fetch all events
   fetchAllEvents(): Observable<Event[]> {

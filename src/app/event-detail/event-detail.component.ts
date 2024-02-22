@@ -52,15 +52,12 @@ export class EventDetailComponent implements OnInit {
     private eventService: EventService,
     private titleService: Title,
     private snackBar: MatSnackBar,
-  ) { }
+  ) {}
 
   ngOnInit() {
     // Check if user is redirected after creating or updating an event
     this.route.queryParams.subscribe((params) => {
-      if (
-        params['eventCreated'] === 'true' ||
-        params['eventUpdated'] === 'true'
-      ) {
+      if (params['eventCreated'] === 'true' || params['eventUpdated'] === 'true') {
         if (params['eventCreated'] === 'true') {
           this.snackBar.open('Event skapat.', 'Stäng', {
             duration: 3000,
@@ -107,9 +104,7 @@ export class EventDetailComponent implements OnInit {
           this.titleService.setTitle(foundEvent.title);
           this.isLoading = false;
           this.eventNotFound = false;
-          return this.eventService.getOrganizerContactInfo(
-            foundEvent.creatorUserId,
-          );
+          return this.eventService.getOrganizerContactInfo(foundEvent.creatorUserId);
         }),
         catchError((error) => {
           console.error('Error fetching event:', error);

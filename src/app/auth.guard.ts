@@ -1,9 +1,5 @@
 import { Injectable } from '@angular/core';
-import {
-  CanActivate,
-  Router,
-  UrlTree,
-} from '@angular/router';
+import { CanActivate, Router, UrlTree } from '@angular/router';
 import { AuthService } from './auth.service';
 import { Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
@@ -13,7 +9,7 @@ export class AuthGuardService implements CanActivate {
   constructor(
     private authService: AuthService,
     private router: Router,
-  ) { }
+  ) {}
 
   canActivate(): Observable<boolean | UrlTree> {
     return this.authService.validateToken().pipe(

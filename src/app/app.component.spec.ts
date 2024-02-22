@@ -13,12 +13,7 @@ describe('AppComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      imports: [
-        AppComponent,
-        RouterTestingModule,
-        MatSnackBarModule,
-        NoopAnimationsModule,
-      ],
+      imports: [AppComponent, RouterTestingModule, MatSnackBarModule, NoopAnimationsModule],
       providers: [{ provide: ActivatedRoute, useValue: activatedRouteStub }],
     }).compileComponents();
   });

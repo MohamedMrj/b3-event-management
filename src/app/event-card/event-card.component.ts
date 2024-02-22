@@ -49,13 +49,11 @@ export class EventCardComponent implements OnInit {
   constructor(
     private snackBar: MatSnackBar,
     private eventService: EventService,
-  ) { }
+  ) {}
 
   ngOnInit() {
     if (this.event && this.event.creatorUserId) {
-      this.organizerInfo$ = this.eventService.getOrganizerContactInfo(
-        this.event.creatorUserId,
-      );
+      this.organizerInfo$ = this.eventService.getOrganizerContactInfo(this.event.creatorUserId);
     }
   }
 
@@ -86,10 +84,6 @@ export class EventCardComponent implements OnInit {
       return;
     }
 
-    this.snackBar.open(
-      `RSVP funktion inte implementerad ännu. Event ID: ${eventId}`,
-      'Stäng',
-      {},
-    );
+    this.snackBar.open(`RSVP funktion inte implementerad ännu. Event ID: ${eventId}`, 'Stäng', {});
   }
 }

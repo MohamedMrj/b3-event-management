@@ -9,10 +9,6 @@ import { getGoogleMapsUrl } from './utils/location.utils';
 export class GoogleMapsUrlPipe implements PipeTransform {
   transform(event: Event): string {
     const { locationStreet, locationCity, locationCountry } = event;
-    return getGoogleMapsUrl(
-      locationStreet ?? '',
-      locationCity,
-      locationCountry,
-    );
+    return getGoogleMapsUrl(locationStreet ?? '', locationCity, locationCountry);
   }
 }

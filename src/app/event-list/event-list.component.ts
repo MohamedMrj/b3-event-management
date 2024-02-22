@@ -19,15 +19,7 @@ import { AuthService } from '../auth.service';
   templateUrl: './event-list.component.html',
   styleUrls: ['./event-list.component.css'],
   standalone: true,
-  imports: [
-    MatFabButton,
-    MatIcon,
-    NgFor,
-    NgIf,
-    EventCardComponent,
-    MatPaginator,
-    MatTabsModule,
-  ],
+  imports: [MatFabButton, MatIcon, NgFor, NgIf, EventCardComponent, MatPaginator, MatTabsModule],
 })
 export class EventListComponent implements OnInit {
   currentUser$: Observable<UserDetails | null>;

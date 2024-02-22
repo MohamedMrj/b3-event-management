@@ -10,12 +10,7 @@ import { MatOption } from '@angular/material/core';
 import { MatSelect } from '@angular/material/select';
 import { MatIcon } from '@angular/material/icon';
 import { MatInput } from '@angular/material/input';
-import {
-  MatFormField,
-  MatLabel,
-  MatSuffix,
-  MatHint,
-} from '@angular/material/form-field';
+import { MatFormField, MatLabel, MatSuffix, MatHint } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
 import { NgIf, NgFor, AsyncPipe } from '@angular/common';
 import { AuthService } from '../auth.service';
@@ -108,9 +103,7 @@ export class CreateEventFormComponent implements OnInit {
 
     // Convert startDateTime and endDateTime to ISO format
     if (this.event.startDateTime) {
-      this.event.startDateTime = new Date(
-        this.event.startDateTime,
-      ).toISOString();
+      this.event.startDateTime = new Date(this.event.startDateTime).toISOString();
     }
     if (this.event.endDateTime) {
       this.event.endDateTime = new Date(this.event.endDateTime).toISOString();

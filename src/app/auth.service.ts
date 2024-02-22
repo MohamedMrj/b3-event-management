@@ -26,7 +26,8 @@ export class AuthService {
         const decodedToken = jwtDecode<DecodedToken>(token);
         const user: UserDetails = {
           expirationTime: decodedToken.exp,
-          userId: decodedToken['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'],
+          userId:
+            decodedToken['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'],
           username: decodedToken['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'],
           issuedAt: decodedToken.iat,
           notValidBefore: decodedToken.nbf,
@@ -51,13 +52,8 @@ export class AuthService {
           const user = {
             expirationTime: decodedToken['exp'],
             userId:
-              decodedToken[
-              'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'
-              ],
-            username:
-              decodedToken[
-              'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'
-              ],
+              decodedToken['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'],
+            username: decodedToken['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'],
             issuedAt: decodedToken['iat'],
             notValidBefore: decodedToken['nbf'],
           };

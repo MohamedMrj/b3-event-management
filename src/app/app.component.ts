@@ -52,27 +52,25 @@ export class AppComponent implements OnInit {
     });
 
     // Check if user is redirected after deleting an event
-    this.route.queryParams.subscribe(
-      (params: Record<string, string | undefined>) => {
-        if (params['eventDeleted'] === 'true') {
-          this.snackBar.open('Event deleted successfully!', 'Close', {
-            duration: 3000,
-          });
+    this.route.queryParams.subscribe((params: Record<string, string | undefined>) => {
+      if (params['eventDeleted'] === 'true') {
+        this.snackBar.open('Event deleted successfully!', 'Close', {
+          duration: 3000,
+        });
 
-          // Specify the type for queryParams
-          const queryParams: Record<string, string | undefined> = { ...params };
-          delete queryParams['eventDeleted'];
+        // Specify the type for queryParams
+        const queryParams: Record<string, string | undefined> = { ...params };
+        delete queryParams['eventDeleted'];
 
-          // Navigate without the parameter
-          this.router.navigate([], {
-            relativeTo: this.route,
-            queryParams: queryParams,
-            queryParamsHandling: '',
-            replaceUrl: true,
-          });
-        }
-      },
-    );
+        // Navigate without the parameter
+        this.router.navigate([], {
+          relativeTo: this.route,
+          queryParams: queryParams,
+          queryParamsHandling: '',
+          replaceUrl: true,
+        });
+      }
+    });
 
     const customTitle = this.titleService.getTitle();
     if (customTitle) {
