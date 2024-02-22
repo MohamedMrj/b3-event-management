@@ -21,6 +21,12 @@ export class EventService {
     return this.http.get<Event>(`/api/event/${eventId}`, { headers });
   }
 
+  // Fetch events by organizer
+  fetchEventsByOrganizer(organizerId: string): Observable<Event[]> {
+    const headers = this.getAuthHeaders();
+    return this.http.get<Event[]>(`/api/events/creator/${organizerId}`, { headers });
+  }
+
   // Create a new event
   createEvent(event: Event): Observable<Event> {
     const headers = this.getAuthHeaders();

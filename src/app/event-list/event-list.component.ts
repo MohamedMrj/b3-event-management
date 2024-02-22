@@ -10,6 +10,9 @@ import { MatIcon } from '@angular/material/icon';
 import { MatFabButton } from '@angular/material/button';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTabsModule } from '@angular/material/tabs';
+import { Observable } from 'rxjs';
+import { UserDetails } from '../auth.interfaces';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-event-list',
@@ -26,7 +29,9 @@ import { MatTabsModule } from '@angular/material/tabs';
   ],
 })
 export class EventListComponent implements OnInit {
+  currentUser$: Observable<UserDetails | null>;
   eventList: Event[] = [];
+  eventListByOrganizer: Event[] = [];
 
   // Pagination properties
   totalEvents: number = 0;
@@ -40,12 +45,19 @@ export class EventListComponent implements OnInit {
     private router: Router,
     private titleService: Title,
     private snackBar: MatSnackBar,
+    private authService: AuthService,
   ) {
     this.titleService.setTitle('Events');
+    this.currentUser$ = this.authService.getCurrentUser();
   }
 
   ngOnInit() {
     this.fetchAllEvents();
+    this.currentUser$.subscribe((user) => {
+      if (user) {
+        this.fetchEventsByOrganizer(user.userId);
+      }
+    });
   }
 
   fetchAllEvents() {
@@ -64,6 +76,20 @@ export class EventListComponent implements OnInit {
           (this.currentPage - 1) * this.eventsPerPage,
           this.currentPage * this.eventsPerPage,
         );
+      },
+      error: (error) => {
+        console.error('Error fetching events:', error);
+        this.snackBar.open('Failed to fetch events.', 'Close', {
+          duration: 3000,
+        });
+      },
+    });
+  }
+
+  fetchEventsByOrganizer(organizerId: string) {
+    this.eventService.fetchEventsByOrganizer(organizerId).subscribe({
+      next: (events) => {
+        this.eventListByOrganizer = events;
       },
       error: (error) => {
         console.error('Error fetching events:', error);
