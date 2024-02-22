@@ -50,7 +50,7 @@ export class EventDetailComponent implements OnInit {
     private titleService: Title,
     private pageLocation: Location,
     private snackBar: MatSnackBar,
-  ) { }
+  ) {}
 
   ngOnInit() {
     // Check if user is redirected after creating or updating an event

@@ -11,11 +11,39 @@ import { AuthGuardService } from './auth.guard';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent, title: 'Logga in' },
-  { path: 'event/create', component: EventCreateComponent, title: 'Skapa event', canActivate: [AuthGuardService] },
-  { path: 'event/update/:eventid', component: EventEditComponent, title: 'Redigera event', canActivate: [AuthGuardService] },
-  { path: 'event/:eventid', component: EventDetailComponent, canActivate: [AuthGuardService] },
-  { path: 'api-test', component: ApiTestComponent, title: 'API-test', canActivate: [AuthGuardService] },
+  {
+    path: 'event/create',
+    component: EventCreateComponent,
+    title: 'Skapa event',
+    canActivate: [AuthGuardService],
+  },
+  {
+    path: 'event/update/:eventid',
+    component: EventEditComponent,
+    title: 'Redigera event',
+    canActivate: [AuthGuardService],
+  },
+  {
+    path: 'event/:eventid',
+    component: EventDetailComponent,
+    canActivate: [AuthGuardService],
+  },
+  {
+    path: 'api-test',
+    component: ApiTestComponent,
+    title: 'API-test',
+    canActivate: [AuthGuardService],
+  },
   /* { path: 'my-events', component: MyEventsComponent, title: 'Mina Event', canActivate: [AuthGuardService] }, */
-  { path: '', component: EventListComponent, title: 'Events', canActivate: [AuthGuardService] },
-  { path: '**', component: PageNotFoundComponent, title: 'Sidan kunde inte hittas' },
+  {
+    path: '',
+    component: EventListComponent,
+    title: 'Events',
+    canActivate: [AuthGuardService],
+  },
+  {
+    path: '**',
+    component: PageNotFoundComponent,
+    title: 'Sidan kunde inte hittas',
+  },
 ];

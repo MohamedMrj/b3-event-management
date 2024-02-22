@@ -16,7 +16,14 @@ import { MatTabsModule } from '@angular/material/tabs';
   templateUrl: './event-list.component.html',
   styleUrls: ['./event-list.component.css'],
   standalone: true,
-  imports: [MatFabButton, MatIcon, NgFor, EventCardComponent, MatPaginator, MatTabsModule],
+  imports: [
+    MatFabButton,
+    MatIcon,
+    NgFor,
+    EventCardComponent,
+    MatPaginator,
+    MatTabsModule,
+  ],
 })
 export class EventListComponent implements OnInit {
   eventList: Event[] = [];

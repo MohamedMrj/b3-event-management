@@ -7,7 +7,7 @@ import { Event } from './event';
   providedIn: 'root',
 })
 export class EventService {
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   // Fetch all events
   fetchAllEvents(): Observable<Event[]> {
@@ -39,11 +39,17 @@ export class EventService {
     return this.http.delete<void>(`/api/event/${eventId}`, { headers });
   }
 
+  // Get organizer contact information
+  getOrganizerContactInfo(userId: string): Observable<any> {
+    const headers = this.getAuthHeaders();
+    return this.http.get<any>(`/api/user/${userId}`, { headers });
+  }
+
   // Helper method to generate HttpHeaders with the Authorization token
   private getAuthHeaders(): HttpHeaders {
     const token = this.getToken();
     return new HttpHeaders({
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${token}`,
     });
   }
 

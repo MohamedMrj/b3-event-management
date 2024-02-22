@@ -8,8 +8,10 @@
         {{ event.title }}
       </a>
     </mat-card-title>
-    <mat-card-subtitle><strong style="color: black">Organizatör:</strong>
-      {{ event.creatorUserId }}</mat-card-subtitle>
+    <mat-card-subtitle
+      ><strong style="color: black">Organizatör:</strong>
+      {{ event.creatorUserId }}</mat-card-subtitle
+    >
   </mat-card-header>
   <mat-card-content>
     <p class="cardDescription">{{ event.shortDescription }}</p>
@@ -22,10 +24,10 @@
         <strong>Slutar:</strong>
         <span style="display: none" #startDate>{{
           event.startDateTime | date: 'shortDate'
-          }}</span>
+        }}</span>
         <span style="display: none" #endDate>{{
           event.endDateTime | date: 'shortDate'
-          }}</span>
+        }}</span>
         <ng-container *ngIf="startDate.innerText !== endDate.innerText">
           {{ event.endDateTime | date: 'longDate' }}
         </ng-container>
@@ -36,7 +38,7 @@
       <mat-icon>location_on</mat-icon>
       <a [href]="event | googleMapsUrl" target="_blank">{{
         event | locationFormat
-        }}</a>
+      }}</a>
     </div>
   </mat-card-content>
   <mat-divider></mat-divider>

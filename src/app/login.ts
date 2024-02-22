@@ -1,9 +1,9 @@
 export interface LoginInfo {
-    username: string;
-    password: string;
+  username: string;
+  password: string;
 }
 
 export interface LoginResponse {
-    token: string;
-    username?: string;
+  token: string;
+  username?: string;
 }

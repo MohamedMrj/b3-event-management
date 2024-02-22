@@ -17,7 +17,7 @@ export class EventCreateComponent {
   constructor(
     private pageLocation: Location,
     private dialog: MatDialog,
-  ) { }
+  ) {}
 
   goBack() {
     this.pageLocation.back();
@@ -25,7 +25,10 @@ export class EventCreateComponent {
 
   confirmDiscardChanges() {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      data: { title: 'Lämna sidan', message: 'Vill du lämna sidan? Ändringar har inte sparats.' },
+      data: {
+        title: 'Lämna sidan',
+        message: 'Vill du lämna sidan? Ändringar har inte sparats.',
+      },
     });
 
     dialogRef.afterClosed().subscribe((result) => {

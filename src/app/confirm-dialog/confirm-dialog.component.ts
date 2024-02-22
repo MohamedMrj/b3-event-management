@@ -9,7 +9,7 @@ import {
 import { MatButton } from '@angular/material/button';
 
 export interface DialogData {
-  title: string
+  title: string;
   message: string;
 }
 
@@ -32,7 +32,7 @@ export class ConfirmDialogComponent {
   constructor(
     public dialogRef: MatDialogRef<ConfirmDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
-  ) { }
+  ) {}
 
   onConfirm(): void {
     this.dialogRef.close(true);

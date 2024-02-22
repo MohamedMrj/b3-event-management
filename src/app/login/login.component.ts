@@ -15,7 +15,15 @@ import { MatIconModule } from '@angular/material/icon';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
   standalone: true,
-  imports: [MatCardModule, MatFormFieldModule, MatInputModule, FormsModule, ReactiveFormsModule, MatButtonModule, MatIconModule]
+  imports: [
+    MatCardModule,
+    MatFormFieldModule,
+    MatInputModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatButtonModule,
+    MatIconModule,
+  ],
 })
 export class LoginComponent {
   username: string = '';
@@ -27,7 +35,7 @@ export class LoginComponent {
     private authService: AuthService,
     private router: Router,
     private snackBar: MatSnackBar,
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.checkIfLoggedIn();
@@ -44,14 +52,14 @@ export class LoginComponent {
       },
       error: () => {
         // Handle error, if needed
-      }
+      },
     });
   }
 
   onLoginClick(): void {
     const loginInfo: LoginInfo = {
       username: this.username,
-      password: this.password
+      password: this.password,
     };
 
     this.authService.login(loginInfo).subscribe({
@@ -75,7 +83,7 @@ export class LoginComponent {
           duration: 5000,
         });
         this.loginError = true;
-      }
+      },
     });
   }
 }

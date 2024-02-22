@@ -9,9 +9,8 @@ describe('LoginComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [LoginComponent, HttpClientModule, NoopAnimationsModule]
-    })
-      .compileComponents();
+      imports: [LoginComponent, HttpClientModule, NoopAnimationsModule],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(LoginComponent);
     component = fixture.componentInstance;

@@ -42,7 +42,7 @@ import {
 export class EventCardComponent {
   @Input() event!: Event;
 
-  constructor(private snackBar: MatSnackBar) { }
+  constructor(private snackBar: MatSnackBar) {}
 
   copyToClipboard(eventId: string | undefined): void {
     if (!eventId) {
@@ -55,7 +55,9 @@ export class EventCardComponent {
     navigator.clipboard
       .writeText(url)
       .then(() =>
-        this.snackBar.open('Kopierad till urklipp.', 'Stäng', { duration: 3000 }),
+        this.snackBar.open('Kopierad till urklipp.', 'Stäng', {
+          duration: 3000,
+        }),
       )
       .catch((error) => console.error('Failed to copy to clipboard: ', error));
   }

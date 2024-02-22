@@ -39,7 +39,7 @@ export class EventEditComponent implements OnInit {
     private pageLocation: Location,
     private dialog: MatDialog,
     private snackBar: MatSnackBar,
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.route.paramMap.subscribe((params) => {
@@ -99,7 +99,10 @@ export class EventEditComponent implements OnInit {
 
   confirmDiscardChanges() {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      data: { title: 'Lämna sidan', message: 'Vill du lämna sidan? Ändringar har inte sparats.' },
+      data: {
+        title: 'Lämna sidan',
+        message: 'Vill du lämna sidan? Ändringar har inte sparats.',
+      },
     });
 
     dialogRef.afterClosed().subscribe((result) => {

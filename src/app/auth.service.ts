@@ -3,13 +3,15 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, throwError, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { LoginInfo, LoginResponse } from './login';
-import { jwtDecode } from "jwt-decode";
+import { jwtDecode } from 'jwt-decode';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private currentUserSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  private currentUserSubject: BehaviorSubject<any> = new BehaviorSubject<any>(
+    null,
+  );
   public currentUser$: Observable<any> = this.currentUserSubject.asObservable();
 
   constructor(private http: HttpClient) {
@@ -23,8 +25,14 @@ export class AuthService {
         const decodedToken = jwtDecode(token) as any;
         const user = {
           expirationTime: decodedToken['exp'],
-          userId: decodedToken['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'],
-          username: decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"],
+          userId:
+            decodedToken[
+              'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'
+            ],
+          username:
+            decodedToken[
+              'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'
+            ],
           issuedAt: decodedToken['iat'],
           notValidBefore: decodedToken['nbf'],
         };
@@ -41,14 +49,20 @@ export class AuthService {
 
   login(loginInfo: LoginInfo): Observable<boolean> {
     return this.http.post<LoginResponse>('api/SignIn', loginInfo).pipe(
-      map(response => {
+      map((response) => {
         if (response.token) {
           sessionStorage.setItem('token', response.token);
           const decodedToken = jwtDecode(response.token) as any;
           const user = {
             expirationTime: decodedToken['exp'],
-            userId: decodedToken['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'],
-            username: decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"],
+            userId:
+              decodedToken[
+                'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'
+              ],
+            username:
+              decodedToken[
+                'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'
+              ],
             issuedAt: decodedToken['iat'],
             notValidBefore: decodedToken['nbf'],
           };
@@ -57,10 +71,10 @@ export class AuthService {
         }
         return false;
       }),
-      catchError(error => {
+      catchError((error) => {
         console.error('Login error', error);
         return throwError(() => new Error('Login failed'));
-      })
+      }),
     );
   }
 
@@ -70,19 +84,24 @@ export class AuthService {
     window.location.href = '/login';
   }
 
-  validateToken(): Observable<{ valid: boolean, error?: string }> {
+  validateToken(): Observable<{ valid: boolean; error?: string }> {
     const token = sessionStorage.getItem('token');
     if (!token) {
       return of({ valid: false, error: 'Missing token' });
     }
 
-    return this.http.post<{ valid: boolean, error?: string }>('api/validateToken', { token: token }).pipe(
-      map(response => response),
-      catchError(error => {
-        console.error('Token validation error', error);
-        return of({ valid: false, error: 'Token validation failed' });
-      })
-    );
+    return this.http
+      .post<{
+        valid: boolean;
+        error?: string;
+      }>('api/validateToken', { token: token })
+      .pipe(
+        map((response) => response),
+        catchError((error) => {
+          console.error('Token validation error', error);
+          return of({ valid: false, error: 'Token validation failed' });
+        }),
+      );
   }
 
   decodeToken(): Observable<any> {
