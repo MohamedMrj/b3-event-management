@@ -53,7 +53,7 @@ export class EventDetailComponent implements OnInit {
     private titleService: Title,
     private pageLocation: Location,
     private snackBar: MatSnackBar,
-  ) {}
+  ) { }
 
   ngOnInit() {
     // Check if user is redirected after creating or updating an event
@@ -63,12 +63,12 @@ export class EventDetailComponent implements OnInit {
         params['eventUpdated'] === 'true'
       ) {
         if (params['eventCreated'] === 'true') {
-          this.snackBar.open('Event created successfully!', 'Close', {
+          this.snackBar.open('Event skapat.', 'Stäng', {
             duration: 3000,
           });
         }
         if (params['eventUpdated'] === 'true') {
-          this.snackBar.open('Event updated successfully!', 'Close', {
+          this.snackBar.open('Event uppdaterat.', 'Stäng', {
             duration: 3000,
           });
         }
@@ -113,6 +113,10 @@ export class EventDetailComponent implements OnInit {
           );
         }),
         catchError((error) => {
+          console.error('Error fetching event:', error);
+          this.snackBar.open('Fel vid hämtning av event', 'Stäng', {
+            duration: 3000,
+          });
           this.isLoading = false;
           this.eventNotFound = true;
           return of(null);
@@ -141,7 +145,7 @@ export class EventDetailComponent implements OnInit {
         },
         error: (error) => {
           console.error('Error deleting event:', error);
-          this.snackBar.open('Error deleting event', 'Close', {
+          this.snackBar.open('Fel vid radering av event', 'Stäng', {
             duration: 3000,
           });
         },

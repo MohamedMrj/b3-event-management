@@ -42,14 +42,14 @@ import { EventService } from '../event.service';
     GoogleMapsUrlPipe,
   ],
 })
-export class EventCardComponent {
+export class EventCardComponent implements OnInit {
   @Input() event!: Event;
   organizerInfo$!: Observable<any>;
 
   constructor(
     private snackBar: MatSnackBar,
     private eventService: EventService,
-  ) {}
+  ) { }
 
   ngOnInit() {
     if (this.event && this.event.creatorUserId) {
