@@ -13,17 +13,6 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 
-public class UserEntityTest : ITableEntity
-{
-    public string? Username { get; set; }
-    public string? PasswordHash { get; set; }
-    public string? Salt { get; set; }
-    public string? PartitionKey { get; set; }
-    public string? RowKey { get; set; }
-    public DateTimeOffset? Timestamp { get; set; }
-    public ETag ETag { get; set; }
-}
-
 public class UserCredentials
 {
     public string? Username { get; set; }
@@ -68,7 +57,7 @@ namespace B3.Complete.Eventwebb
             }
 
             var (passwordHash, salt) = CreatePasswordHash(data.Password);
-            UserEntityTest newUser = new UserEntityTest
+            UserEntity newUser = new UserEntity
             {
                 PartitionKey = "User",
                 RowKey = Guid.NewGuid().ToString(),
@@ -175,7 +164,7 @@ namespace B3.Complete.Eventwebb
         private static async Task<bool> UserExists(string username)
         {
             // Assuming usersTable is correctly initialized and usable
-            var entities = usersTable.QueryAsync<UserEntityTest>($"PartitionKey eq 'User' and Username eq '{username}'");
+            var entities = usersTable.QueryAsync<UserEntity>($"PartitionKey eq 'User' and Username eq '{username}'");
             await foreach (var entity in entities)
             {
                 return true;
@@ -183,10 +172,10 @@ namespace B3.Complete.Eventwebb
             return false;
         }
 
-        private static async Task<UserEntityTest?> GetUserEntity(string username)
+        private static async Task<UserEntity?> GetUserEntity(string username)
         {
             // Assuming usersTable is correctly initialized and usable
-            var entities = usersTable.QueryAsync<UserEntityTest>($"PartitionKey eq 'User' and Username eq '{username}'");
+            var entities = usersTable.QueryAsync<UserEntity>($"PartitionKey eq 'User' and Username eq '{username}'");
             await foreach (var entity in entities)
             {
                 return entity;

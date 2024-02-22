@@ -7,15 +7,15 @@ using System.Collections.Generic;
 
 namespace B3.Complete.Eventwebb
 {
-    public static class GetUserInfo
+    public static class GetUser
     {
-        [Function(nameof(GetUserInfo))]
+        [Function(nameof(GetUser))]
         public static async Task<HttpResponseData> Run(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "user/{id}")] HttpRequestData req,
             string id,
             FunctionContext executionContext)
         {
-            var log = executionContext.GetLogger("GetUserInfo");
+            var log = executionContext.GetLogger("GetUser");
             log.LogInformation($"Getting user with ID: {id}");
 
             var client = new TableClient(DatabaseConfig.ConnectionString, DatabaseConfig.UserTable);
@@ -23,8 +23,17 @@ namespace B3.Complete.Eventwebb
 
             await foreach (var entity in queryResults)
             {
+                var userInfo = new UserInfoDto
+                {
+                    RowKey = entity.RowKey ?? string.Empty,
+                    Username = entity.ContainsKey("Username") ? entity["Username"]?.ToString() ?? string.Empty : string.Empty,
+                    FirstName = entity.ContainsKey("FirstName") ? entity["FirstName"]?.ToString() ?? string.Empty : string.Empty,
+                    LastName = entity.ContainsKey("LastName") ? entity["LastName"]?.ToString() ?? string.Empty : string.Empty,
+                    PhoneNumber = entity.ContainsKey("PhoneNumber") ? entity["PhoneNumber"]?.ToString() ?? string.Empty : string.Empty,
+                };
+
                 var okResponse = req.CreateResponse(System.Net.HttpStatusCode.OK);
-                await okResponse.WriteAsJsonAsync(new { id = entity.RowKey, username = entity["Username"] });
+                await okResponse.WriteAsJsonAsync(userInfo);
                 return okResponse;
             }
 
