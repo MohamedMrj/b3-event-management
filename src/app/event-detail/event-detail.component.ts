@@ -42,6 +42,7 @@ export class EventDetailComponent implements OnInit {
   event!: Event;
   isLoading: boolean = true;
   eventNotFound: boolean = false;
+  organizerContactInfo: any;
 
   constructor(
     private route: ActivatedRoute,
@@ -50,7 +51,7 @@ export class EventDetailComponent implements OnInit {
     private titleService: Title,
     private pageLocation: Location,
     private snackBar: MatSnackBar,
-  ) {}
+  ) { }
 
   ngOnInit() {
     // Check if user is redirected after creating or updating an event
