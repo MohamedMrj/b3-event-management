@@ -31,15 +31,7 @@ namespace B3.Complete.Eventwebb
             }
 
             var response = req.CreateResponse(System.Net.HttpStatusCode.OK);
-            if (eventsList.Count > 0)
-            {
-                await response.WriteAsJsonAsync(eventsList);
-            }
-            else
-            {
-                response.StatusCode = System.Net.HttpStatusCode.NotFound;
-                await response.WriteStringAsync("No events found.");
-            }
+            await response.WriteAsJsonAsync(eventsList);
 
             return response;
         }
