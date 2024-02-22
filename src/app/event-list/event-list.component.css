@@ -18,6 +18,11 @@
   margin: 1rem 0;
 }
 
+.no-events-text {
+  text-align: center;
+  margin: 4rem 0;
+}
+
 mat-paginator {
   background-color: transparent;
 }

@@ -11,19 +11,25 @@
       Alla event
     </ng-template>
     <div class="events-container">
-      <app-event-card *ngFor="let event of eventList" [event]="event">
+      <app-event-card *ngFor="let event of allEventsList" [event]="event">
       </app-event-card>
     </div>
+    <p *ngIf="allEventsList.length === 0" class="center-text no-events-text">
+      Du finns inga skapade event. <a routerLink="/event/create">Skapat</a> ett!
+    </p>
   </mat-tab>
   <mat-tab>
     <ng-template mat-tab-label>
-      <mat-icon class="my-events-tab">calendar_month</mat-icon>
+      <mat-icon class="my-created-events-tab">calendar_month</mat-icon>
       Mina event
     </ng-template>
     <div class="events-container">
-      <app-event-card *ngFor="let event of eventList" [event]="event">
+      <app-event-card *ngFor="let event of userEvents" [event]="event">
       </app-event-card>
     </div>
+    <p *ngIf="userEvents.length === 0" class="center-text no-events-text">
+      Du är inte inbjuden eller registrerad för några event än.
+    </p>
   </mat-tab>
   <mat-tab>
     <ng-template mat-tab-label>
@@ -31,9 +37,12 @@
       Administrera event
     </ng-template>
     <div class="events-container">
-      <app-event-card *ngFor="let event of eventListByOrganizer" [event]="event">
+      <app-event-card *ngFor="let event of eventsByOrganizer" [event]="event">
       </app-event-card>
     </div>
+    <p *ngIf="eventsByOrganizer.length === 0" class="center-text no-events-text">
+      Du har inte <a routerLink="/event/create">skapat</a> några event än.
+    </p>
   </mat-tab>
 </mat-tab-group>
 <mat-paginator [length]="totalEvents" [pageSize]="eventsPerPage" [pageSizeOptions]="[6, 12, 18]"

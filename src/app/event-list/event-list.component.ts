@@ -5,7 +5,7 @@ import { EventService } from '../event.service';
 import { Event } from '../event';
 import { MatPaginator } from '@angular/material/paginator';
 import { EventCardComponent } from '../event-card/event-card.component';
-import { NgFor } from '@angular/common';
+import { NgFor, NgIf } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
 import { MatFabButton } from '@angular/material/button';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -23,6 +23,7 @@ import { AuthService } from '../auth.service';
     MatFabButton,
     MatIcon,
     NgFor,
+    NgIf,
     EventCardComponent,
     MatPaginator,
     MatTabsModule,
@@ -30,8 +31,9 @@ import { AuthService } from '../auth.service';
 })
 export class EventListComponent implements OnInit {
   currentUser$: Observable<UserDetails | null>;
-  eventList: Event[] = [];
-  eventListByOrganizer: Event[] = [];
+  allEventsList: Event[] = [];
+  userEvents: Event[] = [];
+  eventsByOrganizer: Event[] = [];
 
   // Pagination properties
   totalEvents: number = 0;
@@ -72,7 +74,7 @@ export class EventListComponent implements OnInit {
           return dateA.getTime() - dateB.getTime();
         });
 
-        this.eventList = events.slice(
+        this.allEventsList = events.slice(
           (this.currentPage - 1) * this.eventsPerPage,
           this.currentPage * this.eventsPerPage,
         );
@@ -89,13 +91,10 @@ export class EventListComponent implements OnInit {
   fetchEventsByOrganizer(organizerId: string) {
     this.eventService.fetchEventsByOrganizer(organizerId).subscribe({
       next: (events) => {
-        this.eventListByOrganizer = events;
+        this.eventsByOrganizer = events;
       },
       error: (error) => {
-        console.error('Error fetching events:', error);
-        this.snackBar.open('Failed to fetch events.', 'Close', {
-          duration: 3000,
-        });
+        console.log('No user created events found:', error);
       },
     });
   }
