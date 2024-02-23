@@ -41,6 +41,16 @@ namespace B3.Complete.Eventwebb
                 return badRequestResponse;
             }
 
+            if (newEvent.StartDateTime.Kind != DateTimeKind.Utc)
+            {
+                newEvent.StartDateTime = DateTime.SpecifyKind(newEvent.StartDateTime, DateTimeKind.Utc);
+            }
+
+            if (newEvent.EndDateTime.Kind != DateTimeKind.Utc)
+            {
+                newEvent.EndDateTime = DateTime.SpecifyKind(newEvent.EndDateTime, DateTimeKind.Utc);
+            }
+
             var client = new TableClient(DatabaseConfig.ConnectionString, DatabaseConfig.EventTable);
 
             try
