@@ -7,5 +7,6 @@ namespace B3.Complete.Eventwebb
 
         public static string EventTable => "Events";
         public static string UserTable => "Usersv2";
+        public static string EventRegistrationTable => "EventRegistrations";
     }
 }
