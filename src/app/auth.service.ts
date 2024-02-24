@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject, Observable, throwError, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { LoginInfo, LoginResponse } from './login';
@@ -17,6 +17,19 @@ export class AuthService {
     this.currentUserSubject = new BehaviorSubject<UserDetails | null>(null);
     this.currentUser$ = this.currentUserSubject.asObservable();
     this.initializeCurrentUser();
+  }
+
+  // Helper method to retrieve the token
+  getToken(): string {
+    return sessionStorage.getItem('token') || '';
+  }
+
+  // Helper method to generate HttpHeaders with the Authorization token
+  getAuthHeaders(): HttpHeaders {
+    const token = this.getToken();
+    return new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
   }
 
   private initializeCurrentUser(): void {

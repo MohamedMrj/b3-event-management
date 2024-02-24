@@ -36,8 +36,15 @@
     </div>
   </mat-card-content>
   <mat-divider></mat-divider>
-  <mat-card-actions>
-    <button mat-button (click)="rsvp(event.id)">RSVP</button>
+  <mat-card-actions *ngIf="currentUser$ | async as currentUser">
+    <button mat-button [matMenuTriggerFor]="rsvpMenu">RSVP</button>
+    <mat-menu #rsvpMenu="matMenu">
+      <button mat-menu-item (click)="rsvp(event.id, currentUser.userId, 'coming')">Coming</button>
+      <button mat-menu-item (click)="rsvp(event.id, currentUser.userId, 'maybe')">Maybe</button>
+      <button mat-menu-item (click)="rsvp(event.id, currentUser.userId, 'not_coming')">
+        Not coming
+      </button>
+    </mat-menu>
     <button mat-button (click)="copyToClipboard(event.id)">DELA</button>
   </mat-card-actions>
 </mat-card>

@@ -5,6 +5,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { GoogleMapsUrlPipe } from '../google-maps-url.pipe';
 import { LocationFormatPipe } from '../location-format.pipe';
 import { MatButton } from '@angular/material/button';
+import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
 import { MatDivider } from '@angular/material/divider';
 import { NgIf, DatePipe, AsyncPipe } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
@@ -18,6 +19,9 @@ import {
   MatCardActions,
 } from '@angular/material/card';
 import { EventService } from '../event.service';
+import { EventRegistrationService } from '../event-registration.service';
+import { AuthService } from '../auth.service';
+import { UserDetails } from '../auth.interfaces';
 
 @Component({
   selector: 'app-event-card',
@@ -37,6 +41,9 @@ import { EventService } from '../event.service';
     MatDivider,
     MatCardActions,
     MatButton,
+    MatMenuTrigger,
+    MatMenu,
+    MatMenuItem,
     DatePipe,
     LocationFormatPipe,
     GoogleMapsUrlPipe,
@@ -45,11 +52,16 @@ import { EventService } from '../event.service';
 export class EventCardComponent implements OnInit {
   @Input() event!: Event;
   organizerInfo$!: Observable<OrganizerInfo>;
+  currentUser$: Observable<UserDetails | null>;
 
   constructor(
     private snackBar: MatSnackBar,
     private eventService: EventService,
-  ) {}
+    private eventRegistrationService: EventRegistrationService,
+    public authService: AuthService,
+  ) {
+    this.currentUser$ = this.authService.getCurrentUser();
+  }
 
   ngOnInit() {
     if (this.event && this.event.creatorUserId) {
@@ -75,7 +87,7 @@ export class EventCardComponent implements OnInit {
       .catch((error) => console.error('Failed to copy to clipboard: ', error));
   }
 
-  rsvp(eventId: string | undefined): void {
+  rsvp(eventId: string | undefined, userId: string, registrationStatus: string): void {
     if (!eventId) {
       console.error('Event ID is undefined');
       this.snackBar.open('Event kunde inte hittas.', 'Stäng', {
@@ -84,6 +96,18 @@ export class EventCardComponent implements OnInit {
       return;
     }
 
-    this.snackBar.open(`RSVP funktion inte implementerad ännu. Event ID: ${eventId}`, 'Stäng', {});
+    this.eventRegistrationService.registerForEvent(eventId, userId, registrationStatus).subscribe({
+      next: () => {
+        this.snackBar.open('Din anmälan är sparad.', 'Stäng', {
+          duration: 3000,
+        });
+      },
+      error: (error) => {
+        console.error('Failed to register for event: ', error);
+        this.snackBar.open('Misslyckades att spara din anmälan.', 'Stäng', {
+          duration: 3000,
+        });
+      },
+    });
   }
 }
