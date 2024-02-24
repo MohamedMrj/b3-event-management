@@ -19,7 +19,7 @@ import {
   MatCardActions,
 } from '@angular/material/card';
 import { EventService } from '../event.service';
-import { EventRegistrationService } from '../event-registration.service';
+import { UserService } from '../user.service';
 import { AuthService } from '../auth.service';
 import { UserDetails } from '../auth.interfaces';
 
@@ -57,7 +57,7 @@ export class EventCardComponent implements OnInit {
   constructor(
     private snackBar: MatSnackBar,
     private eventService: EventService,
-    private eventRegistrationService: EventRegistrationService,
+    private userService: UserService,
     public authService: AuthService,
   ) {
     this.currentUser$ = this.authService.getCurrentUser();
@@ -96,7 +96,7 @@ export class EventCardComponent implements OnInit {
       return;
     }
 
-    this.eventRegistrationService.registerForEvent(eventId, userId, registrationStatus).subscribe({
+    this.userService.registerForEvent(eventId, userId, registrationStatus).subscribe({
       next: () => {
         this.snackBar.open('Din anmälan är sparad.', 'Stäng', {
           duration: 3000,

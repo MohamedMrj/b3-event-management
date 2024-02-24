@@ -50,6 +50,7 @@ export class EventListComponent implements OnInit {
     this.currentUser$.subscribe((user) => {
       if (user) {
         this.fetchEventsByOrganizer(user.userId);
+        this.fetchUserEvents(user.userId);
       }
     });
   }
@@ -76,6 +77,17 @@ export class EventListComponent implements OnInit {
         this.snackBar.open('Failed to fetch events.', 'Close', {
           duration: 3000,
         });
+      },
+    });
+  }
+
+  fetchUserEvents(userId: string) {
+    this.eventService.getUserEvents(userId).subscribe({
+      next: (events) => {
+        this.userEvents = events;
+      },
+      error: (error) => {
+        console.log('No user events found:', error);
       },
     });
   }
