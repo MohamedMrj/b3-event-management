@@ -56,7 +56,7 @@ import { MatRadioModule } from '@angular/material/radio';
 export class EventCardComponent implements OnInit {
   @Input() event!: Event;
   @Input() registrationStatus!: string;
-  statusValues: string[] = ['Kommer', 'Kanske', 'Kommer inte', 'Inbjuden'];
+  statusOptions: string[] = ['Kommer', 'Kanske', 'Kommer inte'];
   organizerInfo$!: Observable<OrganizerInfo>;
   currentUser$: Observable<UserDetails | null>;
 
