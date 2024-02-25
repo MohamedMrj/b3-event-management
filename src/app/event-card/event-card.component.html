@@ -39,7 +39,7 @@
   <mat-card-actions *ngIf="currentUser$ | async as currentUser">
     <button mat-button [matMenuTriggerFor]="rsvpMenu">
       <mat-icon>expand_more</mat-icon>
-      <span style="text-transform: capitalize">{{ registrationStatus }}</span>
+      <span>{{ registrationStatus }}</span>
     </button>
     <mat-menu #rsvpMenu="matMenu">
       <mat-radio-group
@@ -48,9 +48,12 @@
         [(ngModel)]="registrationStatus"
       >
         @for (status of statusValues; track status) {
-          <mat-radio-button class="rsvp-radio-button" [value]="status">{{
-            status
-          }}</mat-radio-button>
+          <mat-radio-button
+            class="rsvp-radio-button"
+            [value]="status"
+            (click)="rsvp(event.id, currentUser.userId, status)"
+            >{{ status }}</mat-radio-button
+          >
         }
       </mat-radio-group>
     </mat-menu>
