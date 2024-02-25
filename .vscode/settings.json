@@ -2,6 +2,7 @@
   "[csharp]": {
     "editor.defaultFormatter": "ms-dotnettools.csharp"
   },
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
   "staticWebApps.outputSubpath": "dist/angular-basic",
   "azureFunctions.deploySubpath": "api/bin/Release/net8.0/publish",
   "azureFunctions.projectLanguage": "C#",
