@@ -34,3 +34,13 @@ mat-card-content {
   flex-direction: column;
   height: 100%;
 }
+
+.rsvp-radio-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.rsvp-radio-button {
+  margin: 5px;
+}

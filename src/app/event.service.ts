@@ -11,7 +11,7 @@ export class EventService {
   constructor(
     private http: HttpClient,
     public authService: AuthService,
-  ) { }
+  ) {}
 
   // Fetch all events
   fetchAllEvents(): Observable<Event[]> {

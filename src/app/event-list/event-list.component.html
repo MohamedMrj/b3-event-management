@@ -16,7 +16,12 @@
       Alla event
     </ng-template>
     <div class="events-container">
-      <app-event-card *ngFor="let event of allEventsList" [event]="event"> </app-event-card>
+      <app-event-card
+        *ngFor="let event of allEventsList"
+        [event]="event"
+        [registrationStatus]="getRegistrationStatusForEvent(event.id || '')"
+      >
+      </app-event-card>
     </div>
     <p *ngIf="allEventsList.length === 0" class="center-text no-events-text">
       Du finns inga skapade event. <a routerLink="/event/create">Skapat</a> ett!

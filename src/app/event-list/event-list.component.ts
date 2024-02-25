@@ -13,6 +13,8 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { Observable } from 'rxjs';
 import { UserDetails } from '../auth.interfaces';
 import { AuthService } from '../auth.service';
+import { UserService } from '../user.service';
+import { UserRegistration } from '../user';
 
 @Component({
   selector: 'app-event-list',
@@ -25,6 +27,7 @@ export class EventListComponent implements OnInit {
   currentUser$: Observable<UserDetails | null>;
   allEventsList: Event[] = [];
   userEvents: Event[] = [];
+  userRegistrations: UserRegistration[] = [];
   eventsByOrganizer: Event[] = [];
 
   // Pagination properties
@@ -40,6 +43,7 @@ export class EventListComponent implements OnInit {
     private titleService: Title,
     private snackBar: MatSnackBar,
     private authService: AuthService,
+    private userService: UserService,
   ) {
     this.titleService.setTitle('Events');
     this.currentUser$ = this.authService.getCurrentUser();
@@ -51,6 +55,7 @@ export class EventListComponent implements OnInit {
       if (user) {
         this.fetchEventsByOrganizer(user.userId);
         this.fetchUserEvents(user.userId);
+        this.fetchUserRegistrations(user.userId);
       }
     });
   }
@@ -101,6 +106,22 @@ export class EventListComponent implements OnInit {
         console.log('No user created events found:', error);
       },
     });
+  }
+
+  fetchUserRegistrations(userId: string) {
+    this.userService.getUserRegistrations(userId).subscribe({
+      next: (registrations) => {
+        this.userRegistrations = registrations;
+      },
+      error: (error) => {
+        console.error('Failed to fetch user registrations:', error);
+      },
+    });
+  }
+
+  getRegistrationStatusForEvent(eventId: string): string {
+    const registration = this.userRegistrations.find((reg) => reg.eventId === eventId);
+    return registration ? registration.registrationStatus : 'RSVP';
   }
 
   onPageChange(event: { pageIndex: number; pageSize: number }) {

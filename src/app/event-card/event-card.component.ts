@@ -22,6 +22,8 @@ import { EventService } from '../event.service';
 import { UserService } from '../user.service';
 import { AuthService } from '../auth.service';
 import { UserDetails } from '../auth.interfaces';
+import { FormsModule } from '@angular/forms';
+import { MatRadioModule } from '@angular/material/radio';
 
 @Component({
   selector: 'app-event-card',
@@ -47,10 +49,14 @@ import { UserDetails } from '../auth.interfaces';
     DatePipe,
     LocationFormatPipe,
     GoogleMapsUrlPipe,
+    MatRadioModule,
+    FormsModule,
   ],
 })
 export class EventCardComponent implements OnInit {
   @Input() event!: Event;
+  @Input() registrationStatus!: string;
+  statusValues: string[] = ['Kommer', 'Kanske', 'Kommer inte', 'Inbjuden'];
   organizerInfo$!: Observable<OrganizerInfo>;
   currentUser$: Observable<UserDetails | null>;
 
