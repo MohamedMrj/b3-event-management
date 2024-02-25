@@ -33,7 +33,12 @@
       Mina event
     </ng-template>
     <div class="events-container">
-      <app-event-card *ngFor="let event of userEvents" [event]="event"> </app-event-card>
+      <app-event-card
+        *ngFor="let event of userEvents"
+        [event]="event"
+        [registrationStatus]="getRegistrationStatusForEvent(event.id || '')"
+      >
+      </app-event-card>
     </div>
     <p *ngIf="userEvents.length === 0" class="center-text no-events-text">
       Du är inte inbjuden eller registrerad för några event än.
@@ -45,7 +50,12 @@
       Administrera event
     </ng-template>
     <div class="events-container">
-      <app-event-card *ngFor="let event of eventsByOrganizer" [event]="event"> </app-event-card>
+      <app-event-card
+        *ngFor="let event of eventsByOrganizer"
+        [event]="event"
+        [registrationStatus]="getRegistrationStatusForEvent(event.id || '')"
+      >
+      </app-event-card>
     </div>
     <p *ngIf="eventsByOrganizer.length === 0" class="center-text no-events-text">
       Du har inte <a routerLink="/event/create">skapat</a> några event än.

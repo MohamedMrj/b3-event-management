@@ -30,4 +30,11 @@ export class UserService {
     const headers = this.authService.getAuthHeaders();
     return this.http.get<UserRegistration[]>(`/api/users/${userId}/registrations`, { headers });
   }
+
+  getUserRegistrationForEvent(eventId: string, userId: string): Observable<UserRegistration> {
+    const headers = this.authService.getAuthHeaders();
+    return this.http.get<UserRegistration>(`/api/users/${userId}/registration/${eventId}`, {
+      headers,
+    });
+  }
 }

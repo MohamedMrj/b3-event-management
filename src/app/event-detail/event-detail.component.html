@@ -8,6 +8,32 @@
     <div class="event-detail-header">
       <h1>{{ event.title }}</h1>
       <span class="flex-spacer"></span>
+      <div *ngIf="currentUser$ | async as currentUser">
+        <button mat-button [matMenuTriggerFor]="rsvpMenu">
+          <mat-icon>expand_more</mat-icon>
+          {{ registrationStatus }}
+          @if (registrationStatus === 'Inbjuden') {
+            <mat-icon color="accent" style="order: 1">notification_important</mat-icon>
+          }
+        </button>
+        <mat-menu #rsvpMenu="matMenu">
+          <mat-radio-group
+            aria-labelledby="rsvp-radio-group-label"
+            class="rsvp-radio-group"
+            [(ngModel)]="registrationStatus"
+          >
+            @for (status of statusOptions; track status) {
+              <mat-radio-button
+                class="rsvp-radio-button"
+                [value]="status"
+                (click)="rsvp(event.id, currentUser.userId, status)"
+              >
+                {{ status }}
+              </mat-radio-button>
+            }
+          </mat-radio-group>
+        </mat-menu>
+      </div>
       <button
         mat-icon-button
         [matMenuTriggerFor]="manageEventMenu"

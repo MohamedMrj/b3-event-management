@@ -16,6 +16,12 @@ import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
 import { MatIcon } from '@angular/material/icon';
 import { MatButton, MatIconButton } from '@angular/material/button';
 import { MatProgressBar } from '@angular/material/progress-bar';
+import { UserService } from '../user.service';
+import { UserRegistration } from '../user';
+import { AuthService } from '../auth.service';
+import { UserDetails } from '../auth.interfaces';
+import { MatRadioModule } from '@angular/material/radio';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-event-detail',
@@ -38,6 +44,8 @@ import { MatProgressBar } from '@angular/material/progress-bar';
     GoogleMapsUrlPipe,
     SafePipe,
     GoogleMapsEmbedUrlPipe,
+    MatRadioModule,
+    FormsModule,
   ],
 })
 export class EventDetailComponent implements OnInit {
@@ -45,14 +53,21 @@ export class EventDetailComponent implements OnInit {
   isLoading: boolean = true;
   eventNotFound: boolean = false;
   organizerInfo$!: Observable<OrganizerInfo | null>;
+  registrationStatus!: string;
+  currentUser$: Observable<UserDetails | null>;
+  statusOptions: string[] = ['Kommer', 'Kanske', 'Kommer inte'];
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private eventService: EventService,
+    private userService: UserService,
+    private authService: AuthService,
     private titleService: Title,
     private snackBar: MatSnackBar,
-  ) {}
+  ) {
+    this.currentUser$ = this.authService.getCurrentUser();
+  }
 
   ngOnInit() {
     // Check if user is redirected after creating or updating an event
@@ -88,6 +103,13 @@ export class EventDetailComponent implements OnInit {
       const eventId = params.get('eventid');
       if (eventId) {
         this.fetchEvent(eventId);
+        this.currentUser$.subscribe((userDetails) => {
+          if (userDetails) {
+            this.getUserEventRegistration(eventId, userDetails.userId).subscribe((status) => {
+              this.registrationStatus = status.registrationStatus;
+            });
+          }
+        });
       } else {
         this.eventNotFound = true;
       }
@@ -145,6 +167,34 @@ export class EventDetailComponent implements OnInit {
         },
       });
     }
+  }
+
+  getUserEventRegistration(eventId: string, userId: string): Observable<UserRegistration> {
+    return this.userService.getUserRegistrationForEvent(eventId, userId);
+  }
+
+  rsvp(eventId: string | undefined, userId: string, registrationStatus: string): void {
+    if (!eventId) {
+      console.error('Event ID is undefined');
+      this.snackBar.open('Event kunde inte hittas.', 'Stäng', {
+        duration: 3000,
+      });
+      return;
+    }
+
+    this.userService.registerForEvent(eventId, userId, registrationStatus).subscribe({
+      next: () => {
+        this.snackBar.open('Din anmälan är sparad.', 'Stäng', {
+          duration: 3000,
+        });
+      },
+      error: (error) => {
+        console.error('Failed to register for event: ', error);
+        this.snackBar.open('Misslyckades att spara din anmälan.', 'Stäng', {
+          duration: 3000,
+        });
+      },
+    });
   }
 
   goBack() {
