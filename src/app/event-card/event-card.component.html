@@ -18,9 +18,7 @@
       <mat-icon>event</mat-icon>
       <span>
         <strong>Startar:</strong>
-        <span #startDate>
-          {{ event.startDateTime | dateFormat:'dateFull':true }} {{ event.startDateTime | dateFormat: 'time' }}
-        </span>
+        {{ event.startDateTime | dateFormat: 'dateFull':true }} {{ event.startDateTime | dateFormat: 'time' }}
         <br>
         <strong>Slutar:</strong>
         @if (isSameDay(event)) {
