@@ -13,32 +13,22 @@
           <mat-icon>expand_more</mat-icon>
           {{ registrationStatus }}
           @if (registrationStatus === 'Inbjuden') {
-            <mat-icon color="accent" style="order: 1">notification_important</mat-icon>
+          <mat-icon color="accent" style="order: 1">notification_important</mat-icon>
           }
         </button>
         <mat-menu #rsvpMenu="matMenu">
-          <mat-radio-group
-            aria-labelledby="rsvp-radio-group-label"
-            class="rsvp-radio-group"
-            [(ngModel)]="registrationStatus"
-          >
+          <mat-radio-group aria-labelledby="rsvp-radio-group-label" class="rsvp-radio-group"
+            [(ngModel)]="registrationStatus">
             @for (status of statusOptions; track status) {
-              <mat-radio-button
-                class="rsvp-radio-button"
-                [value]="status"
-                (click)="rsvp(event.id, currentUser.userId, status)"
-              >
-                {{ status }}
-              </mat-radio-button>
+            <mat-radio-button class="rsvp-radio-button" [value]="status"
+              (click)="rsvp(event.id, currentUser.userId, status)">
+              {{ status }}
+            </mat-radio-button>
             }
           </mat-radio-group>
         </mat-menu>
       </div>
-      <button
-        mat-icon-button
-        [matMenuTriggerFor]="manageEventMenu"
-        aria-label="Menu for managing event"
-      >
+      <button mat-icon-button [matMenuTriggerFor]="manageEventMenu" aria-label="Menu for managing event">
         <mat-icon>more_vert</mat-icon>
       </button>
       <mat-menu #manageEventMenu="matMenu">
@@ -68,19 +58,16 @@
             <mat-icon>event</mat-icon>
             <span>
               <strong>Startar:</strong>
-              {{ event.startDateTime | date: 'longDate' }}
-              {{ event.startDateTime | date: 'shortTime' }}<br />
+              <span #startDate>
+                {{ event.startDateTime | dateFormat: 'dateFull' }} {{ event.startDateTime | dateFormat: 'time' }}
+              </span>
+              <br>
               <strong>Slutar:</strong>
-              <span style="display: none" #startDate>{{
-                event.startDateTime | date: 'shortDate'
-              }}</span>
-              <span style="display: none" #endDate>{{
-                event.endDateTime | date: 'shortDate'
-              }}</span>
-              <ng-container *ngIf="startDate.innerText !== endDate.innerText">
-                {{ event.endDateTime | date: 'longDate' }}
-              </ng-container>
-              {{ event.endDateTime | date: 'shortTime' }}
+              @if (isSameDay(event)) {
+              {{ event.endDateTime | dateFormat: 'time' }}
+              } @else {
+              {{ event.endDateTime | dateFormat: 'dateFull' }} {{ event.endDateTime | dateFormat: 'time' }}
+              }
             </span>
           </div>
         </div>
@@ -90,14 +77,8 @@
             <a [href]="event | googleMapsUrl" target="_blank">{{ event | locationFormat }}</a>
           </div>
           <div class="googleMapsEmbed">
-            <iframe
-              [src]="event | googleMapsEmbedUrl | safe"
-              loading="lazy"
-              width="100%"
-              height="250"
-              frameborder="0"
-              allowfullscreen
-            ></iframe>
+            <iframe [src]="event | googleMapsEmbedUrl | safe" loading="lazy" width="100%" height="250" frameborder="0"
+              allowfullscreen></iframe>
           </div>
         </div>
       </div>

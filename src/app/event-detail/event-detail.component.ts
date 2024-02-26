@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NgIf, AsyncPipe, DatePipe } from '@angular/common';
+import { NgIf, AsyncPipe, DatePipe, registerLocaleData } from '@angular/common';
 import { switchMap } from 'rxjs/operators';
 import { of, Observable, catchError } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -22,6 +22,8 @@ import { AuthService } from '../auth.service';
 import { UserDetails } from '../auth.interfaces';
 import { MatRadioModule } from '@angular/material/radio';
 import { FormsModule } from '@angular/forms';
+import { DateFormatPipe } from '../date-format.pipe';
+import localeSv from '@angular/common/locales/sv';
 
 @Component({
   selector: 'app-event-detail',
@@ -46,6 +48,7 @@ import { FormsModule } from '@angular/forms';
     GoogleMapsEmbedUrlPipe,
     MatRadioModule,
     FormsModule,
+    DateFormatPipe,
   ],
 })
 export class EventDetailComponent implements OnInit {
@@ -67,6 +70,7 @@ export class EventDetailComponent implements OnInit {
     private snackBar: MatSnackBar,
   ) {
     this.currentUser$ = this.authService.getCurrentUser();
+    registerLocaleData(localeSv);
   }
 
   ngOnInit() {
@@ -195,6 +199,12 @@ export class EventDetailComponent implements OnInit {
         });
       },
     });
+  }
+
+  isSameDay(event: Event): boolean {
+    const start = new Date(event.startDateTime);
+    const end = new Date(event.endDateTime);
+    return start.toDateString() === end.toDateString();
   }
 
   goBack() {

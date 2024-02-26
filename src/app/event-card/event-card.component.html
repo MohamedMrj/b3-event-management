@@ -8,27 +8,27 @@
         {{ event.title }}
       </a>
     </mat-card-title>
-    <mat-card-subtitle
-      ><strong style="color: black">Skapad av:</strong>
-      {{ (organizerInfo$ | async)?.username }}</mat-card-subtitle
-    >
+    <mat-card-subtitle><strong style="color: black">Skapad av:</strong>
+      {{ (organizerInfo$ | async)?.username }}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
     <p class="cardDescription">{{ event.shortDescription }}</p>
     <span class="flex-spacer"></span>
     <div class="event-card-info">
       <mat-icon>event</mat-icon>
-      <p>
-        <strong>Startar:</strong> {{ event.startDateTime | date: 'longDate' }}
-        {{ event.startDateTime | date: 'shortTime' }}<br />
+      <span>
+        <strong>Startar:</strong>
+        <span #startDate>
+          {{ event.startDateTime | dateFormat:'dateFull':true }} {{ event.startDateTime | dateFormat: 'time' }}
+        </span>
+        <br>
         <strong>Slutar:</strong>
-        <span style="display: none" #startDate>{{ event.startDateTime | date: 'shortDate' }}</span>
-        <span style="display: none" #endDate>{{ event.endDateTime | date: 'shortDate' }}</span>
-        <ng-container *ngIf="startDate.innerText !== endDate.innerText">
-          {{ event.endDateTime | date: 'longDate' }}
-        </ng-container>
-        {{ event.endDateTime | date: 'shortTime' }}
-      </p>
+        @if (isSameDay(event)) {
+        {{ event.endDateTime | dateFormat: 'time' }}
+        } @else {
+        {{ event.endDateTime | dateFormat: 'dateFull':true }} {{ event.endDateTime | dateFormat: 'time' }}
+        }
+      </span>
     </div>
     <div class="event-card-info">
       <mat-icon>location_on</mat-icon>
@@ -41,23 +41,17 @@
       <mat-icon>expand_more</mat-icon>
       {{ registrationStatus }}
       @if (registrationStatus === 'Inbjuden') {
-        <mat-icon color="accent" style="order: 1">notification_important</mat-icon>
+      <mat-icon color="accent" style="order: 1">notification_important</mat-icon>
       }
     </button>
     <mat-menu #rsvpMenu="matMenu">
-      <mat-radio-group
-        aria-labelledby="rsvp-radio-group-label"
-        class="rsvp-radio-group"
-        [(ngModel)]="registrationStatus"
-      >
+      <mat-radio-group aria-labelledby="rsvp-radio-group-label" class="rsvp-radio-group"
+        [(ngModel)]="registrationStatus">
         @for (status of statusOptions; track status) {
-          <mat-radio-button
-            class="rsvp-radio-button"
-            [value]="status"
-            (click)="rsvp(event.id, currentUser.userId, status)"
-          >
-            {{ status }}
-          </mat-radio-button>
+        <mat-radio-button class="rsvp-radio-button" [value]="status"
+          (click)="rsvp(event.id, currentUser.userId, status)">
+          {{ status }}
+        </mat-radio-button>
         }
       </mat-radio-group>
     </mat-menu>

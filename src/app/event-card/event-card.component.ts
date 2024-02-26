@@ -7,7 +7,7 @@ import { LocationFormatPipe } from '../location-format.pipe';
 import { MatButton } from '@angular/material/button';
 import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
 import { MatDivider } from '@angular/material/divider';
-import { NgIf, DatePipe, AsyncPipe } from '@angular/common';
+import { NgIf, DatePipe, AsyncPipe, registerLocaleData } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
 import {
@@ -24,6 +24,8 @@ import { AuthService } from '../auth.service';
 import { UserDetails } from '../auth.interfaces';
 import { FormsModule } from '@angular/forms';
 import { MatRadioModule } from '@angular/material/radio';
+import { DateFormatPipe } from '../date-format.pipe';
+import localeSv from '@angular/common/locales/sv';
 
 @Component({
   selector: 'app-event-card',
@@ -51,6 +53,7 @@ import { MatRadioModule } from '@angular/material/radio';
     GoogleMapsUrlPipe,
     MatRadioModule,
     FormsModule,
+    DateFormatPipe,
   ],
 })
 export class EventCardComponent implements OnInit {
@@ -67,12 +70,19 @@ export class EventCardComponent implements OnInit {
     public authService: AuthService,
   ) {
     this.currentUser$ = this.authService.getCurrentUser();
+    registerLocaleData(localeSv);
   }
 
   ngOnInit() {
     if (this.event && this.event.creatorUserId) {
       this.organizerInfo$ = this.eventService.getOrganizerContactInfo(this.event.creatorUserId);
     }
+  }
+
+  isSameDay(event: Event): boolean {
+    const start = new Date(event.startDateTime);
+    const end = new Date(event.endDateTime);
+    return start.toDateString() === end.toDateString();
   }
 
   copyToClipboard(eventId: string | undefined): void {
