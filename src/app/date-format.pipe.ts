@@ -6,22 +6,24 @@ import { formatDate } from '@angular/common';
   standalone: true,
 })
 export class DateFormatPipe implements PipeTransform {
-
-  transform(value: any, formatType: string): string {
+  transform(value: any, formatType: string, omitYearIfCurrent: boolean = false): string {
     if (!value) return '';
 
     const svLocale = 'sv-SE';
     let formatString = '';
+    const currentYear = new Date().getFullYear();
+    const valueYear = new Date(value).getFullYear();
+    const omitYear = omitYearIfCurrent && currentYear === valueYear;
 
     switch (formatType) {
       case 'dateFull':
-        formatString = 'EEEE d MMMM yyyy';
+        formatString = omitYear ? 'EEEE d MMMM' : 'EEEE d MMMM yyyy';
         break;
       case 'dateMedium':
-        formatString = 'd MMMM yyyy';
+        formatString = omitYear ? 'd MMMM' : 'd MMMM yyyy';
         break;
       case 'dateShort':
-        formatString = 'yyyy-MM-dd';
+        formatString = omitYear ? 'MM-dd' : 'yyyy-MM-dd';
         break;
       case 'time':
         formatString = 'HH:mm';
@@ -32,5 +34,4 @@ export class DateFormatPipe implements PipeTransform {
 
     return formatDate(value, formatString, svLocale);
   }
-
 }
