@@ -11,8 +11,10 @@
 }
 
 .events-container {
+  width: 100%;
   display: grid;
-  grid-template-columns: repeat(1, 1fr);
+  grid-template-columns: repeat(1, minmax(320px, 400px));
+  justify-content: space-around;
   grid-auto-rows: minmax(100px, auto);
   gap: 2rem 1rem;
   margin: 1rem 0;
@@ -35,18 +37,15 @@ mat-paginator {
   color: var(--white);
 }
 
-@media (min-width: 640px) {
+@media (min-width: 720px) {
   .events-container {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(320px, 400px));
   }
-}
-
-@media (min-width: 768px) {
 }
 
 @media (min-width: 1024px) {
   .events-container {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, minmax(320px, 380px));
   }
 }
 
@@ -55,6 +54,6 @@ mat-paginator {
 
 @media (min-width: 1536px) {
   .events-container {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(4, minmax(320px, 400px));
   }
 }

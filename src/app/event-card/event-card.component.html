@@ -17,10 +17,10 @@
     <div class="event-card-info">
       <mat-icon>event</mat-icon>
       <span>
-        <strong>Startar:</strong>
+        <strong>Från:</strong>
         {{ event.startDateTime | dateFormat: 'dateFull':true }} {{ event.startDateTime | dateFormat: 'time' }}
         <br>
-        <strong>Slutar:</strong>
+        <strong>Till:</strong>
         @if (isSameDay(event)) {
         {{ event.endDateTime | dateFormat: 'time' }}
         } @else {

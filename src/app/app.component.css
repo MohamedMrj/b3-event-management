@@ -1,8 +1,8 @@
 /* Main */
 
 .main-wrapper {
-  margin: 1rem auto;
-  padding: 0 1rem;
+  margin: 0 auto;
+  padding: 1rem 1rem;
   width: 100%;
 }
 
@@ -10,6 +10,7 @@
 
 mat-toolbar {
   background-color: var(--black);
+  padding: 0 1rem;
 }
 
 .header-wrapper {
@@ -19,7 +20,6 @@ mat-toolbar {
   margin: 0 auto;
   align-items: center;
   gap: 1rem;
-  padding: 1rem 0;
 }
 
 .logo-container {
@@ -36,35 +36,6 @@ mat-toolbar {
 .logo-container img {
   height: 100%;
   width: auto;
-}
-
-.menu-item {
-  font-size: 1rem;
-  color: var(--white);
-}
-
-.menu-item:hover {
-  text-decoration: none;
-  color: var(--pink-light);
-}
-
-.menu-item:after {
-  background: none repeat scroll 0 0 transparent;
-  bottom: 0;
-  content: '';
-  display: block;
-  height: 2px;
-  left: 50%;
-  position: absolute;
-  background: #fff;
-  transition:
-    width 0.3s ease 0s,
-    left 0.3s ease 0s;
-  width: 0;
-}
-.menu-item:hover:after {
-  width: 100%;
-  left: 0;
 }
 
 .signed-in-user {
@@ -92,21 +63,13 @@ mat-toolbar {
   padding: 0;
 }
 
-@media (min-width: 640px) {
-  .header-wrapper {
-    width: calc(100% - 1rem * 2);
-  }
-  .menu-item {
-    text-transform: uppercase;
-    letter-spacing: 0.15em;
-    display: inline-block;
-    padding: 15px 20px;
-    position: relative;
+@media (min-width: 664px) {
+  mat-toolbar {
+    padding: 0 1rem;
   }
 
   .main-wrapper {
-    margin: 2rem auto;
-    width: calc(100% - 1rem * 2);
+    padding: 2rem 1rem;
   }
 
   .footer {
@@ -115,43 +78,34 @@ mat-toolbar {
 }
 
 @media (min-width: 768px) {
-  .header-wrapper {
-    width: calc(100% - 2rem * 2);
-  }
-
   .main-wrapper {
-    margin: 3rem auto;
-    width: calc(100% - 2rem * 2);
+    padding: 3rem 1rem;
   }
 }
 
 @media (min-width: 1024px) {
-  .header-wrapper {
-    width: calc(100% - 6rem * 2);
-  }
-
   .main-wrapper {
-    margin: 4rem auto;
-    width: calc(100% - 6rem * 2);
+    padding: 4rem 1rem;
   }
 }
 
 @media (min-width: 1280px) {
   .header-wrapper {
-    width: calc(100% - 8rem * 2);
+    padding: 0 3rem;
   }
 
   .main-wrapper {
-    width: calc(100% - 8rem * 2);
+    padding: 4rem 4rem;
   }
 }
 
 @media (min-width: 1536px) {
   .header-wrapper {
-    width: calc(1773px - 17rem * 2);
+    max-width: 1504px;
   }
 
   .main-wrapper {
-    width: calc(1773px - 16rem * 2);
+    max-width: 1536px;
+    padding: 4rem 4rem;
   }
 }
