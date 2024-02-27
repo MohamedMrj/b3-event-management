@@ -1,11 +1,6 @@
 <div class="event-list-header">
   <h1>Events</h1>
-  <button
-    mat-fab
-    aria-label="Create event button"
-    class="create-event-button"
-    (click)="navigateToCreateEvent()"
-  >
+  <button mat-fab aria-label="Create event button" class="create-event-button" (click)="navigateToCreateEvent()">
     <mat-icon>add</mat-icon>
   </button>
 </div>
@@ -16,11 +11,8 @@
       Alla event
     </ng-template>
     <div class="events-container">
-      <app-event-card
-        *ngFor="let event of allEventsList"
-        [event]="event"
-        [registrationStatus]="getRegistrationStatusForEvent(event.id || '')"
-      >
+      <app-event-card *ngFor="let event of allEventsList" [event]="event"
+        [registrationStatus]="getRegistrationStatusForEvent(event.id || '')">
       </app-event-card>
     </div>
     <p *ngIf="allEventsList.length === 0" class="center-text no-events-text">
@@ -33,11 +25,8 @@
       Mina event
     </ng-template>
     <div class="events-container">
-      <app-event-card
-        *ngFor="let event of userEvents"
-        [event]="event"
-        [registrationStatus]="getRegistrationStatusForEvent(event.id || '')"
-      >
+      <app-event-card *ngFor="let event of userEvents" [event]="event"
+        [registrationStatus]="getRegistrationStatusForEvent(event.id || '')">
       </app-event-card>
     </div>
     <p *ngIf="userEvents.length === 0" class="center-text no-events-text">
@@ -50,11 +39,8 @@
       Administrera event
     </ng-template>
     <div class="events-container">
-      <app-event-card
-        *ngFor="let event of eventsByOrganizer"
-        [event]="event"
-        [registrationStatus]="getRegistrationStatusForEvent(event.id || '')"
-      >
+      <app-event-card *ngFor="let event of eventsByOrganizer" [event]="event"
+        [registrationStatus]="getRegistrationStatusForEvent(event.id || '')">
       </app-event-card>
     </div>
     <p *ngIf="eventsByOrganizer.length === 0" class="center-text no-events-text">
@@ -62,10 +48,6 @@
     </p>
   </mat-tab>
 </mat-tab-group>
-<mat-paginator
-  [length]="totalEvents"
-  [pageSize]="eventsPerPage"
-  [pageSizeOptions]="[6, 12, 18]"
-  (page)="onPageChange($event)"
->
+<mat-paginator [length]="totalEvents" [pageSize]="eventsPerPage" [pageSizeOptions]="[6, 8, 12, 16, 18]"
+  (page)="onPageChange($event)">
 </mat-paginator>
