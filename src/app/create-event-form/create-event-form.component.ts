@@ -14,6 +14,7 @@ import { MatFormField, MatLabel, MatSuffix, MatHint } from '@angular/material/fo
 import { FormsModule } from '@angular/forms';
 import { NgIf, NgFor, AsyncPipe } from '@angular/common';
 import { AuthService } from '../auth.service';
+import { FutureDateTimeValidatorDirective } from '../shared/directives/future-datetime-validator.directive';
 
 @Component({
   selector: 'app-create-event-form',
@@ -34,6 +35,7 @@ import { AuthService } from '../auth.service';
     NgFor,
     MatOption,
     MatButton,
+    FutureDateTimeValidatorDirective,
   ],
 })
 export class CreateEventFormComponent implements OnInit {

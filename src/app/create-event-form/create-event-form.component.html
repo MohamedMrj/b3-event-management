@@ -21,14 +21,16 @@
   <div class="form-group">
     <mat-form-field>
       <mat-label>Startdatum</mat-label>
-      <input matInput type="datetime-local" (click)="startDateInput.showPicker()" #startDateInput class="form-control"
-        id="startDateTime" required [(ngModel)]="event.startDateTime" name="startDateTime" />
+      <input matInput type="datetime-local" appFutureDateTime (click)="startDateInput.showPicker()" #startDateInput
+        class="form-control" id="startDateTime" required [(ngModel)]="event.startDateTime" name="startDateTime" />
       <mat-icon matSuffix>event</mat-icon>
     </mat-form-field>
     <mat-form-field>
       <mat-label>Slutdatum</mat-label>
       <input matInput type="datetime-local" (click)="endDateTimeInput.showPicker()" #endDateTimeInput
-        class="form-control" id="endDateTime" required [(ngModel)]="event.endDateTime" name="endDateTime" />
+        class="form-control" id="endDateTime" required [(ngModel)]="event.endDateTime" name="endDateTime"
+        [min]="event.startDateTime" class="form-control" id="endDateTime" required [(ngModel)]="event.endDateTime"
+        name="endDateTime" />
       <mat-icon matSuffix>event</mat-icon>
     </mat-form-field>
   </div>
