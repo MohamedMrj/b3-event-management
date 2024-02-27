@@ -23,7 +23,7 @@
       <mat-label>Startdatum</mat-label>
       <input matInput type="datetime-local" appFutureDateTime (click)="startDateInput.showPicker()" #startDateInput
         class="form-control" id="startDateTime" required [(ngModel)]="event.startDateTime" name="startDateTime" />
-      <mat-icon matSuffix>event</mat-icon>
+      <mat-icon matSuffix (click)="startDateInput.showPicker()">event</mat-icon>
     </mat-form-field>
     <mat-form-field>
       <mat-label>Slutdatum</mat-label>
@@ -31,7 +31,7 @@
         class="form-control" id="endDateTime" required [(ngModel)]="event.endDateTime" name="endDateTime"
         [min]="event.startDateTime" class="form-control" id="endDateTime" required [(ngModel)]="event.endDateTime"
         name="endDateTime" />
-      <mat-icon matSuffix>event</mat-icon>
+      <mat-icon matSuffix (click)="endDateTimeInput.showPicker()">event</mat-icon>
     </mat-form-field>
   </div>
   <div class="form-group">
