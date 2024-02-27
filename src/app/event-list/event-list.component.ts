@@ -32,7 +32,7 @@ export class EventListComponent implements OnInit {
 
   // Pagination properties
   totalEvents: number = 0;
-  eventsPerPage: number = 6;
+  eventsPerPage: number = 12;
   currentPage: number = 1;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
