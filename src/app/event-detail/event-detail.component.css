@@ -64,6 +64,7 @@
   align-items: center;
   flex-direction: row;
   margin-bottom: 1rem;
+  gap: 1rem;
 }
 
 .event-image {
@@ -85,6 +86,18 @@
   align-items: center;
   justify-content: center;
   height: 50vh;
+}
+
+.rsvp-button-green {
+  background: #C8E6C9;
+}
+
+.rsvp-button-yellow {
+  background: #F0F4C3;
+}
+
+.rsvp-button-red {
+  background: #FFCDD2;
 }
 
 .rsvp-radio-group {

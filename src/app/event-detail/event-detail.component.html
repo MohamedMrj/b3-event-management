@@ -9,7 +9,11 @@
       <h1>{{ event.title }}</h1>
       <span class="flex-spacer"></span>
       <div *ngIf="currentUser$ | async as currentUser">
-        <button mat-button [matMenuTriggerFor]="rsvpMenu">
+        <button mat-button [matMenuTriggerFor]="rsvpMenu" [ngClass]="{
+          'rsvp-button-green': registrationStatus === 'Kommer',
+          'rsvp-button-yellow': registrationStatus === 'Kanske' || registrationStatus === 'Inbjuden',
+          'rsvp-button-red': registrationStatus === 'Kommer inte'
+        }">
           <mat-icon>expand_more</mat-icon>
           {{ registrationStatus }}
           @if (registrationStatus === 'Inbjuden') {
@@ -29,7 +33,7 @@
         </mat-menu>
       </div>
       <button mat-icon-button [matMenuTriggerFor]="manageEventMenu" aria-label="Menu for managing event">
-        <mat-icon>more_vert</mat-icon>
+        <mat-icon>manage_accounts</mat-icon>
       </button>
       <mat-menu #manageEventMenu="matMenu">
         <button mat-menu-item (click)="navigateToEditEvent()">

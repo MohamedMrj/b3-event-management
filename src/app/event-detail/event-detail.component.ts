@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NgIf, AsyncPipe, DatePipe, registerLocaleData } from '@angular/common';
+import { CommonModule, NgIf, AsyncPipe, DatePipe, registerLocaleData } from '@angular/common';
 import { switchMap } from 'rxjs/operators';
 import { of, Observable, catchError } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -31,6 +31,7 @@ import localeSv from '@angular/common/locales/sv';
   styleUrls: ['./event-detail.component.css'],
   standalone: true,
   imports: [
+    CommonModule,
     NgIf,
     MatProgressBar,
     MatButton,
