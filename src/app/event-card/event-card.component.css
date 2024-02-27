@@ -35,6 +35,18 @@ mat-card-content {
   height: 100%;
 }
 
+.rsvp-button-green {
+  background: #C8E6C9;
+}
+
+.rsvp-button-yellow {
+  background: #F0F4C3;
+}
+
+.rsvp-button-red {
+  background: #FFCDD2;
+}
+
 .rsvp-radio-group {
   display: flex;
   flex-direction: column;

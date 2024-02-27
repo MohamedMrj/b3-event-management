@@ -7,7 +7,7 @@ import { LocationFormatPipe } from '../location-format.pipe';
 import { MatButton } from '@angular/material/button';
 import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
 import { MatDivider } from '@angular/material/divider';
-import { NgIf, DatePipe, AsyncPipe, registerLocaleData } from '@angular/common';
+import { CommonModule, NgIf, DatePipe, AsyncPipe, registerLocaleData } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
 import {
@@ -33,6 +33,7 @@ import localeSv from '@angular/common/locales/sv';
   styleUrls: ['./event-card.component.css'],
   standalone: true,
   imports: [
+    CommonModule,
     MatCard,
     AsyncPipe,
     RouterLink,

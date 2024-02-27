@@ -35,7 +35,11 @@
   </mat-card-content>
   <mat-divider></mat-divider>
   <mat-card-actions *ngIf="currentUser$ | async as currentUser">
-    <button mat-button [matMenuTriggerFor]="rsvpMenu">
+    <button mat-button [matMenuTriggerFor]="rsvpMenu" [ngClass]="{
+      'rsvp-button-green': registrationStatus === 'Kommer',
+      'rsvp-button-yellow': registrationStatus === 'Kanske' || registrationStatus === 'Inbjuden',
+      'rsvp-button-red': registrationStatus === 'Kommer inte'
+    }">
       <mat-icon>expand_more</mat-icon>
       {{ registrationStatus }}
       @if (registrationStatus === 'Inbjuden') {
