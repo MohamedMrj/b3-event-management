@@ -8,6 +8,9 @@ import { LoginComponent } from './login/login.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 /* import { MyEventsComponent } from './my-events/my-events.component'; */
 import { AuthGuardService } from './auth.guard';
+import { UserManageComponent } from './user-manage/user-manage.component';
+import { AdminGuardService } from './admin.guard';
+import { AdminComponent } from './admin/admin.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent, title: 'Logga in' },
@@ -34,7 +37,12 @@ export const routes: Routes = [
     title: 'API-test',
     canActivate: [AuthGuardService],
   },
-  /* { path: 'my-events', component: MyEventsComponent, title: 'Mina Event', canActivate: [AuthGuardService] }, */
+  {
+    path: 'admin',
+    component: AdminComponent,
+    title: 'Admin',
+    canActivate: [AdminGuardService],
+  },
   {
     path: '',
     component: EventListComponent,

@@ -5,10 +5,10 @@
     <button mat-button appBackButton (click)="goBack()" class="back-button">
       <mat-icon>arrow_back</mat-icon>Tillbaka
     </button>
-    <div class="event-detail-header">
+    <div class="event-detail-header" *ngIf="currentUser$ | async as currentUser">
       <h1>{{ event.title }}</h1>
       <span class="flex-spacer"></span>
-      <div *ngIf="currentUser$ | async as currentUser">
+      <div>
         <button mat-button [matMenuTriggerFor]="rsvpMenu" [ngClass]="{
           'rsvp-button-green': registrationStatus === 'Kommer',
           'rsvp-button-yellow': registrationStatus === 'Kanske' || registrationStatus === 'Inbjuden',
@@ -32,7 +32,8 @@
           </mat-radio-group>
         </mat-menu>
       </div>
-      <button mat-icon-button [matMenuTriggerFor]="manageEventMenu" aria-label="Menu for managing event">
+      <button mat-icon-button [matMenuTriggerFor]="manageEventMenu" *ngIf="currentUser.role === 'Admin'"
+        aria-label="Menu for managing event">
         <mat-icon>manage_accounts</mat-icon>
       </button>
       <mat-menu #manageEventMenu="matMenu">

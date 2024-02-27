@@ -33,7 +33,7 @@ namespace B3.Complete.Eventwebb
 
         [Function(nameof(CreateUser))]
         public static async Task<HttpResponseData> CreateUser(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "createUser")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "users")] HttpRequestData req,
             FunctionContext executionContext)
         {
             var log = executionContext.GetLogger("AuthenticationManager");
@@ -123,7 +123,7 @@ namespace B3.Complete.Eventwebb
                 return response;
             }
 
-            var token = GenerateJwtToken(userEntity.RowKey!, data.Username);
+            var token = GenerateJwtToken(userEntity.RowKey!, data.Username!, userEntity.UserType!);
             var tokenResponse = JsonConvert.SerializeObject(new { token = token });
             await response.WriteStringAsync(tokenResponse);
             return response;
@@ -188,7 +188,7 @@ namespace B3.Complete.Eventwebb
             return null;
         }
 
-        private static string GenerateJwtToken(string userId, string username)
+        private static string GenerateJwtToken(string userId, string username, string UserType)
         {
             var tokenHandler = new JsonWebTokenHandler();
             var key = Encoding.ASCII.GetBytes(secretKey);
@@ -197,7 +197,8 @@ namespace B3.Complete.Eventwebb
                 Subject = new ClaimsIdentity(new Claim[]
                 {
             new Claim(ClaimTypes.NameIdentifier, userId),
-            new Claim(ClaimTypes.Name, username)
+            new Claim(ClaimTypes.Name, username),
+            new Claim(ClaimTypes.Role, UserType),
                 }),
                 Expires = DateTime.UtcNow.AddHours(2),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)

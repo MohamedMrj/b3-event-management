@@ -42,6 +42,7 @@ export class AuthService {
           userId:
             decodedToken['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'],
           username: decodedToken['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'],
+          role: decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'],
           issuedAt: decodedToken.iat,
           notValidBefore: decodedToken.nbf,
         };
@@ -67,6 +68,7 @@ export class AuthService {
             userId:
               decodedToken['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'],
             username: decodedToken['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'],
+            role: decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'],
             issuedAt: decodedToken['iat'],
             notValidBefore: decodedToken['nbf'],
           };
@@ -119,5 +121,12 @@ export class AuthService {
 
   getCurrentUser(): Observable<UserDetails | null> {
     return this.currentUser$;
+  }
+
+  isUserAdmin(): boolean {
+    const user = this.currentUserSubject.getValue();
+    console.log("Checking if boii is admin")
+    console.log(user?.role)
+    return user?.role === 'Admin';
   }
 }
