@@ -2,6 +2,9 @@ using System.Text.Json.Serialization;
 
 public class UserInfoDto
 {
+    [JsonPropertyName("userType")]
+    public string UserType { get; set; } = string.Empty;
+
     [JsonPropertyName("id")]
     public string RowKey { get; set; } = string.Empty;
 

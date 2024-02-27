@@ -41,7 +41,8 @@ namespace B3.Complete.Eventwebb
 
             var response = req.CreateResponse(HttpStatusCode.OK);
             string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-            var data = JsonConvert.DeserializeObject<UserCredentials>(requestBody);
+            var data = JsonConvert.DeserializeObject<UserEntity>(requestBody);
+
             if (data == null || string.IsNullOrEmpty(data.Username) || string.IsNullOrEmpty(data.Password))
             {
                 response.StatusCode = HttpStatusCode.BadRequest;
@@ -61,9 +62,13 @@ namespace B3.Complete.Eventwebb
             {
                 PartitionKey = "User",
                 RowKey = Guid.NewGuid().ToString(),
+                UserType = data.UserType,
                 Username = data.Username,
-                PasswordHash = passwordHash,
-                Salt = salt
+                Password = passwordHash,
+                Salt = salt,
+                FirstName = data.FirstName,
+                LastName = data.LastName,
+                PhoneNumber = data.PhoneNumber,
             };
 
             await usersTable.AddEntityAsync(newUser);
@@ -93,7 +98,7 @@ namespace B3.Complete.Eventwebb
             }
 
             var userEntity = await GetUserEntity(data.Username);
-            if (userEntity == null || string.IsNullOrEmpty(userEntity.PasswordHash) || string.IsNullOrEmpty(userEntity.Salt))
+            if (userEntity == null || string.IsNullOrEmpty(userEntity.Password) || string.IsNullOrEmpty(userEntity.Salt))
             {
                 response.StatusCode = HttpStatusCode.BadRequest;
                 var errorResponse = JsonConvert.SerializeObject(new { error = "User not found or invalid credentials." });
@@ -101,7 +106,7 @@ namespace B3.Complete.Eventwebb
                 return response;
             }
 
-            bool isPasswordValid = VerifyPasswordHash(data.Password, userEntity.PasswordHash!, userEntity.Salt!);
+            bool isPasswordValid = VerifyPasswordHash(data.Password, userEntity.Password!, userEntity.Salt!);
             if (!isPasswordValid)
             {
                 response.StatusCode = HttpStatusCode.BadRequest;

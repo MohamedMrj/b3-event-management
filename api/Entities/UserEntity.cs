@@ -9,6 +9,9 @@ public class UserEntity : ITableEntity
     public DateTimeOffset? Timestamp { get; set; }
     public ETag ETag { get; set; }
 
+    [JsonPropertyName("userType")]
+    public string UserType { get; set; } = string.Empty;
+
     [JsonPropertyName("id")]
     public string RowKey { get; set; } = string.Empty;
 
@@ -16,7 +19,7 @@ public class UserEntity : ITableEntity
     public string Username { get; set; } = string.Empty;
 
     [JsonPropertyName("password")]
-    public string PasswordHash { get; set; } = string.Empty;
+    public string Password { get; set; } = string.Empty;
 
     [JsonPropertyName("salt")]
     public string Salt { get; set; } = string.Empty;
