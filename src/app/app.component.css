@@ -20,6 +20,7 @@ mat-toolbar {
   margin: 0 auto;
   align-items: center;
   gap: 1rem;
+  justify-content: space-between;
 }
 
 .logo-container {
@@ -43,6 +44,18 @@ mat-toolbar {
   flex-direction: row;
   align-items: center;
   height: 100%;
+}
+
+.account-button {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  gap: 0.5rem;
+  width: auto;
+}
+
+.toolbar-username {
+  font-size: 1rem;
 }
 
 /* Footer */

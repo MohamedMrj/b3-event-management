@@ -125,8 +125,6 @@ export class AuthService {
 
   isUserAdmin(): boolean {
     const user = this.currentUserSubject.getValue();
-    console.log("Checking if boii is admin")
-    console.log(user?.role)
     return user?.role === 'Admin';
   }
 }
