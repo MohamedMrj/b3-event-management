@@ -6,6 +6,7 @@ import { MatSort, Sort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon'
 import { UserAccount } from '../auth.interfaces';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -22,12 +23,12 @@ const USER_DATA: UserAccount[] = [
 @Component({
   selector: 'app-user-manage',
   standalone: true,
-  imports: [MatFormFieldModule, MatInputModule, MatButtonModule, MatTableModule, MatSortModule, MatPaginatorModule,],
+  imports: [MatFormFieldModule, MatInputModule, MatButtonModule, MatTableModule, MatSortModule, MatPaginatorModule, MatIconModule,],
   templateUrl: './user-manage.component.html',
   styleUrl: './user-manage.component.css'
 })
 export class UserManageComponent implements AfterViewInit {
-  displayedColumns: string[] = ['userType', 'username', 'firstName', 'lastName', 'phoneNumber', 'lastChanged'];
+  displayedColumns: string[] = ['userType', 'username', 'firstName', 'lastName', 'phoneNumber', 'lastChanged', 'actions'];
   dataToDisplay = [...USER_DATA];
 
   dataSource = new MatTableDataSource(this.dataToDisplay);
