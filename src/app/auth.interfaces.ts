@@ -28,5 +28,5 @@ export interface UserAccount {
   firstName: string;
   lastName: string;
   phoneNumber: string;
-  lastChanged: string;
+  lastModified: string;
 }

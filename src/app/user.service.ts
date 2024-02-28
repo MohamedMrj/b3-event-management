@@ -11,7 +11,17 @@ export class UserService {
   constructor(
     private http: HttpClient,
     public authService: AuthService,
-  ) {}
+  ) { }
+
+  getUser(userId: string): Observable<any> {
+    const headers = this.authService.getAuthHeaders();
+    return this.http.get(`/api/users/${userId}`, { headers });
+  }
+
+  getAllUsers(): Observable<any> {
+    const headers = this.authService.getAuthHeaders();
+    return this.http.get('/api/users', { headers });
+  }
 
   registerForEvent(
     eventId: string,
