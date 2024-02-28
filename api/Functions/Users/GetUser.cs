@@ -23,7 +23,7 @@ namespace B3.Complete.Eventwebb
 
             await foreach (var entity in queryResults)
             {
-                var userInfo = new UserInfoDto
+                var userInfo = new UserInfoDTO
                 {
                     RowKey = entity.RowKey ?? string.Empty,
                     Username = entity.ContainsKey("Username") ? entity["Username"]?.ToString() ?? string.Empty : string.Empty,

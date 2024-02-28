@@ -2,9 +2,6 @@ using Azure.Data.Tables;
 using Microsoft.Extensions.Logging;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
-using System.Threading.Tasks;
-using System.Collections.Generic;
-using Azure;
 using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
@@ -28,7 +25,7 @@ namespace B3.Complete.Eventwebb
 {
     public static class AuthenticationManager
     {
-        private static readonly string secretKey = "ZczdEdVxhn78Y3dF7v67HfzhVT8fzDF6ddGT4UeTC6zRK9gL7Kxrt6VMogqmCwQw";
+        private static readonly string secretKey = Constants.JwtSecretKey;
         private static readonly TableClient usersTable = new TableClient(DatabaseConfig.ConnectionString, DatabaseConfig.UserTable);
 
         [Function(nameof(CreateUser))]
