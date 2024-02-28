@@ -11,7 +11,7 @@ namespace B3.Complete.Eventwebb
     {
         [Function(nameof(GetUser))]
         public static async Task<HttpResponseData> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "user/{id}")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "users/{id}")] HttpRequestData req,
             string id,
             FunctionContext executionContext)
         {
@@ -30,6 +30,8 @@ namespace B3.Complete.Eventwebb
                     FirstName = entity.ContainsKey("FirstName") ? entity["FirstName"]?.ToString() ?? string.Empty : string.Empty,
                     LastName = entity.ContainsKey("LastName") ? entity["LastName"]?.ToString() ?? string.Empty : string.Empty,
                     PhoneNumber = entity.ContainsKey("PhoneNumber") ? entity["PhoneNumber"]?.ToString() ?? string.Empty : string.Empty,
+                    UserType = entity.ContainsKey("UserType") ? entity["UserType"]?.ToString() ?? string.Empty : string.Empty,
+                    Timestamp = entity.Timestamp ?? default,
                 };
 
                 var okResponse = req.CreateResponse(System.Net.HttpStatusCode.OK);
