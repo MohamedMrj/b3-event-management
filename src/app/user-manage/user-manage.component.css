@@ -10,24 +10,6 @@
   margin-bottom: 1rem;
 }
 
-@media (min-width: 1024px) {
-  .container {
-    max-width: 1024px;
-  }
-}
-
-.demo-table {
-  width: 100%;
-}
-
-.demo-button-container {
-  padding-bottom: 16px;
-}
-
-.demo-button + .demo-button {
-  margin-left: 8px;
-}
-
 .mat-mdc-form-field {
   font-size: 14px;
   width: 100%;
@@ -35,4 +17,10 @@
 
 th.mat-sort-header-sorted {
   color: black;
+}
+
+@media (min-width: 1024px) {
+  .container {
+    max-width: 1024px;
+  }
 }

@@ -4,6 +4,7 @@ import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { Observable, ReplaySubject } from 'rxjs';
 import { MatSort, Sort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatButtonModule } from '@angular/material/button';
 import { UserAccount } from '../auth.interfaces';
 import { MatInputModule } from '@angular/material/input';
@@ -14,12 +15,14 @@ const USER_DATA: UserAccount[] = [
   { id: '2', userType: 'User', username: 'user', firstName: 'User', lastName: 'User', phoneNumber: '123-456-7890', lastChanged: '2020-01-01' },
   { id: '3', userType: 'User', username: 'user2', firstName: 'User2', lastName: 'User2', phoneNumber: '123-456-7890', lastChanged: '2020-01-01' },
   { id: '4', userType: 'User', username: 'user3', firstName: 'User3', lastName: 'User3', phoneNumber: '123-456-7890', lastChanged: '2020-01-01' },
+  { id: '5', userType: 'User', username: 'user4', firstName: 'User4', lastName: 'User4', phoneNumber: '123-456-7890', lastChanged: '2020-01-01' },
+  { id: '6', userType: 'User', username: 'user5', firstName: 'User5', lastName: 'User5', phoneNumber: '123-456-7890', lastChanged: '2020-01-01' },
 ];
 
 @Component({
   selector: 'app-user-manage',
   standalone: true,
-  imports: [MatFormFieldModule, MatInputModule, MatButtonModule, MatTableModule, MatSortModule,],
+  imports: [MatFormFieldModule, MatInputModule, MatButtonModule, MatTableModule, MatSortModule, MatPaginatorModule,],
   templateUrl: './user-manage.component.html',
   styleUrl: './user-manage.component.css'
 })
@@ -31,9 +34,11 @@ export class UserManageComponent implements AfterViewInit {
 
   constructor(private _liveAnnouncer: LiveAnnouncer) { }
 
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
   ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
 
