@@ -23,6 +23,11 @@ export class UserService {
     return this.http.get('/api/users', { headers });
   }
 
+  deleteUser(userId: string): Observable<any> {
+    const headers = this.authService.getAuthHeaders();
+    return this.http.delete(`/api/users/${userId}`, { headers });
+  }
+
   registerForEvent(
     eventId: string,
     userId: string,

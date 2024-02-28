@@ -4,8 +4,10 @@ import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { MatSort, Sort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
-import { MatButtonModule } from '@angular/material/button';
+import { MatButtonModule, MatButton, MatIconButton } from '@angular/material/button';
+import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon'
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { UserAccount } from '../auth.interfaces';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -17,8 +19,7 @@ import localeSv from '@angular/common/locales/sv';
   selector: 'app-user-manage',
   standalone: true,
   imports: [
-    MatFormFieldModule, MatInputModule, MatButtonModule, MatTableModule,
-    MatSortModule, MatPaginatorModule, MatIconModule, DateFormatPipe,
+    MatFormFieldModule, MatInputModule, MatButtonModule, MatTableModule, MatSortModule, MatPaginatorModule, MatIconModule, DateFormatPipe, MatButton, MatIconButton, MatMenuTrigger, MatMenu, MatMenuItem,
   ],
   templateUrl: './user-manage.component.html',
   styleUrls: ['./user-manage.component.css']
@@ -33,6 +34,7 @@ export class UserManageComponent implements AfterViewInit, OnInit {
   constructor(
     private _liveAnnouncer: LiveAnnouncer,
     private userService: UserService,
+    private snackBar: MatSnackBar,
   ) {
     registerLocaleData(localeSv);
   }
@@ -52,6 +54,24 @@ export class UserManageComponent implements AfterViewInit, OnInit {
     });
   }
 
+  deleteUser(user: UserAccount) {
+    this.userService.deleteUser(user.id).subscribe({
+      next: () => {
+        console.log(`User: ${user.id} deleted successfully.`);
+        this.snackBar.open('Användare raderad.', 'Stäng', {
+          duration: 3000,
+        });
+        this.deleteUserFromTable(user);
+      },
+      error: (error) => {
+        console.error('Error deleting user:', error);
+        this.snackBar.open('Fel vid radering av användare', 'Stäng', {
+          duration: 3000,
+        });
+      },
+    });
+  }
+
   announceSortChange(sortState: Sort) {
     if (sortState.direction) {
       this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
@@ -63,5 +83,10 @@ export class UserManageComponent implements AfterViewInit, OnInit {
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
+
+  // Function to delete a user from the table
+  deleteUserFromTable(user: UserAccount) {
+    this.dataSource.data = this.dataSource.data.filter(u => u.id !== user.id);
   }
 }

@@ -45,7 +45,19 @@
       <ng-container matColumnDef="actions" stickyEnd>
         <th mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;</th>
         <td mat-cell *matCellDef="let element">
-          <mat-icon>more_vert</mat-icon>
+          <button mat-icon-button [matMenuTriggerFor]="manageUserMenu" aria-label="Menu for managing event">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <mat-menu #manageUserMenu="matMenu">
+            <button mat-menu-item>
+              <mat-icon>edit</mat-icon>
+              <span>Redigera användare</span>
+            </button>
+            <button mat-menu-item (click)="deleteUser(element)">
+              <mat-icon color="warn">delete</mat-icon>
+              <span>Radera användare</span>
+            </button>
+          </mat-menu>
         </td>
       </ng-container>
 
