@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-public class UserInfoDto
+public class UserInfoDTO
 {
     [JsonPropertyName("userType")]
     public string UserType { get; set; } = string.Empty;
