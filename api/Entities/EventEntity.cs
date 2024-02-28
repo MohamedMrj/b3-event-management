@@ -1,6 +1,5 @@
 using Azure;
 using Azure.Data.Tables;
-using System;
 using System.Text.Json.Serialization;
 
 public class EventEntity : ITableEntity
