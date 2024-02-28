@@ -1,7 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+
 :root {
-  --pink-light: #ff79a7; /* Use on dark bg */
+  --pink-light: #ff79a7;
+  /* Use on dark bg */
   --pink: #ff4081;
-  --pink-dark: #df004c; /* Use on light bg */
+  --pink-dark: #df004c;
+  /* Use on light bg */
   --cyan: hsl(180, 89%, 42%);
   --black: #000000;
   --white: #ffffff;
@@ -16,7 +21,7 @@
 body {
   height: 100dvh;
   margin: 0;
-  font-family: system-ui, sans-serif;
+  font-family: 'Work Sans', sans-serif;
   font-size: 1rem;
   background-color: #e6e6e6;
 }
