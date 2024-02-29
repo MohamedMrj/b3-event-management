@@ -103,6 +103,19 @@ export class CreateEventFormComponent implements OnInit {
     this.eventService.fetchEventById(eventId).subscribe({
       next: (foundEvent) => {
         this.event = foundEvent;
+        if (this.event.startDateTime) {
+          const startDateTime = new Date(this.event.startDateTime);
+          const timeZoneOffset = startDateTime.getTimezoneOffset() * 60000; // Offset in milliseconds
+          const localStartDate = new Date(startDateTime.getTime() - timeZoneOffset);
+          this.event.startDateTime = localStartDate.toISOString().slice(0, 16); // Converts to 'YYYY-MM-DDTHH:mm' format
+        }
+
+        if (this.event.endDateTime) {
+          const endDateTime = new Date(this.event.endDateTime);
+          const timeZoneOffset = endDateTime.getTimezoneOffset() * 60000; // Offset in milliseconds
+          const localEndDate = new Date(endDateTime.getTime() - timeZoneOffset);
+          this.event.endDateTime = localEndDate.toISOString().slice(0, 16); // Converts to 'YYYY-MM-DDTHH:mm' format
+        }
       },
       error: () => {
         console.error('Event not found:', eventId);
