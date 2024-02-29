@@ -3,20 +3,16 @@
     <mat-icon>arrow_back</mat-icon>
     Tillbaka
   </button>
-  <div class="editEvent-header">
+  <div *ngIf="event" class="editEvent-header">
     <h1>
       @if (event.title) {
-        {{ event.title }}
+      {{ event.title }}
       } @else {
-        Redigera event
+      Redigera event
       }
     </h1>
     <span class="flex-spacer"></span>
-    <button
-      mat-icon-button
-      [matMenuTriggerFor]="manageEventMenu"
-      aria-label="Menu for managing event"
-    >
+    <button mat-icon-button [matMenuTriggerFor]="manageEventMenu" aria-label="Menu for managing event">
       <mat-icon>more_vert</mat-icon>
     </button>
     <mat-menu #manageEventMenu="matMenu">

@@ -3,7 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { EventService } from '../event.service';
 import { Event } from '../event';
-import { Location } from '@angular/common';
+import { NgIf, Location } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -25,6 +25,7 @@ import { MatButton, MatIconButton } from '@angular/material/button';
     MatMenu,
     MatMenuItem,
     CreateEventFormComponent,
+    NgIf,
   ],
 })
 export class EventEditComponent implements OnInit {
@@ -39,7 +40,7 @@ export class EventEditComponent implements OnInit {
     private pageLocation: Location,
     private dialog: MatDialog,
     private snackBar: MatSnackBar,
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.route.paramMap.subscribe((params) => {
