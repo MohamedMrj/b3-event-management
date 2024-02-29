@@ -100,6 +100,10 @@ export class CreateEventFormComponent implements OnInit {
     });
   }
 
+  isImageAltRequired(): boolean {
+    return this.event.image !== null && this.event.image.trim() !== '';
+  }
+
   onSubmit() {
     this.submitted = true;
 

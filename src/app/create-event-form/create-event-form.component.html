@@ -58,15 +58,15 @@
   <div class="form-group">
     <mat-form-field>
       <mat-label>Bild</mat-label>
-      <input matInput type="text" class="form-control" id="image" required [(ngModel)]="event.image" name="image"
+      <input matInput type="text" class="form-control" id="image" [(ngModel)]="event.image" name="image"
         placeholder="Bild" />
       <mat-icon matSuffix>image</mat-icon>
     </mat-form-field>
     <mat-form-field>
       <mat-label>Beskrivning av bild</mat-label>
       <mat-hint>Enter a description for the event image</mat-hint>
-      <input matInput type="text" class="form-control" id="imageAlt" required maxlength="100"
-        [(ngModel)]="event.imageAlt" name="imageAlt" #imageAlt="ngModel" placeholder="Beskrivning av bild" />
+      <input matInput type="text" class="form-control" id="imageAlt" maxlength="100" [(ngModel)]="event.imageAlt"
+        name="imageAlt" #imageAlt="ngModel" placeholder="Beskrivning av bild" [required]="isImageAltRequired()" />
       <mat-icon matSuffix>accessibility_new</mat-icon>
       <mat-hint align="end">{{ imageAlt?.value?.length || 0 }}/{{ imageAltMaxLength }}</mat-hint>
     </mat-form-field>
