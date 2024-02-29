@@ -77,7 +77,7 @@ export class EventEditComponent implements OnInit {
         if (result && this.event?.id) {
           this.eventService.deleteEvent(this.event.id).subscribe({
             next: () => {
-              console.log(`Event: ${this.event.id} raderades.`);
+              console.log(`Event: ${this.event.id} deleted.`);
               this.router.navigate(['/'], {
                 queryParams: { eventDeleted: 'true' },
               });
