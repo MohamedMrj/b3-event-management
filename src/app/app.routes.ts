@@ -3,13 +3,11 @@ import { EventListComponent } from './event-list/event-list.component';
 import { EventDetailComponent } from './event-detail/event-detail.component';
 import { EventCreateComponent } from './event-create/event-create.component';
 import { EventEditComponent } from './event-edit/event-edit.component';
-import { ApiTestComponent } from './api-test/api-test.component';
 import { LoginComponent } from './login/login.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
-/* import { MyEventsComponent } from './my-events/my-events.component'; */
 import { AuthGuardService } from './auth.guard';
-import { UserManageComponent } from './user-manage/user-manage.component';
 import { AdminGuardService } from './admin.guard';
+import { EventCreatorOrAdminGuardService } from './event-creator-or-admin.guard';
 import { AdminComponent } from './admin/admin.component';
 
 export const routes: Routes = [
@@ -24,17 +22,11 @@ export const routes: Routes = [
     path: 'event/update/:eventid',
     component: EventEditComponent,
     title: 'Redigera event',
-    canActivate: [AuthGuardService],
+    canActivate: [AuthGuardService, EventCreatorOrAdminGuardService],
   },
   {
     path: 'event/:eventid',
     component: EventDetailComponent,
-    canActivate: [AuthGuardService],
-  },
-  {
-    path: 'api-test',
-    component: ApiTestComponent,
-    title: 'API-test',
     canActivate: [AuthGuardService],
   },
   {
