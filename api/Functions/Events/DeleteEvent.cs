@@ -4,6 +4,7 @@ using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using System.Text.Json;
 
 namespace B3.Complete.Eventwebb
 {
@@ -27,20 +28,32 @@ namespace B3.Complete.Eventwebb
                 {
                     await client.DeleteEntityAsync(entity.PartitionKey, entity.RowKey, Azure.ETag.All);
                     var okResponse = req.CreateResponse(System.Net.HttpStatusCode.OK);
-                    await okResponse.WriteStringAsync($"Event with ID: {id} deleted successfully.");
+                    okResponse.Headers.Add("Content-Type", "application/json");
+
+                    var responseContent = new { message = $"Event with ID: {id} deleted successfully." };
+                    await okResponse.WriteStringAsync(JsonSerializer.Serialize(responseContent));
+
                     return okResponse;
                 }
                 catch (Exception ex)
                 {
                     log.LogError($"Could not delete event: {ex.Message}");
                     var errorResponse = req.CreateResponse(System.Net.HttpStatusCode.InternalServerError);
-                    await errorResponse.WriteStringAsync("Error deleting the event.");
+                    errorResponse.Headers.Add("Content-Type", "application/json");
+
+                    var errorContent = new { message = "Error deleting the event." };
+                    await errorResponse.WriteStringAsync(JsonSerializer.Serialize(errorContent));
+
                     return errorResponse;
                 }
             }
 
             var notFoundResponse = req.CreateResponse(System.Net.HttpStatusCode.NotFound);
-            await notFoundResponse.WriteStringAsync("Event not found.");
+            notFoundResponse.Headers.Add("Content-Type", "application/json");
+
+            var notFoundContent = new { message = "Event not found." };
+            await notFoundResponse.WriteStringAsync(JsonSerializer.Serialize(notFoundContent));
+
             return notFoundResponse;
         }
     }
