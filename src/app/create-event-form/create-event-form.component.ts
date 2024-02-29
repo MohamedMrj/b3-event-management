@@ -16,6 +16,7 @@ import { NgIf, NgFor, AsyncPipe } from '@angular/common';
 import { AuthService } from '../auth.service';
 import { FutureDateTimeValidatorDirective } from '../shared/directives/future-datetime-validator.directive';
 import { ValidateEndDateDirective } from '../shared/directives/validate-end-date.directive';
+import { UserService } from '../user.service';
 
 @Component({
   selector: 'app-create-event-form',
@@ -76,6 +77,7 @@ export class CreateEventFormComponent implements OnInit {
     private eventService: EventService,
     private snackBar: MatSnackBar,
     public authService: AuthService,
+    private userService: UserService,
   ) {
     this.currentUser$ = this.authService.getCurrentUser();
   }
@@ -119,27 +121,39 @@ export class CreateEventFormComponent implements OnInit {
 
     // Handle event creation
     if (!this.isEditMode) {
-      // Since currentUser$ is an Observable, subscribe to it to get the current user
-      // Note: Assuming currentUser$ emits an object that includes userId
       this.currentUser$.subscribe((currentUser) => {
-        this.event.creatorUserId = currentUser!.userId; // Assign userId to creatorUserId
+        if (currentUser) {
+          this.event.creatorUserId = currentUser.userId;
 
-        // Call createEvent with the modified event object
-        this.eventService.createEvent(this.event).subscribe({
-          next: (createdEvent) => {
-            console.log('Event created successfully:', createdEvent);
-            this.router.navigate(['/event', createdEvent.id], {
-              queryParams: { eventCreated: 'true' },
-            });
-          },
-          error: (error) => {
-            console.error('Error creating event:', error);
-            this.snackBar.open('Error creating event', 'Close', {
-              duration: 3000,
-            });
-            this.submitted = false;
-          },
-        });
+          this.eventService.createEvent(this.event).subscribe({
+            next: (createdEvent) => {
+              console.log('Event created successfully:', createdEvent);
+
+              this.userService.registerForEvent(createdEvent.id!, currentUser.userId, "Kommer").subscribe({
+                next: () => {
+                  console.log('User successfully registered for the event');
+
+                  this.router.navigate(['/event', createdEvent.id], {
+                    queryParams: { eventCreated: 'true' },
+                  });
+                },
+                error: (error) => {
+                  console.error('Error registering user for the event:', error);
+                  this.snackBar.open('Misslyckades att registrera användare för event.', 'Stäng', {
+                    duration: 3000,
+                  });
+                },
+              });
+            },
+            error: (error) => {
+              console.error('Error creating event:', error);
+              this.snackBar.open('Error creating event', 'Close', {
+                duration: 3000,
+              });
+              this.submitted = false;
+            },
+          });
+        }
       });
     }
     // Handle event update
