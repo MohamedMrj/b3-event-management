@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
 import { EventService } from '../event.service';
@@ -11,7 +11,7 @@ import { MatSelect } from '@angular/material/select';
 import { MatIcon } from '@angular/material/icon';
 import { MatInput } from '@angular/material/input';
 import { MatFormField, MatLabel, MatSuffix, MatHint } from '@angular/material/form-field';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 import { NgIf, NgFor, AsyncPipe } from '@angular/common';
 import { AuthService } from '../auth.service';
 import { FutureDateTimeValidatorDirective } from '../shared/directives/future-datetime-validator.directive';
@@ -80,6 +80,13 @@ export class CreateEventFormComponent implements OnInit {
     private userService: UserService,
   ) {
     this.currentUser$ = this.authService.getCurrentUser();
+  }
+
+  @ViewChild('createEventForm') createEventForm!: NgForm;
+
+  // Getter to check if the form is dirty
+  get isFormDirty(): boolean {
+    return this.createEventForm?.dirty ?? false;
   }
 
   ngOnInit() {

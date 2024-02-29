@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { EventService } from '../event.service';
@@ -41,6 +41,8 @@ export class EventEditComponent implements OnInit {
     private dialog: MatDialog,
     private snackBar: MatSnackBar,
   ) { }
+
+  @ViewChild(CreateEventFormComponent) createEventFormComponent!: CreateEventFormComponent;
 
   ngOnInit() {
     this.route.paramMap.subscribe((params) => {
@@ -99,17 +101,21 @@ export class EventEditComponent implements OnInit {
   }
 
   confirmDiscardChanges() {
-    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      data: {
-        title: 'Lämna sidan',
-        message: 'Vill du lämna sidan? Ändringar har inte sparats.',
-      },
-    });
+    if (this.createEventFormComponent.isFormDirty) {
+      const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+        data: {
+          title: 'Lämna sidan',
+          message: 'Vill du lämna sidan? Ändringar har inte sparats.',
+        },
+      });
 
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        this.goBack();
-      }
-    });
+      dialogRef.afterClosed().subscribe(result => {
+        if (result) {
+          this.goBack();
+        }
+      });
+    } else {
+      this.goBack();
+    }
   }
 }
