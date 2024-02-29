@@ -15,6 +15,7 @@ import { FormsModule } from '@angular/forms';
 import { NgIf, NgFor, AsyncPipe } from '@angular/common';
 import { AuthService } from '../auth.service';
 import { FutureDateTimeValidatorDirective } from '../shared/directives/future-datetime-validator.directive';
+import { ValidateEndDateDirective } from '../shared/directives/validate-end-date.directive';
 
 @Component({
   selector: 'app-create-event-form',
@@ -36,6 +37,7 @@ import { FutureDateTimeValidatorDirective } from '../shared/directives/future-da
     MatOption,
     MatButton,
     FutureDateTimeValidatorDirective,
+    ValidateEndDateDirective,
   ],
 })
 export class CreateEventFormComponent implements OnInit {

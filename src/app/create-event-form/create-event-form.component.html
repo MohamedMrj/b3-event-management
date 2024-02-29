@@ -27,7 +27,7 @@
     </mat-form-field>
     <mat-form-field>
       <mat-label>Slutdatum</mat-label>
-      <input matInput type="datetime-local" (click)="endDateTimeInput.showPicker()" #endDateTimeInput
+      <input matInput type="datetime-local" appValidateEndDate (click)="endDateTimeInput.showPicker()" #endDateTimeInput
         class="form-control" id="endDateTime" required [(ngModel)]="event.endDateTime" name="endDateTime"
         [min]="event.startDateTime" class="form-control" id="endDateTime" required [(ngModel)]="event.endDateTime"
         name="endDateTime" />
