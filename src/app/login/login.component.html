@@ -7,51 +7,22 @@
     <div class="form-group">
       <mat-form-field>
         <mat-label>Ange e-postadress</mat-label>
-        <input
-          matInput
-          type="email"
-          name="username"
-          id="username"
-          class="form-control"
-          required
-          placeholder="e-post@exempel.com"
-          [(ngModel)]="username"
-          username
-        />
+        <input matInput type="email" name="username" id="username" class="form-control" required
+          placeholder="e-post@exempel.com" [(ngModel)]="username" username />
         <mat-icon matSuffix>face</mat-icon>
       </mat-form-field>
     </div>
     <div class="form-group">
       <mat-form-field>
         <mat-label>Ange lösenord</mat-label>
-        <input
-          matInput
-          type="password"
-          name="password"
-          class="form-control"
-          id="password"
-          required
-          [minlength]="passwordMinLength"
-          name="password"
-          placeholder="Lösenord"
-          #passwordField="ngModel"
-          [(ngModel)]="password"
-          (keyup.enter)="onLoginClick()"
-        />
+        <input matInput type="password" name="password" id="password" class="form-control" required
+          placeholder="Lösenord" [(ngModel)]="password" password />
         <mat-icon matSuffix>password</mat-icon>
-        <mat-hint align="end"
-          >{{ passwordField.value?.length || 0 }}/{{ passwordMinLength }}</mat-hint
-        >
       </mat-form-field>
     </div>
     <div class="form-group">
-      <button
-        mat-raised-button
-        color="accent"
-        type="submit"
-        [disabled]="!loginForm.form.valid"
-        (click)="onLoginClick()"
-      >
+      <button mat-raised-button color="accent" type="submit" [disabled]="!loginForm.form.valid"
+        (click)="onLoginClick()">
         Logga in
       </button>
     </div>
