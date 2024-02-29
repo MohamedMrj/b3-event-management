@@ -49,8 +49,25 @@ export class UserManageComponent implements AfterViewInit, OnInit {
   }
 
   fetchUsers() {
-    this.userService.getAllUsers().subscribe(users => {
-      this.dataSource.data = users;
+    this.userService.getAllUsers().subscribe({
+      next: (response) => {
+        if (response.success) {
+          // Assign the data part of the response to the dataSource
+          this.dataSource.data = response.data;
+        } else {
+          // Handle the case where the API response indicates failure
+          console.error('Failed to fetch users:', response.message);
+          this.snackBar.open('Failed to fetch users.', 'Close', {
+            duration: 3000,
+          });
+        }
+      },
+      error: (error) => {
+        console.error('Error fetching users:', error);
+        this.snackBar.open('Error fetching users.', 'Close', {
+          duration: 3000,
+        });
+      },
     });
   }
 

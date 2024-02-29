@@ -1,5 +1,4 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { EventService } from '../event.service';
 import { Event } from '../event';
@@ -40,12 +39,10 @@ export class EventListComponent implements OnInit {
   constructor(
     private eventService: EventService,
     private router: Router,
-    private titleService: Title,
     private snackBar: MatSnackBar,
     private authService: AuthService,
     private userService: UserService,
   ) {
-    this.titleService.setTitle('Events');
     this.currentUser$ = this.authService.getCurrentUser();
   }
 
@@ -110,11 +107,22 @@ export class EventListComponent implements OnInit {
 
   fetchUserRegistrations(userId: string) {
     this.userService.getUserRegistrations(userId).subscribe({
-      next: (registrations) => {
-        this.userRegistrations = registrations;
+      next: (apiResponse) => {
+        if (apiResponse.success) {
+          this.userRegistrations = apiResponse.data; // Assign the data part of the response
+        } else {
+          // Optionally, handle the case where the API call was not successful
+          console.error('Failed to fetch user registrations:', apiResponse.message);
+          this.snackBar.open('Failed to fetch user registrations.', 'Close', {
+            duration: 3000,
+          });
+        }
       },
       error: (error) => {
         console.error('Failed to fetch user registrations:', error);
+        this.snackBar.open('Failed to fetch user registrations.', 'Close', {
+          duration: 3000,
+        });
       },
     });
   }
