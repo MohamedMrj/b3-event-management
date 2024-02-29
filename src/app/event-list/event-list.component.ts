@@ -2,7 +2,6 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { EventService } from '../event.service';
 import { Event } from '../event';
-import { MatPaginator } from '@angular/material/paginator';
 import { EventCardComponent } from '../event-card/event-card.component';
 import { NgFor, NgIf } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
@@ -20,7 +19,7 @@ import { UserRegistration } from '../user';
   templateUrl: './event-list.component.html',
   styleUrls: ['./event-list.component.css'],
   standalone: true,
-  imports: [MatFabButton, MatIcon, NgFor, NgIf, EventCardComponent, MatPaginator, MatTabsModule],
+  imports: [MatFabButton, MatIcon, NgFor, NgIf, EventCardComponent, MatTabsModule],
 })
 export class EventListComponent implements OnInit {
   currentUser$: Observable<UserDetails | null>;
@@ -28,13 +27,6 @@ export class EventListComponent implements OnInit {
   userEvents: Event[] = [];
   userRegistrations: UserRegistration[] = [];
   eventsByOrganizer: Event[] = [];
-
-  // Pagination properties
-  totalEvents: number = 0;
-  eventsPerPage: number = 12;
-  currentPage: number = 1;
-
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   constructor(
     private eventService: EventService,
@@ -60,7 +52,7 @@ export class EventListComponent implements OnInit {
   fetchAllEvents() {
     this.eventService.fetchAllEvents().subscribe({
       next: (events) => {
-        this.totalEvents = events.length; // Set this based on server response if you implement pagination in the backend
+        this.allEventsList = events;
 
         // Sort events by startDateTime in ascending order
         events.sort((a, b) => {
@@ -68,11 +60,6 @@ export class EventListComponent implements OnInit {
           const dateB = new Date(b.startDateTime);
           return dateA.getTime() - dateB.getTime();
         });
-
-        this.allEventsList = events.slice(
-          (this.currentPage - 1) * this.eventsPerPage,
-          this.currentPage * this.eventsPerPage,
-        );
       },
       error: (error) => {
         console.error('Error fetching events:', error);
@@ -130,12 +117,6 @@ export class EventListComponent implements OnInit {
   getRegistrationStatusForEvent(eventId: string): string {
     const registration = this.userRegistrations.find((reg) => reg.eventId === eventId);
     return registration ? registration.registrationStatus : 'RSVP';
-  }
-
-  onPageChange(event: { pageIndex: number; pageSize: number }) {
-    this.currentPage = event.pageIndex + 1;
-    this.eventsPerPage = event.pageSize;
-    this.fetchAllEvents();
   }
 
   navigateToCreateEvent() {
