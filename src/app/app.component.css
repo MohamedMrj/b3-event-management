@@ -18,6 +18,7 @@ mat-toolbar {
   height: 100%;
   width: 100%;
   margin: 0 auto;
+  padding: 0.5rem 0;
   align-items: center;
   gap: 1rem;
   justify-content: space-between;
@@ -104,7 +105,7 @@ mat-toolbar {
 
 @media (min-width: 1280px) {
   .header-wrapper {
-    padding: 0 3rem;
+    padding: 0.5 3rem;
   }
 
   .main-wrapper {
