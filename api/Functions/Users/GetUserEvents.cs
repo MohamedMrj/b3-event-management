@@ -24,7 +24,7 @@ namespace B3.Complete.Eventwebb
             var eventsClient = new TableClient(DatabaseConfig.ConnectionString, DatabaseConfig.EventTable);
 
             // Query the registrations table for the given userId
-            var filter = $"RowKey eq '{userId}'";
+            var filter = $"RowKey eq '{userId}' and RegistrationStatus ne 'Kommer inte'";
             var registrationQueryResults = registrationsClient.QueryAsync<EventRegistrationEntity>(filter: filter);
 
             var eventsList = new List<EventEntity>();
