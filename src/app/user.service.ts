@@ -79,15 +79,15 @@ export class UserService {
       { headers: this.getHeaders() },
     ).pipe(
       map(response => this.handleResponse<UserRegistration>(response)),
-      catchError(error => this.handleError<UserRegistration>(error)), // Specify the type parameter explicitly
+      catchError(error => this.handleError<UserRegistration>(error)),
     );
   }
 
   getUserRegistrations(userId: string): Observable<ApiResponse<UserRegistration[]>> {
     return this.http.get<UserRegistration[]>(`/api/users/${userId}/registrations`, { headers: this.getHeaders() })
       .pipe(
-        map(response => ({ success: true, data: response } as ApiResponse<UserRegistration[]>)), // Ensure the response is wrapped in ApiResponse
-        catchError(error => this.handleError<UserRegistration[]>(error)) // Specify the type parameter explicitly
+        map(response => ({ success: true, data: response } as ApiResponse<UserRegistration[]>)),
+        catchError(error => this.handleError<UserRegistration[]>(error))
       );
   }
 
@@ -100,7 +100,7 @@ export class UserService {
           if (response.success) {
             return response.data;
           } else {
-            throw new Error(response.message || 'Failed to get user registration for event');
+            return response.data || 'No user registration for event';
           }
         }),
         catchError(error => {
