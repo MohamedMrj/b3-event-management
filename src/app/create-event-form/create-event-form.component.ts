@@ -51,7 +51,7 @@ export class CreateEventFormComponent implements OnInit {
     shortDescription: '',
     locationStreet: '',
     locationCity: '',
-    locationCountry: '',
+    locationCountry: 'Sverige',
     creatorUserId: '',
     startDateTime: '',
     endDateTime: '',
