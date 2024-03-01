@@ -77,8 +77,8 @@
         <a href="https://www.markdownguide.org/basic-syntax/" target="_blank">Markdown</a>
         finns.</mat-hint>
       <mat-label>Fullständig beskrivning</mat-label>
-      <textarea matInput class="form-control" id="longDescription" maxlength="10000" [rows]="12"
-        [(ngModel)]="event.longDescription" name="longDescription" #longDescription="ngModel"
+      <textarea matInput cdkTextareaAutosize cdkAutosizeMinRows="4" class="form-control" id="longDescription"
+        maxlength="10000" [(ngModel)]="event.longDescription" name="longDescription" #longDescription="ngModel"
         placeholder="Fullständig beskrivning"></textarea>
       <mat-hint align="end">{{ longDescription?.value?.length || 0 }}/{{ longDescriptionMaxLength }}</mat-hint>
     </mat-form-field>

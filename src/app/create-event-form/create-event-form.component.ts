@@ -16,6 +16,7 @@ import { NgIf, NgFor, AsyncPipe } from '@angular/common';
 import { AuthService } from '../auth.service';
 import { FutureDateTimeValidatorDirective } from '../shared/directives/future-datetime-validator.directive';
 import { ValidateEndDateDirective } from '../shared/directives/validate-end-date.directive';
+import { TextFieldModule } from '@angular/cdk/text-field';
 import { UserService } from '../user.service';
 
 @Component({
@@ -39,6 +40,7 @@ import { UserService } from '../user.service';
     MatButton,
     FutureDateTimeValidatorDirective,
     ValidateEndDateDirective,
+    TextFieldModule,
   ],
 })
 export class CreateEventFormComponent implements OnInit {
