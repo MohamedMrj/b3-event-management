@@ -14,7 +14,7 @@
   width: 100%;
   display: grid;
   grid-template-columns: repeat(1, minmax(320px, 400px));
-  justify-content: space-between;
+  justify-content: space-around;
   grid-auto-rows: minmax(100px, auto);
   gap: 2rem 1rem;
   margin: 1rem 0;
@@ -23,6 +23,10 @@
 .no-events-text {
   text-align: center;
   margin: 4rem 0;
+}
+
+mat-paginator {
+  background-color: transparent;
 }
 
 .create-event-button {

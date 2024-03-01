@@ -12,7 +12,6 @@ import { DecodedToken, UserDetails, TokenValidationResponse } from './auth.inter
 export class AuthService {
   private currentUserSubject: BehaviorSubject<UserDetails | null>;
   public currentUser$: Observable<UserDetails | null>;
-  public redirectUrl: string | null = null;
 
   constructor(private http: HttpClient) {
     this.currentUserSubject = new BehaviorSubject<UserDetails | null>(null);
@@ -58,14 +57,6 @@ export class AuthService {
     }
   }
 
-  setRedirectUrl(url: string): void {
-    this.redirectUrl = url;
-  }
-
-  getRedirectUrl(): string | null {
-    return this.redirectUrl;
-  }
-
   login(loginInfo: LoginInfo): Observable<boolean> {
     return this.http.post<LoginResponse>('api/SignIn', loginInfo).pipe(
       map((response) => {
@@ -82,11 +73,6 @@ export class AuthService {
             notValidBefore: decodedToken['nbf'],
           };
           this.currentUserSubject.next(user);
-
-          if (this.redirectUrl) {
-            window.location.href = this.redirectUrl;
-            this.redirectUrl = null;
-          }
           return true;
         }
         return false;
@@ -139,6 +125,8 @@ export class AuthService {
 
   isUserAdmin(): boolean {
     const user = this.currentUserSubject.getValue();
+    console.log("Checking if boii is admin")
+    console.log(user?.role)
     return user?.role === 'Admin';
   }
 }

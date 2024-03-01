@@ -4,7 +4,6 @@ using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using System.Threading.Tasks;
 using System.Collections.Generic;
-using System.Text.Json;
 
 namespace B3.Complete.Eventwebb
 {
@@ -35,11 +34,12 @@ namespace B3.Complete.Eventwebb
 
             if (registrationEntity != null)
             {
-                await response.WriteAsJsonAsync(new { success = true, data = registrationEntity });
+                await response.WriteAsJsonAsync(registrationEntity);
             }
             else
             {
-                await response.WriteAsJsonAsync(new { success = false, message = "Event registration not found." });
+                response.StatusCode = System.Net.HttpStatusCode.NotFound;
+                await response.WriteStringAsync("Event registration not found.");
             }
 
             return response;

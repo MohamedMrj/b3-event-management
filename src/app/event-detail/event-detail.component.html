@@ -15,7 +15,7 @@
           'rsvp-button-red': registrationStatus === 'Kommer inte'
         }">
           <mat-icon>expand_more</mat-icon>
-          {{ registrationStatus || 'RSVP' }}
+          {{ registrationStatus }}
           @if (registrationStatus === 'Inbjuden') {
           <mat-icon color="accent" style="order: 1">notification_important</mat-icon>
           }
@@ -32,11 +32,7 @@
           </mat-radio-group>
         </mat-menu>
       </div>
-      <button mat-icon-button (click)="copyToClipboard(event.id)">
-        <mat-icon>link</mat-icon>
-      </button>
-      <button mat-icon-button [matMenuTriggerFor]="manageEventMenu"
-        *ngIf="currentUser.role === 'Admin' || event.creatorUserId === currentUser.userId"
+      <button mat-icon-button [matMenuTriggerFor]="manageEventMenu" *ngIf="currentUser.role === 'Admin'"
         aria-label="Menu for managing event">
         <mat-icon>manage_accounts</mat-icon>
       </button>
@@ -94,8 +90,7 @@
           <p>{{ event.shortDescription }}</p>
         </div>
         <div class="event-detail-body-left-item">
-          <img [src]="event.image" [alt]="event.imageAlt" class="event-image"
-            (error)="event.image='assets/event-placeholder.webp'" />
+          <img [src]="event.image" [alt]="event.imageAlt" class="event-image" />
         </div>
         <div class="event-detail-body-left-item">
           <h2>Mer information</h2>

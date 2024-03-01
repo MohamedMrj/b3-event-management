@@ -20,13 +20,3 @@ export interface TokenValidationResponse {
   valid: boolean;
   error?: string;
 }
-
-export interface UserAccount {
-  id: string;
-  userType: string;
-  username: string;
-  firstName: string;
-  lastName: string;
-  phoneNumber: string;
-  lastModified: string;
-}

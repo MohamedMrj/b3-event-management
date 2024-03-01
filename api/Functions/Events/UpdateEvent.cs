@@ -53,7 +53,7 @@ namespace B3.Complete.Eventwebb
                 {
                     await client.UpdateEntityAsync(updatedEvent, Azure.ETag.All, TableUpdateMode.Replace);
                     var okResponse = req.CreateResponse(System.Net.HttpStatusCode.OK);
-                    await okResponse.WriteAsJsonAsync(updatedEvent);
+                    await okResponse.WriteAsJsonAsync(new { message = "Event updated successfully." });
                     return okResponse;
                 }
                 catch (Exception ex)

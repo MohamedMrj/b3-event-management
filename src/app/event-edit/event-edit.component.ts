@@ -1,9 +1,9 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { EventService } from '../event.service';
 import { Event } from '../event';
-import { NgIf, Location } from '@angular/common';
+import { Location } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -25,7 +25,6 @@ import { MatButton, MatIconButton } from '@angular/material/button';
     MatMenu,
     MatMenuItem,
     CreateEventFormComponent,
-    NgIf,
   ],
 })
 export class EventEditComponent implements OnInit {
@@ -40,9 +39,7 @@ export class EventEditComponent implements OnInit {
     private pageLocation: Location,
     private dialog: MatDialog,
     private snackBar: MatSnackBar,
-  ) { }
-
-  @ViewChild(CreateEventFormComponent) createEventFormComponent!: CreateEventFormComponent;
+  ) {}
 
   ngOnInit() {
     this.route.paramMap.subscribe((params) => {
@@ -79,8 +76,8 @@ export class EventEditComponent implements OnInit {
         if (result && this.event?.id) {
           this.eventService.deleteEvent(this.event.id).subscribe({
             next: () => {
-              console.log(`Event: ${this.event.id} deleted.`);
-              this.router.navigate(['/'], {
+              console.log(`Event: ${this.event.id} raderades.`);
+              this.router.navigate(['/event'], {
                 queryParams: { eventDeleted: 'true' },
               });
             },
@@ -101,21 +98,17 @@ export class EventEditComponent implements OnInit {
   }
 
   confirmDiscardChanges() {
-    if (this.createEventFormComponent.isFormDirty) {
-      const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-        data: {
-          title: 'Lämna sidan',
-          message: 'Vill du lämna sidan? Ändringar har inte sparats.',
-        },
-      });
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        title: 'Lämna sidan',
+        message: 'Vill du lämna sidan? Ändringar har inte sparats.',
+      },
+    });
 
-      dialogRef.afterClosed().subscribe(result => {
-        if (result) {
-          this.goBack();
-        }
-      });
-    } else {
-      this.goBack();
-    }
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.goBack();
+      }
+    });
   }
 }

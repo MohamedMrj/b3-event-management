@@ -28,9 +28,6 @@ export class DateFormatPipe implements PipeTransform {
       case 'time':
         formatString = 'HH:mm';
         break;
-      case 'dateTime':
-        formatString = 'yyyy-MM-dd HH:mm';
-        break;
       default:
         formatString = 'yyyy-MM-dd HH:mm';
     }

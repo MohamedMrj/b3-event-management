@@ -2,9 +2,6 @@ using System.Text.Json.Serialization;
 
 public class UserInfoDTO
 {
-    [JsonPropertyName("lastModified")]
-    public DateTimeOffset Timestamp { get; set; }
-
     [JsonPropertyName("userType")]
     public string UserType { get; set; } = string.Empty;
 

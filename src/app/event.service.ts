@@ -11,7 +11,7 @@ export class EventService {
   constructor(
     private http: HttpClient,
     public authService: AuthService,
-  ) { }
+  ) {}
 
   // Fetch all events
   fetchAllEvents(): Observable<Event[]> {
@@ -60,6 +60,6 @@ export class EventService {
     const headers = new HttpHeaders({
       Authorization: 'Bearer your-auth-token',
     });
-    return this.http.get<OrganizerInfo>(`/api/users/${userId}`, { headers });
+    return this.http.get<OrganizerInfo>(`/api/user/${userId}`, { headers });
   }
 }

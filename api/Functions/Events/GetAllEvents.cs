@@ -2,6 +2,8 @@ using Azure.Data.Tables;
 using Microsoft.Extensions.Logging;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
+using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace B3.Complete.Eventwebb
 {
@@ -22,9 +24,7 @@ namespace B3.Complete.Eventwebb
 
             await foreach (var entity in queryResults)
             {
-                if(entity.StartDateTime > DateTime.Now) {
-                    eventsList.Add(entity);
-                }
+                eventsList.Add(entity);
             }
 
             var response = req.CreateResponse(System.Net.HttpStatusCode.OK);

@@ -202,24 +202,6 @@ export class EventDetailComponent implements OnInit {
     });
   }
 
-  copyToClipboard(eventId: string | undefined): void {
-    if (!eventId) {
-      console.error('Event ID is undefined');
-      this.snackBar.open('Event ID saknas.', 'Stäng', { duration: 3000 });
-      return;
-    }
-
-    const url = window.location.origin + '/event/' + eventId;
-    navigator.clipboard
-      .writeText(url)
-      .then(() =>
-        this.snackBar.open('Kopierad till urklipp.', 'Stäng', {
-          duration: 3000,
-        }),
-      )
-      .catch((error) => console.error('Failed to copy to clipboard: ', error));
-  }
-
   isSameDay(event: Event): boolean {
     const start = new Date(event.startDateTime);
     const end = new Date(event.endDateTime);

@@ -18,10 +18,8 @@ mat-toolbar {
   height: 100%;
   width: 100%;
   margin: 0 auto;
-  padding: 0.5rem 0;
   align-items: center;
   gap: 1rem;
-  justify-content: space-between;
 }
 
 .logo-container {
@@ -45,18 +43,6 @@ mat-toolbar {
   flex-direction: row;
   align-items: center;
   height: 100%;
-}
-
-.account-button {
-  display: flex;
-  align-items: center;
-  flex-direction: row;
-  gap: 0.5rem;
-  width: auto;
-}
-
-.toolbar-username {
-  font-size: 1rem;
 }
 
 /* Footer */
@@ -105,7 +91,7 @@ mat-toolbar {
 
 @media (min-width: 1280px) {
   .header-wrapper {
-    padding: 0.5 3rem;
+    padding: 0 3rem;
   }
 
   .main-wrapper {
