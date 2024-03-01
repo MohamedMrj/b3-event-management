@@ -1,7 +1,9 @@
 <mat-card class="event-card">
-  <a [routerLink]="['/event', event.id]" class="card-link">
-    <img [src]="event.image" [alt]="event.imageAlt" />
-  </a>
+  <div class="event-card-image">
+    <a [routerLink]="['/event', event.id]" class="card-link">
+      <img [src]="event.image" [alt]="event.imageAlt" (error)="event.image='assets/event-placeholder.webp'" />
+    </a>
+  </div>
   <mat-card-header>
     <mat-card-title>
       <a [routerLink]="['/event', event.id]" class="card-link">
@@ -59,7 +61,7 @@
     </mat-menu>
     <span class="flex-spacer"></span>
     <button mat-button (click)="copyToClipboard(event.id)">
-      <mat-icon>share</mat-icon>
+      <mat-icon>link</mat-icon>
     </button>
   </mat-card-actions>
 </mat-card>

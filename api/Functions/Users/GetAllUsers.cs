@@ -7,19 +7,20 @@ using System.Collections.Generic;
 
 namespace B3.Complete.Eventwebb
 {
-    public static class GetUser
+    public static class GetAllUsers
     {
-        [Function(nameof(GetUser))]
+        [Function(nameof(GetAllUsers))]
         public static async Task<HttpResponseData> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "users/{id}")] HttpRequestData req,
-            string id,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "users")] HttpRequestData req,
             FunctionContext executionContext)
         {
-            var log = executionContext.GetLogger("GetUser");
-            log.LogInformation($"Getting user with ID: {id}");
+            var log = executionContext.GetLogger("GetAllUsers");
+            log.LogInformation("Getting all users");
 
             var client = new TableClient(DatabaseConfig.ConnectionString, DatabaseConfig.UserTable);
-            var queryResults = client.QueryAsync<TableEntity>(filter: $"RowKey eq '{id}'");
+            var queryResults = client.QueryAsync<TableEntity>();
+
+            var users = new List<UserInfoDTO>();
 
             await foreach (var entity in queryResults)
             {
@@ -34,14 +35,21 @@ namespace B3.Complete.Eventwebb
                     Timestamp = entity.Timestamp ?? default,
                 };
 
-                var okResponse = req.CreateResponse(System.Net.HttpStatusCode.OK);
-                await okResponse.WriteAsJsonAsync(userInfo);
-                return okResponse;
+                users.Add(userInfo);
             }
 
-            var notFoundResponse = req.CreateResponse(System.Net.HttpStatusCode.NotFound);
-            await notFoundResponse.WriteStringAsync("User not found.");
-            return notFoundResponse;
+            if (users.Count > 0)
+            {
+                var okResponse = req.CreateResponse(System.Net.HttpStatusCode.OK);
+                await okResponse.WriteAsJsonAsync(users);
+                return okResponse;
+            }
+            else
+            {
+                var notFoundResponse = req.CreateResponse(System.Net.HttpStatusCode.NotFound);
+                await notFoundResponse.WriteStringAsync("No users found.");
+                return notFoundResponse;
+            }
         }
     }
 }
