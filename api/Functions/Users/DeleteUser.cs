@@ -8,19 +8,19 @@ using System.Text.Json;
 
 namespace B3.Complete.Eventwebb
 {
-    public static class DeleteEvent
+    public static class DeleteUser
     {
-        [Function(nameof(DeleteEvent))]
+        [Function(nameof(DeleteUser))]
         public static async Task<HttpResponseData> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "event/{id}")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "users/{id}")] HttpRequestData req,
             string id,
             FunctionContext executionContext)
         {
-            var log = executionContext.GetLogger("DeleteEvent");
-            log.LogInformation($"Deleting event with ID: {id}");
+            var log = executionContext.GetLogger("DeleteUser");
+            log.LogInformation($"Deleting user with ID: {id}");
 
-            var client = new TableClient(DatabaseConfig.ConnectionString, DatabaseConfig.EventTable);
-            var queryResults = client.QueryAsync<EventEntity>(filter: $"RowKey eq '{id}'");
+            var client = new TableClient(DatabaseConfig.ConnectionString, DatabaseConfig.UserTable);
+            var queryResults = client.QueryAsync<UserEntity>(filter: $"RowKey eq '{id}'");
 
             await foreach (var entity in queryResults)
             {
@@ -30,18 +30,18 @@ namespace B3.Complete.Eventwebb
                     var okResponse = req.CreateResponse(System.Net.HttpStatusCode.OK);
                     okResponse.Headers.Add("Content-Type", "application/json");
 
-                    var responseContent = new { message = $"Event with ID: {id} deleted successfully." };
+                    var responseContent = new { message = $"User with ID: {id} deleted successfully." };
                     await okResponse.WriteStringAsync(JsonSerializer.Serialize(responseContent));
 
                     return okResponse;
                 }
                 catch (Exception ex)
                 {
-                    log.LogError($"Could not delete event: {ex.Message}");
+                    log.LogError($"Could not delete user: {ex.Message}");
                     var errorResponse = req.CreateResponse(System.Net.HttpStatusCode.InternalServerError);
                     errorResponse.Headers.Add("Content-Type", "application/json");
 
-                    var errorContent = new { message = "Error deleting the event." };
+                    var errorContent = new { message = "Error deleting the user." };
                     await errorResponse.WriteStringAsync(JsonSerializer.Serialize(errorContent));
 
                     return errorResponse;
@@ -51,7 +51,7 @@ namespace B3.Complete.Eventwebb
             var notFoundResponse = req.CreateResponse(System.Net.HttpStatusCode.NotFound);
             notFoundResponse.Headers.Add("Content-Type", "application/json");
 
-            var notFoundContent = new { message = "Event not found." };
+            var notFoundContent = new { message = "User not found." };
             await notFoundResponse.WriteStringAsync(JsonSerializer.Serialize(notFoundContent));
 
             return notFoundResponse;

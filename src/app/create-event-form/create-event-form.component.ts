@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
 import { EventService } from '../event.service';
@@ -11,10 +11,13 @@ import { MatSelect } from '@angular/material/select';
 import { MatIcon } from '@angular/material/icon';
 import { MatInput } from '@angular/material/input';
 import { MatFormField, MatLabel, MatSuffix, MatHint } from '@angular/material/form-field';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 import { NgIf, NgFor, AsyncPipe } from '@angular/common';
 import { AuthService } from '../auth.service';
 import { FutureDateTimeValidatorDirective } from '../shared/directives/future-datetime-validator.directive';
+import { ValidateEndDateDirective } from '../shared/directives/validate-end-date.directive';
+import { TextFieldModule } from '@angular/cdk/text-field';
+import { UserService } from '../user.service';
 
 @Component({
   selector: 'app-create-event-form',
@@ -36,6 +39,8 @@ import { FutureDateTimeValidatorDirective } from '../shared/directives/future-da
     MatOption,
     MatButton,
     FutureDateTimeValidatorDirective,
+    ValidateEndDateDirective,
+    TextFieldModule,
   ],
 })
 export class CreateEventFormComponent implements OnInit {
@@ -51,7 +56,7 @@ export class CreateEventFormComponent implements OnInit {
     shortDescription: '',
     locationStreet: '',
     locationCity: '',
-    locationCountry: '',
+    locationCountry: 'Sverige',
     creatorUserId: '',
     startDateTime: '',
     endDateTime: '',
@@ -74,8 +79,16 @@ export class CreateEventFormComponent implements OnInit {
     private eventService: EventService,
     private snackBar: MatSnackBar,
     public authService: AuthService,
+    private userService: UserService,
   ) {
     this.currentUser$ = this.authService.getCurrentUser();
+  }
+
+  @ViewChild('createEventForm') createEventForm!: NgForm;
+
+  // Getter to check if the form is dirty
+  get isFormDirty(): boolean {
+    return this.createEventForm?.dirty ?? false;
   }
 
   ngOnInit() {
@@ -92,12 +105,29 @@ export class CreateEventFormComponent implements OnInit {
     this.eventService.fetchEventById(eventId).subscribe({
       next: (foundEvent) => {
         this.event = foundEvent;
+        if (this.event.startDateTime) {
+          const startDateTime = new Date(this.event.startDateTime);
+          const timeZoneOffset = startDateTime.getTimezoneOffset() * 60000; // Offset in milliseconds
+          const localStartDate = new Date(startDateTime.getTime() - timeZoneOffset);
+          this.event.startDateTime = localStartDate.toISOString().slice(0, 16); // Converts to 'YYYY-MM-DDTHH:mm' format
+        }
+
+        if (this.event.endDateTime) {
+          const endDateTime = new Date(this.event.endDateTime);
+          const timeZoneOffset = endDateTime.getTimezoneOffset() * 60000; // Offset in milliseconds
+          const localEndDate = new Date(endDateTime.getTime() - timeZoneOffset);
+          this.event.endDateTime = localEndDate.toISOString().slice(0, 16); // Converts to 'YYYY-MM-DDTHH:mm' format
+        }
       },
       error: () => {
         console.error('Event not found:', eventId);
         this.snackBar.open('Event not found', 'Close', { duration: 3000 });
       },
     });
+  }
+
+  isImageAltRequired(): boolean {
+    return this.event.image !== null && this.event.image.trim() !== '';
   }
 
   onSubmit() {
@@ -113,27 +143,39 @@ export class CreateEventFormComponent implements OnInit {
 
     // Handle event creation
     if (!this.isEditMode) {
-      // Since currentUser$ is an Observable, subscribe to it to get the current user
-      // Note: Assuming currentUser$ emits an object that includes userId
       this.currentUser$.subscribe((currentUser) => {
-        this.event.creatorUserId = currentUser!.userId; // Assign userId to creatorUserId
+        if (currentUser) {
+          this.event.creatorUserId = currentUser.userId;
 
-        // Call createEvent with the modified event object
-        this.eventService.createEvent(this.event).subscribe({
-          next: (createdEvent) => {
-            console.log('Event created successfully:', createdEvent);
-            this.router.navigate(['/event', createdEvent.id], {
-              queryParams: { eventCreated: 'true' },
-            });
-          },
-          error: (error) => {
-            console.error('Error creating event:', error);
-            this.snackBar.open('Error creating event', 'Close', {
-              duration: 3000,
-            });
-            this.submitted = false;
-          },
-        });
+          this.eventService.createEvent(this.event).subscribe({
+            next: (createdEvent) => {
+              console.log('Event created successfully:', createdEvent);
+
+              this.userService.registerForEvent(createdEvent.id!, currentUser.userId, "Kommer").subscribe({
+                next: () => {
+                  console.log('User successfully registered for the event');
+
+                  this.router.navigate(['/event', createdEvent.id], {
+                    queryParams: { eventCreated: 'true' },
+                  });
+                },
+                error: (error) => {
+                  console.error('Error registering user for the event:', error);
+                  this.snackBar.open('Misslyckades att registrera användare för event.', 'Stäng', {
+                    duration: 3000,
+                  });
+                },
+              });
+            },
+            error: (error) => {
+              console.error('Error creating event:', error);
+              this.snackBar.open('Error creating event', 'Close', {
+                duration: 3000,
+              });
+              this.submitted = false;
+            },
+          });
+        }
       });
     }
     // Handle event update

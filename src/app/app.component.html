@@ -7,10 +7,10 @@
       </svg>
       <span>Events</span>
     </a>
-    <span class="flex-spacer"></span>
     <div *ngIf="currentUser$ | async as currentUser" class="signed-in-user">
-      <button mat-icon-button [matMenuTriggerFor]="accountMenu" aria-label="Profile menu">
+      <button mat-icon-button [matMenuTriggerFor]="accountMenu" class="account-button" aria-label="Profile menu">
         <mat-icon>account_circle</mat-icon>
+        <span class="toolbar-username">{{ currentUser.username }}</span>
       </button>
       <mat-menu #accountMenu="matMenu">
         <button mat-menu-item disabled id="currentUser">
