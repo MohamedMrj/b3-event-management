@@ -2,10 +2,13 @@
   <div class="user-manage-header">
     <h1>Hantera användare</h1>
     <span class="flex-spacer"></span>
+    <button mat-fab aria-label="Create user button" class="create-user-button" (click)="navigateToCreateUser()">
+      <mat-icon>add</mat-icon>
+    </button>
   </div>
   <mat-form-field>
     <mat-label>Filter</mat-label>
-    <input matInput (keyup)="applyFilter($event)" #input>
+    <input matInput (keyup)=" applyFilter($event)" #input>
   </mat-form-field>
   <div class="mat-elevation-z8">
     <table mat-table [dataSource]="dataSource" matSort (matSortChange)="announceSortChange($event)" class="demo-table">
@@ -19,23 +22,27 @@
         </td>
       </ng-container>
       <ng-container matColumnDef="userType">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by access level">Åtkomstnivå
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by access level">
+          Åtkomstnivå
         </th>
         <td mat-cell *matCellDef="let element">{{element.userType}}</td>
       </ng-container>
 
       <ng-container matColumnDef="username">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by username">Användarnamn</th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by username">Användarnamn
+        </th>
         <td mat-cell *matCellDef="let element">{{element.username}}</td>
       </ng-container>
 
       <ng-container matColumnDef="firstName">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by first name">Förnamn</th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by first name">Förnamn
+        </th>
         <td mat-cell *matCellDef="let element">{{element.firstName}}</td>
       </ng-container>
 
       <ng-container matColumnDef="lastName">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by last name">Efternamn</th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by last name">Efternamn
+        </th>
         <td mat-cell *matCellDef="let element">{{element.lastName}}</td>
       </ng-container>
 
@@ -78,6 +85,6 @@
       </tr>
     </table>
 
-    <mat-paginator [pageSizeOptions]="[10, 25, 50, 100]" aria-label="Select page of users"></mat-paginator>
+    <mat-paginator [pageSizeOptions]="[25, 50, 100, 250]" aria-label="Select page of users"></mat-paginator>
   </div>
 </div>

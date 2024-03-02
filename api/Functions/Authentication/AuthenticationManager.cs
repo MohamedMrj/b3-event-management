@@ -30,8 +30,8 @@ namespace B3.Complete.Eventwebb
 
         [Function(nameof(CreateUser))]
         public static async Task<HttpResponseData> CreateUser(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "users")] HttpRequestData req,
-            FunctionContext executionContext)
+    [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "users")] HttpRequestData req,
+    FunctionContext executionContext)
         {
             var log = executionContext.GetLogger("AuthenticationManager");
             log.LogInformation("Creating user.");
@@ -70,7 +70,22 @@ namespace B3.Complete.Eventwebb
             };
 
             await usersTable.AddEntityAsync(newUser);
-            await response.WriteStringAsync("User created successfully.");
+
+            string newUserJson = JsonConvert.SerializeObject(new
+            {
+                newUser.PartitionKey,
+                newUser.RowKey,
+                newUser.UserType,
+                newUser.Username,
+                newUser.FirstName,
+                newUser.LastName,
+                newUser.PhoneNumber,
+                newUser.Avatar
+            });
+
+            response.Headers.Add("Content-Type", "application/json");
+            await response.WriteStringAsync(newUserJson);
+
             return response;
         }
 

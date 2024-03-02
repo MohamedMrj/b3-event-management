@@ -4,6 +4,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
 import { AuthService } from './auth.service';
 import { UserRegistration } from './user';
+import { UserAccount } from './auth.interfaces';
 
 interface ApiResponse<T> {
   success: boolean;
@@ -54,6 +55,22 @@ export class UserService {
 
   getAllUsers(): Observable<ApiResponse<any>> {
     return this.http.get<ApiResponse<any>>('/api/users', { headers: this.getHeaders() })
+      .pipe(
+        map(this.handleResponse),
+        catchError(this.handleError),
+      );
+  }
+
+  createUser(user: UserAccount): Observable<ApiResponse<any>> {
+    return this.http.post<ApiResponse<any>>('/api/users', user, { headers: this.getHeaders() })
+      .pipe(
+        map(this.handleResponse),
+        catchError(this.handleError),
+      );
+  }
+
+  updateUser(userId: string, user: UserAccount): Observable<ApiResponse<any>> {
+    return this.http.put<ApiResponse<any>>(`/api/users/${userId}`, user, { headers: this.getHeaders() })
       .pipe(
         map(this.handleResponse),
         catchError(this.handleError),

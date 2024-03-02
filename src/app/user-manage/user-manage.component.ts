@@ -1,4 +1,5 @@
 import { Component, AfterViewInit, ViewChild, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { registerLocaleData } from '@angular/common';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { MatSort, Sort, MatSortModule } from '@angular/material/sort';
@@ -35,6 +36,7 @@ export class UserManageComponent implements AfterViewInit, OnInit {
     private _liveAnnouncer: LiveAnnouncer,
     private userService: UserService,
     private snackBar: MatSnackBar,
+    private router: Router,
   ) {
     registerLocaleData(localeSv);
   }
@@ -105,5 +107,9 @@ export class UserManageComponent implements AfterViewInit, OnInit {
   // Function to delete a user from the table
   deleteUserFromTable(user: UserAccount) {
     this.dataSource.data = this.dataSource.data.filter(u => u.id !== user.id);
+  }
+
+  navigateToCreateUser() {
+    this.router.navigate(['/admin/users/create']);
   }
 }

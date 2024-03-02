@@ -1,0 +1,68 @@
+<form *ngIf="user" (ngSubmit)="onSubmit()" #createUserForm="ngForm">
+  <div class="form-group">
+    <mat-form-field>
+      <mat-label>Grupp</mat-label>
+      <mat-select class="form-control" required [(ngModel)]="user.userType" name="userType" #userType="ngModel">
+        <mat-option *ngFor="let userType of userTypes" [value]="userType">
+          {{ userType }}
+        </mat-option>
+      </mat-select>
+      <mat-icon matSuffix>people</mat-icon>
+    </mat-form-field>
+  </div>
+  <div class="form-group">
+    <mat-form-field>
+      <mat-label>Användarnamn</mat-label>
+      <input matInput type="text" class="form-control" required [(ngModel)]="user.username" name="username"
+        #username="ngModel" placeholder="Användarnamn" />
+      <mat-icon matSuffix>person</mat-icon>
+    </mat-form-field>
+  </div>
+  <div class="form-group">
+    <mat-form-field>
+      <mat-label>Lösenord</mat-label>
+      <input matInput type="password" class="form-control" required [minlength]="passwordMinLength"
+        [maxlength]="passwordMaxLength" [(ngModel)]="user.password" name="password" #password="ngModel"
+        placeholder="Lösenord" />
+      <mat-icon matSuffix>lock</mat-icon>
+      <mat-hint align="end">{{ password?.value?.length || 0 }}/{{ passwordMinLength }}</mat-hint>
+    </mat-form-field>
+  </div>
+  <div class="form-group">
+    <mat-form-field>
+      <mat-label>Förnamn</mat-label>
+      <input matInput type="text" class="form-control" required [(ngModel)]="user.firstName" name="firstName"
+        #firstName="ngModel" placeholder="Förnamn" />
+      <mat-icon matSuffix>badge</mat-icon>
+    </mat-form-field>
+  </div>
+  <div class="form-group">
+    <mat-form-field>
+      <mat-label>Efternamn</mat-label>
+      <input matInput type="text" class="form-control" required [(ngModel)]="user.lastName" name="lastName"
+        #lastName="ngModel" placeholder="Efternamn" />
+      <mat-icon matSuffix>badge</mat-icon>
+    </mat-form-field>
+  </div>
+  <div class="form-group">
+    <mat-form-field>
+      <mat-label>Telefonnummer</mat-label>
+      <input matInput type="tel" class="form-control" required [(ngModel)]="user.phoneNumber" name="phoneNumber"
+        #phoneNumber="ngModel" placeholder="Telefonnummer" />
+      <mat-icon matSuffix>phone</mat-icon>
+    </mat-form-field>
+  </div>
+  <div class="form-group">
+    <mat-form-field>
+      <mat-label>Profilbild URL</mat-label>
+      <input matInput type="text" class="form-control" [maxlength]="avatarMaxLength" [(ngModel)]="user.avatar"
+        name="avatar" placeholder="Avatar" />
+      <mat-icon matSuffix>image</mat-icon>
+    </mat-form-field>
+  </div>
+  <div class="form-group">
+    <button mat-raised-button color="primary" type="submit" [disabled]="!createUserForm.form.valid">
+      {{ isEditMode ? 'Uppdatera Användare' : 'Skapa Användare' }}
+    </button>
+  </div>
+</form>
