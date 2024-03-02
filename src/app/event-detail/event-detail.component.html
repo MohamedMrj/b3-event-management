@@ -98,7 +98,8 @@
                   </mat-panel-title>
                 </mat-expansion-panel-header>
                 <p *ngFor="let registration of comingRegistrations" class="userlist-row">
-                  <img [src]="'assets/user-avatar-placeholder.svg'" alt="User avatar" class="userlist-avatar" />
+                  <img [src]="registration.avatar || 'assets/user-avatar-placeholder.svg'" alt="User avatar"
+                    class="userlist-avatar" />
                   {{ registration.firstName + ' ' + registration.lastName }}
                 </p>
               </mat-expansion-panel>
@@ -113,7 +114,8 @@
                   </mat-panel-title>
                 </mat-expansion-panel-header>
                 <p *ngFor="let registration of maybeRegistrations" class="userlist-row">
-                  <img [src]="'assets/user-avatar-placeholder.svg'" alt="User avatar" class="userlist-avatar" />
+                  <img [src]="registration.avatar || 'assets/user-avatar-placeholder.svg'" alt="User avatar"
+                    class="userlist-avatar" />
                   {{ registration.firstName + ' ' + registration.lastName }}
                 </p>
               </mat-expansion-panel>
@@ -128,7 +130,8 @@
                   </mat-panel-title>
                 </mat-expansion-panel-header>
                 <p *ngFor="let registration of notComingRegistrations" class="userlist-row">
-                  <img [src]="'assets/user-avatar-placeholder.svg'" alt="User avatar" class="userlist-avatar" />
+                  <img [src]="registration.avatar || 'assets/user-avatar-placeholder.svg'" alt="User avatar"
+                    class="userlist-avatar" />
                   {{ registration.firstName + ' ' + registration.lastName }}
                 </p>
               </mat-expansion-panel>

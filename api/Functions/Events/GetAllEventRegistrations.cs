@@ -38,6 +38,7 @@ namespace B3.Complete.Eventwebb
                     FirstName = userEntity?.Value.GetString("FirstName") ?? "",
                     LastName = userEntity?.Value.GetString("LastName") ?? "",
                     Username = userEntity?.Value.GetString("Username") ?? "",
+                    Avatar = userEntity?.Value.GetString("Avatar") ?? "",
                 };
 
                 detailedRegistrations.Add(registrationDetails);

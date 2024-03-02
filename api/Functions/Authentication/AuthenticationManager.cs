@@ -66,6 +66,7 @@ namespace B3.Complete.Eventwebb
                 FirstName = data.FirstName,
                 LastName = data.LastName,
                 PhoneNumber = data.PhoneNumber,
+                Avatar = data.Avatar
             };
 
             await usersTable.AddEntityAsync(newUser);

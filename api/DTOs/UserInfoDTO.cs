@@ -22,4 +22,7 @@ public class UserInfoDTO
 
     [JsonPropertyName("phoneNumber")]
     public string PhoneNumber { get; set; } = string.Empty;
+
+    [JsonPropertyName("avatar")]
+    public string Avatar { get; set; } = string.Empty;
 }

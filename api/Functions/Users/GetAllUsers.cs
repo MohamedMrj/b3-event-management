@@ -31,6 +31,7 @@ namespace B3.Complete.Eventwebb
                     FirstName = entity.ContainsKey("FirstName") ? entity["FirstName"]?.ToString() ?? string.Empty : string.Empty,
                     LastName = entity.ContainsKey("LastName") ? entity["LastName"]?.ToString() ?? string.Empty : string.Empty,
                     PhoneNumber = entity.ContainsKey("PhoneNumber") ? entity["PhoneNumber"]?.ToString() ?? string.Empty : string.Empty,
+                    Avatar = entity.ContainsKey("Avatar") ? entity["Avatar"]?.ToString() ?? string.Empty : string.Empty,
                     UserType = entity.ContainsKey("UserType") ? entity["UserType"]?.ToString() ?? string.Empty : string.Empty,
                     Timestamp = entity.Timestamp ?? default,
                 };
