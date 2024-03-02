@@ -19,6 +19,18 @@ th.mat-sort-header-sorted {
   color: black;
 }
 
+.userlist-avatar-container {
+  display: flex;
+  align-items: center;
+}
+
+.userlist-avatar {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  padding: 0.25rem;
+}
+
 @media (min-width: 1024px) {
   .container {
     max-width: 1024px;

@@ -25,7 +25,7 @@ import localeSv from '@angular/common/locales/sv';
   styleUrls: ['./user-manage.component.css']
 })
 export class UserManageComponent implements AfterViewInit, OnInit {
-  displayedColumns: string[] = ['userType', 'username', 'firstName', 'lastName', 'phoneNumber', 'lastModified', 'actions'];
+  displayedColumns: string[] = ['avatar', 'userType', 'username', 'firstName', 'lastName', 'phoneNumber', 'lastModified', 'actions'];
   dataSource = new MatTableDataSource<UserAccount>([]);
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
