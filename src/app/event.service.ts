@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Event, OrganizerInfo } from './event';
 import { AuthService } from './auth.service';
+import { UserRegistration } from './user';
 
 @Injectable({
   providedIn: 'root',
@@ -57,9 +58,13 @@ export class EventService {
 
   // Fetch the organizer's contact information
   getOrganizerContactInfo(userId: string): Observable<OrganizerInfo> {
-    const headers = new HttpHeaders({
-      Authorization: 'Bearer your-auth-token',
-    });
+    const headers = this.authService.getAuthHeaders();
     return this.http.get<OrganizerInfo>(`/api/users/${userId}`, { headers });
+  }
+
+  // Fetch all responses for an event
+  fetchAllResponses(eventId: string): Observable<UserRegistration[]> {
+    const headers = this.authService.getAuthHeaders();
+    return this.http.get<UserRegistration[]>(`/api/event/${eventId}/registrations`, { headers });
   }
 }

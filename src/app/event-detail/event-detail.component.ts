@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule, NgIf, AsyncPipe, DatePipe, registerLocaleData } from '@angular/common';
-import { switchMap } from 'rxjs/operators';
-import { of, Observable, catchError } from 'rxjs';
+import { map, mergeMap, switchMap, } from 'rxjs/operators';
+import { of, Observable, catchError, forkJoin } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { EventService } from '../event.service';
@@ -24,6 +24,8 @@ import { MatRadioModule } from '@angular/material/radio';
 import { FormsModule } from '@angular/forms';
 import { DateFormatPipe } from '../date-format.pipe';
 import localeSv from '@angular/common/locales/sv';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 @Component({
   selector: 'app-event-detail',
@@ -50,6 +52,8 @@ import localeSv from '@angular/common/locales/sv';
     MatRadioModule,
     FormsModule,
     DateFormatPipe,
+    MatTooltipModule,
+    MatExpansionModule,
   ],
 })
 export class EventDetailComponent implements OnInit {
@@ -57,9 +61,14 @@ export class EventDetailComponent implements OnInit {
   isLoading: boolean = true;
   eventNotFound: boolean = false;
   organizerInfo$!: Observable<OrganizerInfo | null>;
-  registrationStatus!: string;
+  registrationStatus: string | null = 'RSVP';
   currentUser$: Observable<UserDetails | null>;
   statusOptions: string[] = ['Kommer', 'Kanske', 'Kommer inte'];
+  eventRegistrations: UserRegistration[] = [];
+  comingRegistrations: UserRegistration[] = [];
+  maybeRegistrations: UserRegistration[] = [];
+  notComingRegistrations: UserRegistration[] = [];
+  panelOpenState = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -75,78 +84,56 @@ export class EventDetailComponent implements OnInit {
   }
 
   ngOnInit() {
-    // Check if user is redirected after creating or updating an event
-    this.route.queryParams.subscribe((params) => {
-      if (params['eventCreated'] === 'true' || params['eventUpdated'] === 'true') {
-        if (params['eventCreated'] === 'true') {
-          this.snackBar.open('Event skapat.', 'Stäng', {
-            duration: 3000,
-          });
-        }
-        if (params['eventUpdated'] === 'true') {
-          this.snackBar.open('Event uppdaterat.', 'Stäng', {
-            duration: 3000,
-          });
-        }
-
-        // Specify the types for queryParams
-        const queryParams: Record<string, string | undefined> = { ...params };
-        delete queryParams['eventCreated'];
-        delete queryParams['eventUpdated'];
-
-        // Navigate without the parameters
-        this.router.navigate([], {
-          relativeTo: this.route,
-          queryParams: queryParams,
-          queryParamsHandling: '',
-          replaceUrl: true,
-        });
-      }
-    });
-
-    this.route.paramMap.subscribe((params) => {
+    this.route.paramMap.subscribe(params => {
       const eventId = params.get('eventid');
       if (eventId) {
-        this.fetchEvent(eventId);
-        this.currentUser$.subscribe((userDetails) => {
-          if (userDetails) {
-            this.getUserEventRegistration(eventId, userDetails.userId).subscribe((status) => {
-              this.registrationStatus = status.registrationStatus;
-            });
-          }
-        });
+        this.fetchEventAndRegistrations(eventId);
       } else {
         this.eventNotFound = true;
       }
     });
   }
 
-  fetchEvent(eventId: string) {
+  fetchEventAndRegistrations(eventId: string): void {
     this.isLoading = true;
-    this.eventService
-      .fetchEventById(eventId)
-      .pipe(
-        switchMap((foundEvent) => {
-          this.event = foundEvent;
-          this.titleService.setTitle(foundEvent.title);
-          this.isLoading = false;
-          this.eventNotFound = false;
-          return this.eventService.getOrganizerContactInfo(foundEvent.creatorUserId);
-        }),
-        catchError((error) => {
-          console.error('Error fetching event:', error);
-          this.snackBar.open('Fel vid hämtning av event', 'Stäng', {
-            duration: 3000,
-          });
-          this.isLoading = false;
-          this.eventNotFound = true;
-          return of(null);
-        }),
-      )
-      .subscribe((info) => {
-        this.organizerInfo$ = of(info);
-      });
+
+    this.eventService.fetchEventById(eventId).pipe(
+      switchMap(event => {
+        this.event = event;
+        this.titleService.setTitle(event.title);
+        return this.eventService.fetchAllResponses(eventId);
+      }),
+      catchError(error => {
+        console.error('Error fetching event:', error);
+        this.snackBar.open('Fel vid hämtning av event', 'Stäng', { duration: 3000 });
+        this.isLoading = false;
+        this.eventNotFound = true;
+        return of([]);
+      })
+    ).subscribe(registrations => {
+      this.eventRegistrations = registrations;
+      this.filterRegistrationsByStatus(registrations);
+      this.setRegistrationStatusForCurrentUser();
+      this.isLoading = false;
+    });
   }
+
+
+  private filterRegistrationsByStatus(registrations: UserRegistration[]): void {
+    this.comingRegistrations = registrations.filter(r => r.registrationStatus === 'Kommer');
+    this.maybeRegistrations = registrations.filter(r => r.registrationStatus === 'Kanske');
+    this.notComingRegistrations = registrations.filter(r => r.registrationStatus === 'Kommer inte');
+  }
+
+  setRegistrationStatusForCurrentUser(): void {
+    this.currentUser$.subscribe(currentUser => {
+      if (currentUser) {
+        const userRegistration = this.eventRegistrations.find(r => r.userId === currentUser.userId);
+        this.registrationStatus = userRegistration ? userRegistration.registrationStatus : null;
+      }
+    });
+  }
+
 
   navigateToEditEvent() {
     if (this.event?.id) {

@@ -8,16 +8,16 @@ using System.Text.Json;
 
 namespace B3.Complete.Eventwebb
 {
-    public static class EventRegistration
+    public static class GetEventRegistration
     {
-        [Function(nameof(EventRegistration))]
+        [Function(nameof(GetEventRegistration))]
         public static async Task<HttpResponseData> Run(
             [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "event/{eventId}/registrations/{userId}")] HttpRequestData req,
             string eventId,
             string userId,
             FunctionContext executionContext)
         {
-            var log = executionContext.GetLogger("EventRegistration");
+            var log = executionContext.GetLogger("GetEventRegistration");
             log.LogInformation("Creating a new event registration.");
 
             EventRegistrationEntity? registration;
