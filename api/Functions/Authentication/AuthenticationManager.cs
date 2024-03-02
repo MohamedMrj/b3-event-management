@@ -169,33 +169,6 @@ namespace B3.Complete.Eventwebb
             return response;
         }
 
-        [Function(nameof(DeleteUser))]
-        public static async Task<HttpResponseData> DeleteUser(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "users/{rowKey}")] HttpRequestData req,
-            string rowKey,
-            FunctionContext executionContext)
-        {
-            var log = executionContext.GetLogger("AuthenticationManager");
-            log.LogInformation("Deleting user.");
-
-            var response = req.CreateResponse(HttpStatusCode.OK);
-
-            var fetchResult = await usersTable.GetEntityAsync<UserEntity>("User", rowKey);
-            if (!fetchResult.HasValue)
-            {
-                response.StatusCode = HttpStatusCode.NotFound;
-                await response.WriteStringAsync("User not found.");
-                return response;
-            }
-
-            await usersTable.DeleteEntityAsync("User", rowKey);
-
-            response.Headers.Add("Content-Type", "application/json");
-            await response.WriteStringAsync("User deleted.");
-
-            return response;
-        }
-
         [Function(nameof(SignIn))]
         public static async Task<HttpResponseData> SignIn(
             [HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequestData req,
