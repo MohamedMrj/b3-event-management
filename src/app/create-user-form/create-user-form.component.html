@@ -13,15 +13,15 @@
   <div class="form-group">
     <mat-form-field>
       <mat-label>Användarnamn</mat-label>
-      <input matInput type="text" class="form-control" required [(ngModel)]="user.username" name="username"
-        #username="ngModel" placeholder="Användarnamn" />
+      <input matInput type="text" class="form-control" [disabled]="isEditMode" required [(ngModel)]="user.username"
+        name="username" #username="ngModel" placeholder="Användarnamn" />
       <mat-icon matSuffix>person</mat-icon>
     </mat-form-field>
   </div>
   <div class="form-group">
     <mat-form-field>
       <mat-label>Lösenord</mat-label>
-      <input matInput type="password" class="form-control" required [minlength]="passwordMinLength"
+      <input matInput type="password" class="form-control" [required]="!isEditMode" [minlength]="passwordMinLength"
         [maxlength]="passwordMaxLength" [(ngModel)]="user.password" name="password" #password="ngModel"
         placeholder="Lösenord" />
       <mat-icon matSuffix>lock</mat-icon>
