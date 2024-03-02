@@ -66,6 +66,10 @@ export class CreateUserFormComponent implements OnInit {
 
   @ViewChild('createUserForm') createUserForm!: NgForm;
 
+  get isFormDirty(): boolean {
+    return this.createUserForm?.dirty ?? false;
+  }
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,

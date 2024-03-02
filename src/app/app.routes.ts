@@ -4,7 +4,7 @@ import { EventDetailComponent } from './event-detail/event-detail.component';
 import { EventCreateComponent } from './event-create/event-create.component';
 import { EventEditComponent } from './event-edit/event-edit.component';
 import { UserCreateComponent } from './user-create/user-create.component';
-/* import { UserEditComponent } from './user-edit/user-edit.component'; */
+import { UserEditComponent } from './user-edit/user-edit.component';
 import { LoginComponent } from './login/login.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { UnauthorizedComponent } from './unauthorized/unauthorized.component';
@@ -44,12 +44,12 @@ export const routes: Routes = [
     title: 'Skapa användare',
     canActivate: [AdminGuardService],
   },
-  /*   {
-      path: 'admin/users/update/:userid',
-      component: UserEditComponent,
-      title: 'Redigera användare',
-      canActivate: [AdminGuardService],
-    }, */
+  {
+    path: 'admin/users/update/:userid',
+    component: UserEditComponent,
+    title: 'Redigera användare',
+    canActivate: [AdminGuardService],
+  },
   {
     path: '',
     component: EventListComponent,

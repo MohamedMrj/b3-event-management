@@ -89,6 +89,113 @@ namespace B3.Complete.Eventwebb
             return response;
         }
 
+        [Function(nameof(UpdateUser))]
+        public static async Task<HttpResponseData> UpdateUser(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "users/{rowKey}")] HttpRequestData req,
+            string rowKey,
+            FunctionContext executionContext)
+        {
+            var log = executionContext.GetLogger("AuthenticationManager");
+            log.LogInformation("Updating user information.");
+
+            var response = req.CreateResponse(HttpStatusCode.OK);
+            string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+            var data = JsonConvert.DeserializeObject<UserEntity>(requestBody);
+
+            if (data == null)
+            {
+                response.StatusCode = HttpStatusCode.BadRequest;
+                await response.WriteStringAsync("Invalid request payload.");
+                return response;
+            }
+
+            // Fetch the existing user entity
+            var fetchResult = await usersTable.GetEntityAsync<UserEntity>("User", rowKey);
+            if (!fetchResult.HasValue)
+            {
+                response.StatusCode = HttpStatusCode.NotFound;
+                await response.WriteStringAsync("User not found.");
+                return response;
+            }
+            var userToUpdate = fetchResult.Value;
+
+            // Update fields if they are provided in the request body
+            if (!string.IsNullOrEmpty(data.Username) && data.Username != userToUpdate.Username)
+            {
+                if (await UserExists(data.Username))
+                {
+                    response.StatusCode = HttpStatusCode.BadRequest;
+                    await response.WriteStringAsync("Username already exists.");
+                    return response;
+                }
+                userToUpdate.Username = data.Username;
+            }
+
+            if (!string.IsNullOrEmpty(data.Password))
+            {
+                var (passwordHash, salt) = CreatePasswordHash(data.Password);
+                userToUpdate.Password = passwordHash;
+                userToUpdate.Salt = salt;
+            }
+
+            userToUpdate.FirstName = data.FirstName ?? userToUpdate.FirstName;
+            userToUpdate.LastName = data.LastName ?? userToUpdate.LastName;
+            userToUpdate.PhoneNumber = data.PhoneNumber ?? userToUpdate.PhoneNumber;
+            userToUpdate.Avatar = data.Avatar ?? userToUpdate.Avatar;
+            userToUpdate.UserType = data.UserType ?? userToUpdate.UserType;
+
+            // Update the entity in the table
+            await usersTable.UpdateEntityAsync(userToUpdate, Azure.ETag.All, Azure.Data.Tables.TableUpdateMode.Replace);
+
+            // Map updated UserEntity to UserInfoDTO for response
+            UserInfoDTO userInfoDTO = new UserInfoDTO
+            {
+                Timestamp = userToUpdate.Timestamp ?? DateTimeOffset.UtcNow,
+                UserType = userToUpdate.UserType,
+                RowKey = userToUpdate.RowKey,
+                Username = userToUpdate.Username,
+                FirstName = userToUpdate.FirstName,
+                LastName = userToUpdate.LastName,
+                PhoneNumber = userToUpdate.PhoneNumber,
+                Avatar = userToUpdate.Avatar
+            };
+
+            // Serialize UserInfoDTO to JSON for the response
+            string updatedUserJson = JsonConvert.SerializeObject(userInfoDTO);
+
+            response.Headers.Add("Content-Type", "application/json");
+            await response.WriteStringAsync(updatedUserJson);
+
+            return response;
+        }
+
+        [Function(nameof(DeleteUser))]
+        public static async Task<HttpResponseData> DeleteUser(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "users/{rowKey}")] HttpRequestData req,
+            string rowKey,
+            FunctionContext executionContext)
+        {
+            var log = executionContext.GetLogger("AuthenticationManager");
+            log.LogInformation("Deleting user.");
+
+            var response = req.CreateResponse(HttpStatusCode.OK);
+
+            var fetchResult = await usersTable.GetEntityAsync<UserEntity>("User", rowKey);
+            if (!fetchResult.HasValue)
+            {
+                response.StatusCode = HttpStatusCode.NotFound;
+                await response.WriteStringAsync("User not found.");
+                return response;
+            }
+
+            await usersTable.DeleteEntityAsync("User", rowKey);
+
+            response.Headers.Add("Content-Type", "application/json");
+            await response.WriteStringAsync("User deleted.");
+
+            return response;
+        }
+
         [Function(nameof(SignIn))]
         public static async Task<HttpResponseData> SignIn(
             [HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequestData req,

@@ -112,4 +112,8 @@ export class UserManageComponent implements AfterViewInit, OnInit {
   navigateToCreateUser() {
     this.router.navigate(['/admin/users/create']);
   }
+
+  navigateToEditUser(user: UserAccount) {
+    this.router.navigate(['/admin/users/update', user.id]);
+  }
 }

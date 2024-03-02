@@ -1,0 +1,26 @@
+<div class="container">
+  <button mat-button (click)="confirmDiscardChanges()" class="back-button">
+    <mat-icon>arrow_back</mat-icon>
+    Tillbaka
+  </button>
+  <div *ngIf="user" class="editUser-header">
+    <h1>
+      @if (user.username) {
+      {{ user.username }}
+      } @else {
+      Redigera användare
+      }
+    </h1>
+    <span class="flex-spacer"></span>
+    <button mat-icon-button [matMenuTriggerFor]="manageUserMenu" aria-label="Menu for managing user">
+      <mat-icon>manage_accounts</mat-icon>
+    </button>
+    <mat-menu #manageUserMenu="matMenu">
+      <button mat-menu-item (click)="deleteUser()">
+        <mat-icon color="warn">delete</mat-icon>
+        <span>Radera användare</span>
+      </button>
+    </mat-menu>
+  </div>
+  <app-create-user-form></app-create-user-form>
+</div>
