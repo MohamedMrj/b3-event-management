@@ -80,7 +80,8 @@
     </mat-form-field>
   </div>
   <div class="form-group">
-    <button mat-raised-button color="primary" type="submit" [disabled]="!createEventForm.form.valid">
+    <button mat-raised-button color="primary" type="submit" class="event-form-submit-btn"
+      [disabled]="!createEventForm.form.valid">
       {{ isEditMode ? 'Uppdatera event' : 'Skapa event' }}
     </button>
   </div>

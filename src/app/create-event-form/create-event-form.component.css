@@ -8,6 +8,10 @@
   width: 100%;
 }
 
+.event-form-submit-btn {
+  margin-top: 1rem;
+}
+
 /* Adjustments for larger screens */
 @media (min-width: 640px) {
   .form-group {
