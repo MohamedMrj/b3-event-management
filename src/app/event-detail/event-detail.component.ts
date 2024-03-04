@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule, NgIf, AsyncPipe, DatePipe, registerLocaleData } from '@angular/common';
-import { map, mergeMap, switchMap, } from 'rxjs/operators';
-import { of, Observable, catchError, forkJoin } from 'rxjs';
+import { switchMap, } from 'rxjs/operators';
+import { of, Observable, catchError } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { EventService } from '../event.service';

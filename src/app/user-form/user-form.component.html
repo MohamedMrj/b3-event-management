@@ -1,7 +1,7 @@
 <p *ngIf="isEditMode" class="text-center">
   Password change is not implemented yet.
 </p>
-<form *ngIf="user" (ngSubmit)="onSubmit()" #createUserForm="ngForm">
+<form *ngIf="user" (ngSubmit)="onSubmit()" #userForm="ngForm">
   <div class="form-group">
     <mat-form-field>
       <mat-label>Grupp</mat-label>
@@ -64,7 +64,7 @@
     </mat-form-field>
   </div>
   <div class="form-group">
-    <button mat-raised-button color="primary" type="submit" [disabled]="!createUserForm.form.valid">
+    <button mat-raised-button color="primary" type="submit" [disabled]="!userForm.form.valid">
       {{ isEditMode ? 'Uppdatera användare' : 'Skapa användare' }}
     </button>
   </div>

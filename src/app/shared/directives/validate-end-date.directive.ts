@@ -1,5 +1,5 @@
 import { Directive } from '@angular/core';
-import { NG_VALIDATORS, Validator, AbstractControl } from '@angular/forms';
+import { NG_VALIDATORS, Validator, AbstractControl, ValidationErrors } from '@angular/forms';
 
 @Directive({
   selector: '[appValidateEndDate]',
@@ -7,7 +7,7 @@ import { NG_VALIDATORS, Validator, AbstractControl } from '@angular/forms';
   providers: [{ provide: NG_VALIDATORS, useExisting: ValidateEndDateDirective, multi: true }]
 })
 export class ValidateEndDateDirective implements Validator {
-  validate(control: AbstractControl): { [key: string]: any } | null {
+  validate(control: AbstractControl): ValidationErrors | null {
     const startDateControl = control.root.get('startDateTime');
     if (!startDateControl || !control.value) {
       return null;

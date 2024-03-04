@@ -20,9 +20,9 @@ import { TextFieldModule } from '@angular/cdk/text-field';
 import { UserService } from '../user.service';
 
 @Component({
-  selector: 'app-create-event-form',
-  templateUrl: './create-event-form.component.html',
-  styleUrls: ['./create-event-form.component.css'],
+  selector: 'app-event-form',
+  templateUrl: './event-form.component.html',
+  styleUrls: ['./event-form.component.css'],
   standalone: true,
   imports: [
     NgIf,
@@ -84,11 +84,11 @@ export class CreateEventFormComponent implements OnInit {
     this.currentUser$ = this.authService.getCurrentUser();
   }
 
-  @ViewChild('createEventForm') createEventForm!: NgForm;
+  @ViewChild('EventForm') EventForm!: NgForm;
 
   // Getter to check if the form is dirty
   get isFormDirty(): boolean {
-    return this.createEventForm?.dirty ?? false;
+    return this.EventForm?.dirty ?? false;
   }
 
   ngOnInit() {

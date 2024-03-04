@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { CommonModule, NgIf, NgFor, AsyncPipe } from '@angular/common';
+import { CommonModule, NgIf } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 import { UserService } from '../user.service';
 import { UserAccount } from '../auth.interfaces';
@@ -14,15 +14,10 @@ import { MatIcon } from '@angular/material/icon';
 import { MatInput } from '@angular/material/input';
 import { MatFormField, MatLabel, MatSuffix, MatHint } from '@angular/material/form-field';
 
-interface ApiResponse<T> {
-  data: T;
-  // potentially other fields like 'message', 'status', etc.
-}
-
 @Component({
-  selector: 'app-create-user-form',
-  templateUrl: './create-user-form.component.html',
-  styleUrls: ['./create-user-form.component.css'],
+  selector: 'app-user-form',
+  templateUrl: './user-form.component.html',
+  styleUrls: ['./user-form.component.css'],
   standalone: true,
   imports: [
     CommonModule,
@@ -39,7 +34,7 @@ interface ApiResponse<T> {
     MatButton,
   ],
 })
-export class CreateUserFormComponent implements OnInit {
+export class UserFormComponent implements OnInit {
   submitted = false;
   isEditMode = false;
   userId: string = '';
@@ -64,10 +59,10 @@ export class CreateUserFormComponent implements OnInit {
 
   avatarMaxLength = 1000;
 
-  @ViewChild('createUserForm') createUserForm!: NgForm;
+  @ViewChild('userForm') userForm!: NgForm;
 
   get isFormDirty(): boolean {
-    return this.createUserForm?.dirty ?? false;
+    return this.userForm?.dirty ?? false;
   }
 
   constructor(
@@ -114,6 +109,7 @@ export class CreateUserFormComponent implements OnInit {
     operation$.subscribe({
       next: (response) => {
         const updatedOrCreatedUser = response.data;
+        console.log('User created:', updatedOrCreatedUser);
         this.snackBar.open(`User ${this.isEditMode ? 'updated' : 'created'} successfully`, 'Close', { duration: 3000 });
         this.router.navigate(['/admin']);
       },

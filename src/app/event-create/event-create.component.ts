@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Location } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
-import { CreateEventFormComponent } from '../create-event-form/create-event-form.component';
+import { CreateEventFormComponent } from '../event-form/event-form.component';
 import { MatIcon } from '@angular/material/icon';
 import { MatButton } from '@angular/material/button';
 
@@ -17,7 +17,7 @@ export class EventCreateComponent {
   constructor(
     private pageLocation: Location,
     private dialog: MatDialog,
-  ) {}
+  ) { }
 
   goBack() {
     this.pageLocation.back();

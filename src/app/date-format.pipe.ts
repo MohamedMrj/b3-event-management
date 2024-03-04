@@ -6,7 +6,7 @@ import { formatDate } from '@angular/common';
   standalone: true,
 })
 export class DateFormatPipe implements PipeTransform {
-  transform(value: any, formatType: string, omitYearIfCurrent: boolean = false): string {
+  transform(value: string | number | Date, formatType: string, omitYearIfCurrent: boolean = false): string {
     if (!value) return '';
 
     const svLocale = 'sv-SE';
@@ -29,7 +29,7 @@ export class DateFormatPipe implements PipeTransform {
         formatString = 'HH:mm';
         break;
       case 'dateTime':
-        formatString = 'yyyy-MM-dd HH:mm';
+        formatString = omitYear ? 'MM-dd HH:mm' : 'yyyy-MM-dd HH:mm';
         break;
       default:
         formatString = 'yyyy-MM-dd HH:mm';

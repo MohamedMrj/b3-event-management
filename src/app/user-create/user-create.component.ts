@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Location } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
-import { CreateUserFormComponent } from '../create-user-form/create-user-form.component';
+import { UserFormComponent } from '../user-form/user-form.component';
 import { MatIcon } from '@angular/material/icon';
 import { MatButton } from '@angular/material/button';
 
@@ -11,7 +11,7 @@ import { MatButton } from '@angular/material/button';
   templateUrl: './user-create.component.html',
   styleUrls: ['./user-create.component.css'],
   standalone: true,
-  imports: [MatButton, MatIcon, CreateUserFormComponent],
+  imports: [MatButton, MatIcon, UserFormComponent],
 })
 export class UserCreateComponent {
   constructor(

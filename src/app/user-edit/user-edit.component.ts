@@ -7,7 +7,7 @@ import { NgIf, Location } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { CreateUserFormComponent } from '../create-user-form/create-user-form.component';
+import { UserFormComponent } from '../user-form/user-form.component';
 import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
 import { MatIcon } from '@angular/material/icon';
 import { MatButton, MatIconButton } from '@angular/material/button';
@@ -24,7 +24,7 @@ import { MatButton, MatIconButton } from '@angular/material/button';
     MatMenuTrigger,
     MatMenu,
     MatMenuItem,
-    CreateUserFormComponent,
+    UserFormComponent,
     NgIf,
   ],
 })
@@ -42,7 +42,7 @@ export class UserEditComponent implements OnInit {
     private snackBar: MatSnackBar,
   ) { }
 
-  @ViewChild(CreateUserFormComponent) createUserFormComponent!: CreateUserFormComponent;
+  @ViewChild(UserFormComponent) userFormComponent!: UserFormComponent;
 
   ngOnInit() {
     this.route.paramMap.subscribe((params) => {
@@ -99,7 +99,7 @@ export class UserEditComponent implements OnInit {
   }
 
   confirmDiscardChanges() {
-    if (this.createUserFormComponent.isFormDirty) {
+    if (this.userFormComponent.isFormDirty) {
       const dialogRef = this.dialog.open(ConfirmDialogComponent, {
         data: {
           title: 'Lämna sidan',

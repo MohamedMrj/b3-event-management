@@ -3,7 +3,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientModule } from '@angular/common/http';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { CreateEventFormComponent } from './create-event-form.component';
+import { CreateEventFormComponent } from './event-form.component';
 import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
 
