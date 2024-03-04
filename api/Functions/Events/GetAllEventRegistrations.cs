@@ -28,21 +28,34 @@ namespace B3.Complete.Eventwebb
 
             await foreach (var registration in queryResults)
             {
-                var userEntity = await userClient.GetEntityAsync<TableEntity>("User", registration.RowKey);
-                var registrationDetails = new RegistrationWithUserDetails
+                RegistrationWithUserDetails registrationDetails = new RegistrationWithUserDetails
                 {
                     Timestamp = registration.Timestamp.ToString(),
                     EventId = registration.PartitionKey,
                     UserId = registration.RowKey,
                     RegistrationStatus = registration.RegistrationStatus,
-                    FirstName = userEntity?.Value.GetString("FirstName") ?? "",
-                    LastName = userEntity?.Value.GetString("LastName") ?? "",
-                    Username = userEntity?.Value.GetString("Username") ?? "",
-                    Avatar = userEntity?.Value.GetString("Avatar") ?? "",
                 };
+
+                try
+                {
+                    var userEntity = await userClient.GetEntityAsync<TableEntity>("User", registration.RowKey);
+                    registrationDetails.FirstName = userEntity?.Value.GetString("FirstName") ?? "";
+                    registrationDetails.LastName = userEntity?.Value.GetString("LastName") ?? "";
+                    registrationDetails.Username = userEntity?.Value.GetString("Username") ?? "";
+                    registrationDetails.Avatar = userEntity?.Value.GetString("Avatar") ?? "";
+                }
+                catch (Azure.RequestFailedException ex) when (ex.Status == 404)
+                {
+                    log.LogWarning($"User entity for registration {registration.RowKey} not found. Continuing without user details.");
+                    // Optionally initialize missing properties with default values or log the absence
+                    registrationDetails.FirstName = "N/A";
+                    registrationDetails.LastName = "N/A";
+                    registrationDetails.Username = "N/A";
+                }
 
                 detailedRegistrations.Add(registrationDetails);
             }
+
 
             if (detailedRegistrations.Count == 0)
             {
