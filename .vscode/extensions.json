@@ -4,6 +4,7 @@
     "ms-dotnettools.csharp",
     "ms-azuretools.vscode-azurestaticwebapps",
     "esbenp.prettier-vscode",
-    "editorconfig.editorconfig"
+    "editorconfig.editorconfig",
+    "dbaeumer.vscode-eslint"
   ]
 }
