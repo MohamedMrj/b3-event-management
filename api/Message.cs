@@ -20,28 +20,48 @@ namespace B3.Complete.Eventwebb
             var log = executionContext.GetLogger(nameof(Message));
             log.LogInformation("Processing a new email sending request.");
 
+            var sender = "B3EventWeb@73808b03-f7d2-482d-a917-8b397989c0ee.azurecomm.net";
             var endpoint = "https://b3eventwebbcommservice.europe.communication.azure.com/";
             var accessKey = "7axz1Tyjtw9vpis0Rt9sPcHSnnctbRJ34kE5UBWGT8+4eBJehi7fgIJHgTAjRkuClhIkneW1tS4I0HxkH1sgFw==";
-
             var connectionString = $"endpoint={endpoint};accesskey={accessKey}";
             var emailClient = new EmailClient(connectionString);
 
-            var sender = "B3EventWeb@73808b03-f7d2-482d-a917-8b397989c0ee.azurecomm.net";
-            var recipient = "h21sebda@du.se";
-            var subject = "Send email quick start - dotnet";
-            var htmlContent = "<html><body><h1>Quick send email test</h1><br/><h4>Communication email as a service mail send app working properly</h4><p>Happy Learning!!</p></body></html>";
+            EmailEntity? newEmail;
+
+            try
+            {
+                var options = new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true,
+                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                };
+
+                newEmail = await JsonSerializer.DeserializeAsync<EmailEntity>(req.Body, options);
+                if (newEmail == null)
+                {
+                    var badRequestResponse = req.CreateResponse(System.Net.HttpStatusCode.BadRequest);
+                    await badRequestResponse.WriteStringAsync("Request body is empty or invalid.");
+                    return badRequestResponse;
+                }
+            }
+            catch (JsonException ex)
+            {
+                log.LogError($"JSON parsing error: {ex.Message}");
+                var badRequestResponse = req.CreateResponse(System.Net.HttpStatusCode.BadRequest);
+                await badRequestResponse.WriteStringAsync("Invalid JSON format.");
+                return badRequestResponse;
+            }
 
             try
             {
                 var emailSendOperation = await emailClient.SendAsync(
                     wait: WaitUntil.Completed,
-                    senderAddress: sender, // The email address of the domain registered with the Communication Services resource
-                    recipientAddress: recipient,
-                    subject: subject,
-                    htmlContent: htmlContent);
+                    senderAddress: sender,
+                    recipientAddress: newEmail.Recipient,
+                    subject: newEmail.Subject,
+                    htmlContent: newEmail.HtmlContent);
                 Console.WriteLine($"Email Sent. Status = {emailSendOperation.Value.Status}");
 
-                /// Get the OperationId so that it can be used for tracking the message for troubleshooting
                 string operationId = emailSendOperation.Id;
                 Console.WriteLine($"Email operation id = {operationId}");
 
@@ -55,7 +75,6 @@ namespace B3.Complete.Eventwebb
             }
             catch (RequestFailedException ex)
             {
-                /// OperationID is contained in the exception message and can be used for troubleshooting purposes
                 Console.WriteLine($"Email send operation failed with error code: {ex.ErrorCode}, message: {ex.Message}");
                 var errorResponse = req.CreateResponse(System.Net.HttpStatusCode.InternalServerError);
                 errorResponse.Headers.Add("Content-Type", "application/json");
