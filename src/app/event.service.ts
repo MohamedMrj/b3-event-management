@@ -20,6 +20,12 @@ export class EventService {
     return this.http.get<Event[]>('/api/getAllEvents', { headers });
   }
 
+  // Fetch previous events
+  fetchPreviousEvents(): Observable<Event[]> {
+    const headers = this.authService.getAuthHeaders();
+    return this.http.get<Event[]>('/api/getPreviousEvents', { headers });
+  }
+
   // Fetch a single event by ID
   fetchEventById(eventId: string): Observable<Event> {
     const headers = this.authService.getAuthHeaders();

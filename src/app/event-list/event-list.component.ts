@@ -24,6 +24,7 @@ import { UserRegistration } from '../user';
 export class EventListComponent implements OnInit {
   currentUser$: Observable<UserDetails | null>;
   allEventsList: Event[] = [];
+  allPreviousEvents: Event[] = [];
   userEvents: Event[] = [];
   userRegistrations: UserRegistration[] = [];
   eventsByOrganizer: Event[] = [];
@@ -40,6 +41,7 @@ export class EventListComponent implements OnInit {
 
   ngOnInit() {
     this.fetchAllEvents();
+    this.fetchPreviousEvents();
     this.currentUser$.subscribe((user) => {
       if (user) {
         this.fetchEventsByOrganizer(user.userId);
@@ -53,6 +55,27 @@ export class EventListComponent implements OnInit {
     this.eventService.fetchAllEvents().subscribe({
       next: (events) => {
         this.allEventsList = events;
+
+        // Sort events by startDateTime in ascending order
+        events.sort((a, b) => {
+          const dateA = new Date(a.startDateTime);
+          const dateB = new Date(b.startDateTime);
+          return dateA.getTime() - dateB.getTime();
+        });
+      },
+      error: (error) => {
+        console.error('Error fetching events:', error);
+        this.snackBar.open('Failed to fetch events.', 'Close', {
+          duration: 3000,
+        });
+      },
+    });
+  }
+
+  fetchPreviousEvents() {
+    this.eventService.fetchPreviousEvents().subscribe({
+      next: (events) => {
+        this.allPreviousEvents = events;
 
         // Sort events by startDateTime in ascending order
         events.sort((a, b) => {

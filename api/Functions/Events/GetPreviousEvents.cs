@@ -5,15 +5,15 @@ using Microsoft.Azure.Functions.Worker.Http;
 
 namespace B3.Complete.Eventwebb
 {
-    public static class GetAllEvents
+    public static class GetPreviousEvents
     {
-        [Function(nameof(GetAllEvents))]
+        [Function(nameof(GetPreviousEvents))]
         public static async Task<HttpResponseData> Run(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] HttpRequestData req,
             FunctionContext executionContext)
         {
-            var log = executionContext.GetLogger(nameof(GetAllEvents));
-            log.LogInformation("Getting all events.");
+            var log = executionContext.GetLogger(nameof(GetPreviousEvents));
+            log.LogInformation("Getting all previous events.");
 
             var client = new TableClient(DatabaseConfig.ConnectionString, DatabaseConfig.EventTable);
             var queryResults = client.QueryAsync<EventEntity>();
@@ -22,7 +22,7 @@ namespace B3.Complete.Eventwebb
 
             await foreach (var entity in queryResults)
             {
-                if (entity.EndDateTime > DateTime.Now)
+                if (entity.EndDateTime < DateTime.Now)
                 {
                     eventsList.Add(entity);
                 }

@@ -47,4 +47,18 @@
       Du har inte <a routerLink="/event/create">skapat</a> några event än.
     </p>
   </mat-tab>
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <mat-icon class="previous-events-tab">history</mat-icon>
+      Tidigare event
+    </ng-template>
+    <div class="events-container">
+      <app-event-card *ngFor="let event of allPreviousEvents" [event]="event"
+        [registrationStatus]="getRegistrationStatusForEvent(event.id || '')">
+      </app-event-card>
+    </div>
+    <p *ngIf="allEventsList.length === 0" class="center-text no-events-text">
+      Det finns inga tidigare event.
+    </p>
+  </mat-tab>
 </mat-tab-group>
