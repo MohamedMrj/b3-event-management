@@ -54,10 +54,8 @@ export class UserManageComponent implements AfterViewInit, OnInit {
     this.userService.getAllUsers().subscribe({
       next: (response) => {
         if (response.success) {
-          // Assign the data part of the response to the dataSource
           this.dataSource.data = response.data;
         } else {
-          // Handle the case where the API response indicates failure
           console.error('Failed to fetch users:', response.message);
           this.snackBar.open('Failed to fetch users.', 'Close', {
             duration: 3000,
@@ -104,7 +102,6 @@ export class UserManageComponent implements AfterViewInit, OnInit {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  // Function to delete a user from the table
   deleteUserFromTable(user: UserAccount) {
     this.dataSource.data = this.dataSource.data.filter(u => u.id !== user.id);
   }

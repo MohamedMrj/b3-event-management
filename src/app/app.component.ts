@@ -10,7 +10,8 @@ import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { AuthService } from './auth.service';
 import { NgIf, AsyncPipe } from '@angular/common';
 import { Observable } from 'rxjs';
-import { UserDetails } from './auth.interfaces';
+import { UserDetails, UserAccount } from './auth.interfaces';
+import { UserService } from './user.service';
 
 @Component({
   selector: 'app-root',
@@ -33,6 +34,16 @@ export class AppComponent implements OnInit {
   title = 'B3 Eventwebb';
   isValidToken: boolean = false;
   currentUser$: Observable<UserDetails | null>;
+  userAccount: UserAccount = {
+    id: '',
+    userType: '',
+    username: '',
+    firstName: '',
+    lastName: '',
+    phoneNumber: '',
+    avatar: '',
+    lastModified: '',
+  };
 
   constructor(
     private titleService: TitleService,
@@ -40,6 +51,7 @@ export class AppComponent implements OnInit {
     private router: Router,
     private snackBar: MatSnackBar,
     public authService: AuthService,
+    private userService: UserService,
   ) {
     this.currentUser$ = this.authService.getCurrentUser();
   }
@@ -76,5 +88,34 @@ export class AppComponent implements OnInit {
     if (customTitle) {
       this.title = customTitle;
     }
+
+    // Fetch the user account details
+    this.currentUser$.subscribe((user) => {
+      if (user) {
+        this.getUserAccount(user.userId);
+      }
+    });
+  }
+
+  // Get the user account details
+  getUserAccount(id: string) {
+    this.userService.getUser(id).subscribe({
+      next: (response) => {
+        if (response.success) {
+          this.userAccount = response.data;
+        } else {
+          console.error('Failed to fetch user account:', response.message);
+          this.snackBar.open('Failed to fetch user account.', 'Close', {
+            duration: 3000,
+          });
+        }
+      },
+      error: (error) => {
+        console.error('Error fetching user account:', error);
+        this.snackBar.open('Error fetching user account.', 'Close', {
+          duration: 3000,
+        });
+      },
+    });
   }
 }

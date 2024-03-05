@@ -53,10 +53,24 @@ mat-toolbar {
   flex-direction: row;
   gap: 0.5rem;
   width: auto;
+  font-weight: 400;
+}
+
+.user-row-menu-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .toolbar-username {
   font-size: 1rem;
+  display: none;
+}
+
+.userlist-avatar {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
 }
 
 /* Footer */
@@ -80,6 +94,10 @@ mat-toolbar {
 @media (min-width: 664px) {
   mat-toolbar {
     padding: 0 1rem;
+  }
+
+  .toolbar-username {
+    display: block;
   }
 
   .main-wrapper {
