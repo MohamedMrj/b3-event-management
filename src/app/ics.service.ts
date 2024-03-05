@@ -14,19 +14,17 @@ export class IcsService {
       return;
     }
 
-   
-    const title = event.title;
-    let description = event.shortDescription +  "||"  + event.longDescription; 
-    description = this.formatIcsText(description); 
 
+    const title = event.title;
+    const description = this.formatIcsText(event.shortDescription);
     const startDateTime = this.formatDateForIcs(new Date(event.startDateTime));
     const endDateTime = this.formatDateForIcs(new Date(event.endDateTime));
-
     const location = [
       event.locationStreet,
       event.locationCity,
       event.locationCountry
-    ].filter(part => part).join(', ');
+    ].filter(part => part).join(' ');
+    const event_url = event.id ? `https://wonderful-coast-0fa0b0703.4.azurestaticapps.net/event/${event.id}` : '';
 
     const icsContent = [
       "BEGIN:VCALENDAR",
@@ -39,16 +37,18 @@ export class IcsService {
       `SUMMARY:${title}`,
       `DESCRIPTION:${description}`,
       `LOCATION:${location}`,
+      `URL:${event_url}`,
       "END:VEVENT",
       "END:VCALENDAR",
     ].join("\r\n");
 
+    const sanitizedTitle = title.replace(/[^a-zA-Z0-9åäöÅÄÖ]/g, '_');
     const blob = new Blob([icsContent], { type: "text/calendar" });
     const url = window.URL.createObjectURL(blob);
 
     const link = document.createElement("a");
     link.href = url;
-    link.setAttribute("download", `${title.replace(/[^a-zA-Z0-9]/g, '_')}.ics`);
+    link.setAttribute("download", `${sanitizedTitle}.ics`);
     document.body.appendChild(link);
     link.click();
 
@@ -73,7 +73,7 @@ export class IcsService {
     let result = '';
     text = text.replace(/\\/g, '\\\\').replace(/;/g, '\\;').replace(/,/g, '\\,');
     while (text.length > 0) {
-      let line = text.substring(0, 75);
+      const line = text.substring(0, 75);
       text = text.substring(75);
       result += (result ? '\r\n ' : '') + line;
     }
