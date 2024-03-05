@@ -28,6 +28,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { HttpClient } from '@angular/common/http';
 import { getGoogleMapsEmbedUrl } from '../utils/location.utils';
+import { IcsService } from '../ics.service';
 
 @Component({
   selector: 'app-event-detail',
@@ -81,6 +82,7 @@ export class EventDetailComponent implements OnInit {
     private titleService: Title,
     private snackBar: MatSnackBar,
     private http: HttpClient,
+    private icsService: IcsService
   ) {
     this.currentUser$ = this.authService.getCurrentUser();
     registerLocaleData(localeSv);
@@ -219,76 +221,11 @@ export class EventDetailComponent implements OnInit {
   goBack() {
     this.router.navigate(['/']);
   }
-  
-  // Nedan är kod för att skapa ICS i frontend.
 
   generateAndDownloadICS() {
-    
-
-    const title = this.event.title;
-    let description = this.event.shortDescription + "\\n\\n" + this.event.longDescription; 
-    description = this.formatIcsText(description); // 
-  
-    const startDateTime = this.formatDateForIcs(new Date(this.event.startDateTime));
-    const endDateTime = this.formatDateForIcs(new Date(this.event.endDateTime));
-
-    const location = [
-      this.event.locationStreet,
-      this.event.locationCity,
-      this.event.locationCountry
-    ].filter(part => part).join(', ');
-  
-
-  
-    const icsContent = [
-      "BEGIN:VCALENDAR",
-      "VERSION:2.0",
-      "PRODID:-//Your Organization//EN",
-      "BEGIN:VEVENT",
-      `DTSTAMP:${this.formatDateForIcs(new Date())}`,
-      `DTSTART:${startDateTime}`,
-      `DTEND:${endDateTime}`,
-      `SUMMARY:${title}`,
-      `DESCRIPTION:${description}`,
-      `LOCATION:${location}`,
-      "END:VEVENT",
-      "END:VCALENDAR",
-    ].join("\r\n");
-  
-    const blob = new Blob([icsContent], { type: "text/calendar" });
-    const url = window.URL.createObjectURL(blob);
-  
-    const link = document.createElement("a");
-    link.href = url;
-    link.setAttribute("download", `${title.replace(/[^a-zA-Z0-9]/g, '_')}.ics`);
-    document.body.appendChild(link);
-    link.click();
-  
-    document.body.removeChild(link);
-    window.URL.revokeObjectURL(url);
+    this.icsService.generateAndDownloadICS(this.event);
   }
+ 
 
-  formatDateForIcs(date: Date): string {
-    return [
-      date.getUTCFullYear(),
-      (date.getUTCMonth() + 1).toString().padStart(2, '0'),
-      date.getUTCDate().toString().padStart(2, '0'),
-      'T',
-      date.getUTCHours().toString().padStart(2, '0'),
-      date.getUTCMinutes().toString().padStart(2, '0'),
-      date.getUTCSeconds().toString().padStart(2, '0'),
-      'Z'  
-    ].join('');
-  }
-
-  formatIcsText(text: string): string {
-    let result = '';
-    text = text.replace(/\\/g, '\\\\').replace(/;/g, '\\;').replace(/,/g, '\\,');
-    while (text.length > 0) {
-      let line = text.substring(0, 75);
-      text = text.substring(75);
-      result += (result ? '\r\n ' : '') + line;
-    }
-    return result;
-  }
+ 
 }
