@@ -1,97 +1,70 @@
-// using Azure.Communication.Email;
-// using Microsoft.Extensions.Logging;
-// using Microsoft.Azure.Functions.Worker;
-// using Microsoft.Azure.Functions.Worker.Http;
-// using System.Threading.Tasks;
-// using System.IO;
-// using System.Text.Json;
+using Azure;
+using Azure.Communication.Email;
+using Microsoft.Azure.Functions.Worker;
+using Microsoft.Azure.Functions.Worker.Http;
+using Microsoft.Extensions.Logging;
+using System;
+using System.IO;
+using System.Threading.Tasks;
+using System.Text.Json;
 
-// namespace B3.Complete.Eventwebb
-// {
-//     public static class Message
-//     {
-//         // Azure Function triggered by an HTTP request
-//         [Function(nameof(Message))]
-//         public static async Task<HttpResponseData> Run(
-//             [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] HttpRequestData req,
-//             FunctionContext executionContext)
-//         {
-//             // Get logger to log information and errors
-//             var log = executionContext.GetLogger(nameof(Message));
-//             log.LogInformation("Processing a new message request");
+namespace B3.Complete.Eventwebb
+{
+    public static class Message
+    {
+        [Function(nameof(Message))]
+        public static async Task<HttpResponseData> Run(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] HttpRequestData req,
+            FunctionContext executionContext)
+        {
+            var log = executionContext.GetLogger(nameof(Message));
+            log.LogInformation("Processing a new email sending request.");
 
-//             string senderEmail, recipientEmail, name;
-//             try
-//             {
-//                 // Deserialize the request body to get the sender's and recipient's email addresses and the name
-//                 var data = await JsonSerializer.DeserializeAsync<dynamic>(req.Body);
-//                 name = data?.name;
-//                 senderEmail = data?.senderEmail;
-//                 recipientEmail = data?.recipientEmail;
+            var endpoint = "https://b3eventwebbcommservice.europe.communication.azure.com/";
+            var accessKey = "7axz1Tyjtw9vpis0Rt9sPcHSnnctbRJ34kE5UBWGT8+4eBJehi7fgIJHgTAjRkuClhIkneW1tS4I0HxkH1sgFw==";
 
-//                 // Check if any of the required fields are missing
-//                 if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(senderEmail) || string.IsNullOrEmpty(recipientEmail))
-//                 {
-//                     var badRequestResponse = req.CreateResponse(System.Net.HttpStatusCode.BadRequest);
-//                     await badRequestResponse.WriteStringAsync("Request body is empty or invalid.");
-//                     return badRequestResponse;
-//                 }
-//             }
-//             catch (JsonException ex)
-//             {
-//                 // Log JSON parsing errors
-//                 log.LogError($"JSON parsing error: {ex.Message}");
-//                 var badRequestResponse = req.CreateResponse(System.Net.HttpStatusCode.BadRequest);
-//                 await badRequestResponse.WriteStringAsync("Invalid JSON format.");
-//                 return badRequestResponse;
-//             }
+            var connectionString = $"endpoint={endpoint};accesskey={accessKey}";
+            var emailClient = new EmailClient(connectionString);
 
-//             try
-//             {
-//                 // Send the email
-//                 await SendMail(name, senderEmail, recipientEmail);
-//             }
-//             catch (Exception ex)
-//             {
-//                 // Log errors when sending the email
-//                 log.LogError($"Error sending email: {ex.Message}");
-//                 var errorResponse = req.CreateResponse(System.Net.HttpStatusCode.InternalServerError);
-//                 await errorResponse.WriteStringAsync("Error sending the email.");
-//                 return errorResponse;
-//             }
+            var sender = "B3EventWeb@73808b03-f7d2-482d-a917-8b397989c0ee.azurecomm.net";
+            var recipient = "h21sebda@du.se";
+            var subject = "Send email quick start - dotnet";
+            var htmlContent = "<html><body><h1>Quick send email test</h1><br/><h4>Communication email as a service mail send app working properly</h4><p>Happy Learning!!</p></body></html>";
 
-//             // Return a success response
-//             var okResponse = req.CreateResponse(System.Net.HttpStatusCode.OK);
-//             await okResponse.WriteStringAsync($"Hello, {name}. This HTTP triggered function executed successfully.");
-//             return okResponse;
-//         }
+            try
+            {
+                var emailSendOperation = await emailClient.SendAsync(
+                    wait: WaitUntil.Completed,
+                    senderAddress: sender, // The email address of the domain registered with the Communication Services resource
+                    recipientAddress: recipient,
+                    subject: subject,
+                    htmlContent: htmlContent);
+                Console.WriteLine($"Email Sent. Status = {emailSendOperation.Value.Status}");
 
-//         // Method to send an email
-//         public static async Task SendMail(string name, string senderEmail, string recipientEmail)
-//         {
-//             // Define the endpoint and access key for the Azure Communication Services
-//             var endpoint = "https://b3eventwebbcommservice.europe.communication.azure.com/";
-//             var accessKey = "7axz1Tyjtw9vpis0Rt9sPcHSnnctbRJ34kE5UBWGT8+4eBJehi7fgIJHgTAjRkuClhIkneW1tS4I0HxkH1sgFw==";
-//             var connectionString = $"endpoint={endpoint};accesskey={accessKey}";
+                /// Get the OperationId so that it can be used for tracking the message for troubleshooting
+                string operationId = emailSendOperation.Id;
+                Console.WriteLine($"Email operation id = {operationId}");
 
-//             // Create an email client
-//             var emailClient = new EmailClient(connectionString);
+                var response = req.CreateResponse(System.Net.HttpStatusCode.OK);
+                response.Headers.Add("Content-Type", "application/json");
 
-//             // Define the email content
-//             var emailContent = new EmailContent($"Hello, {name}!")
-//             {
-//                 PlainText = "This is an invitation sent by Mohamed"
-//             };
+                var responseContent = new { message = "Email sent successfully." };
+                await response.WriteStringAsync(JsonSerializer.Serialize(responseContent));
 
-//             // Define the sender and recipient email addresses
-//             var from = new EmailAddress(senderEmail);
-//             var to = new EmailAddress(recipientEmail);
+                return response;
+            }
+            catch (RequestFailedException ex)
+            {
+                /// OperationID is contained in the exception message and can be used for troubleshooting purposes
+                Console.WriteLine($"Email send operation failed with error code: {ex.ErrorCode}, message: {ex.Message}");
+                var errorResponse = req.CreateResponse(System.Net.HttpStatusCode.InternalServerError);
+                errorResponse.Headers.Add("Content-Type", "application/json");
 
-//             // Create the email message
-//             var emailMessage = new EmailMessage(from.Address, to.Address, emailContent);
+                var errorContent = new { message = "Error sending the email." };
+                await errorResponse.WriteStringAsync(JsonSerializer.Serialize(errorContent));
 
-//             // Send the email
-//             await emailClient.SendEmailAsync(emailMessage);
-//         }
-//     }
-// }
+                return errorResponse;
+            }
+        }
+    }
+}
