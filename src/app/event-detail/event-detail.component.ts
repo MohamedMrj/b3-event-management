@@ -27,8 +27,11 @@ import localeSv from '@angular/common/locales/sv';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { HttpClient } from '@angular/common/http';
-import { getGoogleMapsEmbedUrl } from '../utils/location.utils';
 import { IcsService } from '../ics.service';
+import { EmailInviteService } from '../email-invite.service';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { InviteDialogComponent } from '../invite-dialog/invite-dialog.component';
 
 @Component({
   selector: 'app-event-detail',
@@ -57,6 +60,9 @@ import { IcsService } from '../ics.service';
     DateFormatPipe,
     MatTooltipModule,
     MatExpansionModule,
+    MatFormFieldModule,
+    MatDialogModule,
+    InviteDialogComponent,
   ],
 })
 export class EventDetailComponent implements OnInit {
@@ -71,6 +77,7 @@ export class EventDetailComponent implements OnInit {
   comingRegistrations: UserRegistration[] = [];
   maybeRegistrations: UserRegistration[] = [];
   notComingRegistrations: UserRegistration[] = [];
+  inviteRecipients: string[] = [];
   panelOpenState = false;
 
   constructor(
@@ -82,7 +89,9 @@ export class EventDetailComponent implements OnInit {
     private titleService: Title,
     private snackBar: MatSnackBar,
     private http: HttpClient,
-    private icsService: IcsService
+    private icsService: IcsService,
+    private emailInviteService: EmailInviteService,
+    private dialog: MatDialog,
   ) {
     this.currentUser$ = this.authService.getCurrentUser();
     registerLocaleData(localeSv);
@@ -97,6 +106,62 @@ export class EventDetailComponent implements OnInit {
         this.eventNotFound = true;
       }
     });
+  }
+
+  inviteDialog() {
+    const dialogRef = this.dialog.open(InviteDialogComponent, {
+      width: '358px',
+    });
+
+    dialogRef.afterClosed().subscribe((recipients: string[]) => {
+      if (recipients && recipients.length) {
+        this.inviteUsers(this.event, recipients);
+      }
+    });
+  }
+
+  inviteUsers(event: Event, recipients: string[]): void {
+    const emailContent = this.emailInviteService.getEventInviteContent(event);
+
+    for (const recipient of recipients) {
+      this.http
+        .post('/api/Message', {
+          recipient: recipient,
+          subject: emailContent.subject,
+          htmlContent: emailContent.htmlContent,
+        })
+        .subscribe({
+          next: () => {
+            console.log('Email sent successfully');
+          },
+          error: (error) => {
+            console.error('Failed to send email: ', error);
+          },
+        });
+    }
+  }
+
+  sendCalendarInvite(event: Event, currentUser: UserDetails): void {
+    console.log('Trying to send email');
+    if (currentUser && currentUser.username) {
+      const emailContent = this.emailInviteService.getEventRegistrationContent(event);
+      this.http
+        .post('/api/Message', {
+          recipient: currentUser.username,
+          subject: emailContent.subject,
+          htmlContent: emailContent.htmlContent,
+        })
+        .subscribe({
+          next: () => {
+            console.log('Email sent successfully');
+          },
+          error: (error) => {
+            console.error('Failed to send email: ', error);
+          },
+        });
+    } else {
+      console.error('No current user found or user does not have a username.');
+    }
   }
 
   fetchEventAndRegistrations(eventId: string): void {
@@ -123,7 +188,6 @@ export class EventDetailComponent implements OnInit {
     });
   }
 
-
   private filterRegistrationsByStatus(registrations: UserRegistration[]): void {
     this.comingRegistrations = registrations.filter(r => r.registrationStatus === 'Kommer');
     this.maybeRegistrations = registrations.filter(r => r.registrationStatus === 'Kanske');
@@ -138,7 +202,6 @@ export class EventDetailComponent implements OnInit {
       }
     });
   }
-
 
   navigateToEditEvent() {
     if (this.event?.id) {
@@ -170,7 +233,7 @@ export class EventDetailComponent implements OnInit {
     return this.userService.getUserRegistrationForEvent(eventId, userId);
   }
 
-  rsvp(eventId: string | undefined, userId: string, registrationStatus: string): void {
+  rsvp(eventId: string | undefined, currentUser: UserDetails, registrationStatus: string): void {
     if (!eventId) {
       console.error('Event ID is undefined');
       this.snackBar.open('Event kunde inte hittas.', 'Stäng', {
@@ -179,8 +242,12 @@ export class EventDetailComponent implements OnInit {
       return;
     }
 
-    this.userService.registerForEvent(eventId, userId, registrationStatus).subscribe({
+    this.userService.registerForEvent(eventId, currentUser.userId, registrationStatus).subscribe({
       next: () => {
+        if (registrationStatus === 'Kommer') {
+          this.sendCalendarInvite(this.event, currentUser);
+        }
+
         this.snackBar.open('Din anmälan är sparad.', 'Stäng', {
           duration: 3000,
         });
@@ -225,7 +292,4 @@ export class EventDetailComponent implements OnInit {
   generateAndDownloadICS() {
     this.icsService.generateAndDownloadICS(this.event);
   }
- 
-
- 
 }

@@ -1,0 +1,21 @@
+<h3 mat-dialog-title>Bjud in användare</h3>
+<mat-dialog-content>
+  <form [formGroup]="emailsForm">
+    <div formArrayName="emails">
+      <div *ngFor="let email of emailFormArray.controls; let i = index" class="email-input-row">
+        <mat-form-field class="full-width">
+          <mat-label>E-post</mat-label>
+          <input matInput [formControlName]="i">
+        </mat-form-field>
+        <button mat-icon-button aria-label="Remove email" (click)="removeEmail(i)" class="removeButton">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+    </div>
+    <button mat-button (click)="addEmail()"><mat-icon>person_add</mat-icon>Lägg till ytterligare</button>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button [mat-dialog-close]="null">Stäng</button>
+  <button mat-button (click)="sendInvites()">Skicka</button>
+</mat-dialog-actions>

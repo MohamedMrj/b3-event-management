@@ -1,0 +1,17 @@
+.email-input-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.full-width {
+  flex: 1;
+}
+
+.mat-mdc-dialog-content {
+  padding: 0 2rem 0 2rem !important;
+}
+
+.removeButton {
+  margin-bottom: 1rem;
+}
