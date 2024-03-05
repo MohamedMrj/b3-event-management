@@ -1,0 +1,82 @@
+import { Injectable } from '@angular/core';
+import { Event } from './event';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class IcsService {
+
+  constructor() { }
+
+  generateAndDownloadICS(event: Event) {
+    if (!event) {
+      console.error('Event data is not available');
+      return;
+    }
+
+   
+    const title = event.title;
+    let description = event.shortDescription +  "||"  + event.longDescription; 
+    description = this.formatIcsText(description); 
+
+    const startDateTime = this.formatDateForIcs(new Date(event.startDateTime));
+    const endDateTime = this.formatDateForIcs(new Date(event.endDateTime));
+
+    const location = [
+      event.locationStreet,
+      event.locationCity,
+      event.locationCountry
+    ].filter(part => part).join(', ');
+
+    const icsContent = [
+      "BEGIN:VCALENDAR",
+      "VERSION:2.0",
+      "PRODID:-//Your Organization//EN",
+      "BEGIN:VEVENT",
+      `DTSTAMP:${this.formatDateForIcs(new Date())}`,
+      `DTSTART:${startDateTime}`,
+      `DTEND:${endDateTime}`,
+      `SUMMARY:${title}`,
+      `DESCRIPTION:${description}`,
+      `LOCATION:${location}`,
+      "END:VEVENT",
+      "END:VCALENDAR",
+    ].join("\r\n");
+
+    const blob = new Blob([icsContent], { type: "text/calendar" });
+    const url = window.URL.createObjectURL(blob);
+
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute("download", `${title.replace(/[^a-zA-Z0-9]/g, '_')}.ics`);
+    document.body.appendChild(link);
+    link.click();
+
+    document.body.removeChild(link);
+    window.URL.revokeObjectURL(url);
+  }
+
+  formatDateForIcs(date: Date): string {
+    return [
+      date.getUTCFullYear(),
+      (date.getUTCMonth() + 1).toString().padStart(2, '0'),
+      date.getUTCDate().toString().padStart(2, '0'),
+      'T',
+      date.getUTCHours().toString().padStart(2, '0'),
+      date.getUTCMinutes().toString().padStart(2, '0'),
+      date.getUTCSeconds().toString().padStart(2, '0'),
+      'Z'
+    ].join('');
+  }
+
+  formatIcsText(text: string): string {
+    let result = '';
+    text = text.replace(/\\/g, '\\\\').replace(/;/g, '\\;').replace(/,/g, '\\,');
+    while (text.length > 0) {
+      let line = text.substring(0, 75);
+      text = text.substring(75);
+      result += (result ? '\r\n ' : '') + line;
+    }
+    return result;
+  }
+}

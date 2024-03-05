@@ -32,9 +32,10 @@
           </mat-radio-group>
         </mat-menu>
       </div>
-      <button mat-icon-button (click)="addToCalendar()" matTooltip="Lägg till i kalender">
+      <button mat-icon-button (click)="generateAndDownloadICS()" matTooltip="Lägg till i kalender">
         <mat-icon>calendar_today</mat-icon>
       </button>
+      
       
       <button mat-icon-button (click)="copyToClipboard(event.id)" matTooltip="Kopiera event">
         <mat-icon>link</mat-icon>
