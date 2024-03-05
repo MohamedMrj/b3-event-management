@@ -32,6 +32,7 @@ import { EmailInviteService } from '../email-invite.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { InviteDialogComponent } from '../invite-dialog/invite-dialog.component';
+import { Buffer } from 'buffer';
 
 @Component({
   selector: 'app-event-detail',
@@ -145,11 +146,18 @@ export class EventDetailComponent implements OnInit {
     console.log('Trying to send email');
     if (currentUser && currentUser.username) {
       const emailContent = this.emailInviteService.getEventRegistrationContent(event);
+      const attachmentContent = this.icsService.generateICS(event);
+      const base64AttachmentContent = Buffer.from(attachmentContent).toString('base64');
       this.http
         .post('/api/Message', {
           recipient: currentUser.username,
           subject: emailContent.subject,
           htmlContent: emailContent.htmlContent,
+          attachment: {
+            name: event.title.replace(/[^a-zA-Z0-9åäöÅÄÖ]/g, '_') + '.ics',
+            contentType: 'text/calendar',
+            content: base64AttachmentContent,
+          },
         })
         .subscribe({
           next: () => {
@@ -290,6 +298,7 @@ export class EventDetailComponent implements OnInit {
   }
 
   generateAndDownloadICS() {
-    this.icsService.generateAndDownloadICS(this.event);
+    const icsInvitation = this.icsService.generateICS(this.event);
+    this.icsService.downloadICS(icsInvitation, this.event.title);
   }
 }
