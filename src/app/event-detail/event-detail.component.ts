@@ -26,6 +26,7 @@ import { DateFormatPipe } from '../date-format.pipe';
 import localeSv from '@angular/common/locales/sv';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-event-detail',
@@ -78,6 +79,7 @@ export class EventDetailComponent implements OnInit {
     private authService: AuthService,
     private titleService: Title,
     private snackBar: MatSnackBar,
+    private http: HttpClient,
   ) {
     this.currentUser$ = this.authService.getCurrentUser();
     registerLocaleData(localeSv);
@@ -134,7 +136,23 @@ export class EventDetailComponent implements OnInit {
     });
   }
   addToCalendar() {
-    console.log('Add to calendar clicked!');}
+    this.http.get('http://localhost:7071/api/calendar', { responseType: 'text' }).subscribe((data: BlobPart) => {
+      // Skapa en blob från svaret
+      const blob = new Blob([data], { type: 'text/calendar' });
+      const url = window.URL.createObjectURL(blob);
+      
+      // Skapa en temporär länk för nedladdning
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', 'event.ics'); // Ange namn på filen
+      document.body.appendChild(link);
+      link.click();
+
+      // Rensa upp efter nedladdning
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+  });
+}
 
   navigateToEditEvent() {
     if (this.event?.id) {
