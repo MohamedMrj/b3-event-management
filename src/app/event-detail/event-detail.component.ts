@@ -133,7 +133,8 @@ export class EventDetailComponent implements OnInit {
       }
     });
   }
-
+  addToCalendar() {
+    console.log('Add to calendar clicked!');}
 
   navigateToEditEvent() {
     if (this.event?.id) {
