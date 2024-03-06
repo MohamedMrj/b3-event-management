@@ -34,10 +34,14 @@ namespace B3.Complete.Eventwebb
             {
                 await response.WriteAsJsonAsync(registrationList);
             }
+            else if (registrationList.Count == 0)
+            {
+                await response.WriteAsJsonAsync(new List<EventRegistrationEntity>());
+            }
             else
             {
                 response.StatusCode = System.Net.HttpStatusCode.NotFound;
-                await response.WriteStringAsync("No events found.");
+                await response.WriteStringAsync("Something went wrong.");
             }
 
             return response;
