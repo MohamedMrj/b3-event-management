@@ -52,8 +52,7 @@
       <mat-radio-group aria-labelledby="rsvp-radio-group-label" class="rsvp-radio-group"
         [(ngModel)]="registrationStatus">
         @for (status of statusOptions; track status) {
-        <mat-radio-button class="rsvp-radio-button" [value]="status"
-          (click)="rsvp(event.id, currentUser.userId, status)">
+        <mat-radio-button class="rsvp-radio-button" [value]="status" (click)="rsvp(event.id, currentUser, status)">
           {{ status }}
         </mat-radio-button>
         }

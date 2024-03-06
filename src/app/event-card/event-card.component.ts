@@ -26,6 +26,10 @@ import { FormsModule } from '@angular/forms';
 import { MatRadioModule } from '@angular/material/radio';
 import { DateFormatPipe } from '../date-format.pipe';
 import localeSv from '@angular/common/locales/sv';
+import { IcsService } from '../ics.service';
+import { EmailInviteService } from '../email-invite.service';
+import { HttpClient } from '@angular/common/http';
+import { Buffer } from 'buffer';
 
 @Component({
   selector: 'app-event-card',
@@ -69,6 +73,9 @@ export class EventCardComponent implements OnInit {
     private eventService: EventService,
     private userService: UserService,
     public authService: AuthService,
+    private icsService: IcsService,
+    private emailInviteService: EmailInviteService,
+    private http: HttpClient,
   ) {
     this.currentUser$ = this.authService.getCurrentUser();
     registerLocaleData(localeSv);
@@ -104,7 +111,7 @@ export class EventCardComponent implements OnInit {
       .catch((error) => console.error('Failed to copy to clipboard: ', error));
   }
 
-  rsvp(eventId: string | undefined, userId: string, registrationStatus: string): void {
+  rsvp(eventId: string | undefined, currentUser: UserDetails, registrationStatus: string): void {
     if (!eventId) {
       console.error('Event ID is undefined');
       this.snackBar.open('Event kunde inte hittas.', 'Stäng', {
@@ -113,8 +120,12 @@ export class EventCardComponent implements OnInit {
       return;
     }
 
-    this.userService.registerForEvent(eventId, userId, registrationStatus).subscribe({
+    this.userService.registerForEvent(eventId, currentUser.userId, registrationStatus).subscribe({
       next: () => {
+        if (registrationStatus === 'Kommer') {
+          this.sendCalendarInvite(this.event, currentUser);
+        }
+
         this.snackBar.open('Din anmälan är sparad.', 'Stäng', {
           duration: 3000,
         });
@@ -126,5 +137,36 @@ export class EventCardComponent implements OnInit {
         });
       },
     });
+  }
+
+  sendCalendarInvite(event: Event, currentUser: UserDetails): void {
+    console.log('Trying to send email');
+    if (currentUser && currentUser.username) {
+      const emailContent = this.emailInviteService.getEventRegistrationContent(event);
+      const attachmentContent = this.icsService.generateICS(event);
+      const base64AttachmentContent = Buffer.from(attachmentContent).toString('base64');
+      this.http
+        .post('/api/Message', {
+          recipient: currentUser.username,
+          subject: emailContent.subject,
+          htmlContent: emailContent.htmlContent,
+          plainTextContent: emailContent.plainTextContent,
+          attachment: {
+            name: event.title.replace(/[^a-zA-Z0-9åäöÅÄÖ]/g, '_') + '.ics',
+            contentType: 'text/calendar',
+            content: base64AttachmentContent,
+          },
+        })
+        .subscribe({
+          next: () => {
+            console.log('Email sent successfully');
+          },
+          error: (error) => {
+            console.error('Failed to send email: ', error);
+          },
+        });
+    } else {
+      console.error('No current user found or user does not have a username.');
+    }
   }
 }
