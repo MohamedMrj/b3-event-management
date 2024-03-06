@@ -60,9 +60,9 @@
         <div class="event-detail-body-right-item">
           <div class="event-info-row">
             <mat-icon>person</mat-icon>
-            <span *ngIf="organizerInfo$ | async as organizerInfo">
-              <strong>Skapad av:</strong>
-              {{ organizerInfo.username }}
+            <span *ngIf="organizerInfo$ | async as organizerInfo" matTooltip="{{organizerInfo.username}}">
+              <strong>Skapare: </strong>
+              {{ organizerInfo.firstName }} {{ organizerInfo.lastName }}
             </span>
           </div>
         </div>

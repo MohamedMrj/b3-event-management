@@ -16,4 +16,8 @@ export interface Event {
 export interface OrganizerInfo {
   id: string;
   username: string;
+  firstName: string;
+  lastName: string;
+  phoneNumber: string;
+  avatar: string;
 }
