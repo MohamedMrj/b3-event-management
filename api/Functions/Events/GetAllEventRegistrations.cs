@@ -47,7 +47,6 @@ namespace B3.Complete.Eventwebb
                 catch (Azure.RequestFailedException ex) when (ex.Status == 404)
                 {
                     log.LogWarning($"User entity for registration {registration.RowKey} not found. Continuing without user details.");
-                    // Optionally initialize missing properties with default values or log the absence
                     registrationDetails.FirstName = "N/A";
                     registrationDetails.LastName = "N/A";
                     registrationDetails.Username = "N/A";
@@ -56,23 +55,32 @@ namespace B3.Complete.Eventwebb
                 detailedRegistrations.Add(registrationDetails);
             }
 
-
-            if (detailedRegistrations.Count == 0)
-            {
-                var notFoundResponse = req.CreateResponse(HttpStatusCode.NotFound);
-                await notFoundResponse.WriteStringAsync("No registrations found for the given event ID.");
-                return notFoundResponse;
-            }
-
             var okResponse = req.CreateResponse(HttpStatusCode.OK);
             var options = new JsonSerializerOptions
             {
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
             };
-            var json = JsonSerializer.Serialize(detailedRegistrations, options);
-            okResponse.Headers.Add("Content-Type", "application/json; charset=utf-8");
-            await okResponse.WriteStringAsync(json);
-            return okResponse;
+
+            if (detailedRegistrations.Count > 0)
+            {
+                var json = JsonSerializer.Serialize(detailedRegistrations, options);
+                okResponse.Headers.Add("Content-Type", "application/json; charset=utf-8");
+                await okResponse.WriteStringAsync(json);
+                return okResponse;
+            }
+            else if (detailedRegistrations.Count == 0)
+            {
+                var json = JsonSerializer.Serialize(detailedRegistrations, options);
+                okResponse.Headers.Add("Content-Type", "application/json; charset=utf-8");
+                await okResponse.WriteStringAsync(json);
+                return okResponse;
+            }
+            else
+            {
+                var notFoundResponse = req.CreateResponse(HttpStatusCode.NotFound);
+                await notFoundResponse.WriteStringAsync("No registrations found for the given event ID.");
+                return notFoundResponse;
+            }
         }
     }
 }
