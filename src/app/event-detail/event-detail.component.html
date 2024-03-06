@@ -41,7 +41,7 @@
       </button>
       <button mat-icon-button [matMenuTriggerFor]="manageEventMenu"
         *ngIf="currentUser.role === 'Admin' || event.creatorUserId === currentUser.userId"
-        aria-label="Menu for managing event">
+        aria-label="Menu for managing event" matTooltip="Administrera event">
         <mat-icon>manage_accounts</mat-icon>
       </button>
       <mat-menu #manageEventMenu="matMenu">
