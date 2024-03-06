@@ -132,6 +132,7 @@ export class EventDetailComponent implements OnInit {
           recipient: recipient,
           subject: emailContent.subject,
           htmlContent: emailContent.htmlContent,
+          plainTextContent: emailContent.plainTextContent,
         })
         .subscribe({
           next: () => {
@@ -155,6 +156,7 @@ export class EventDetailComponent implements OnInit {
           recipient: currentUser.username,
           subject: emailContent.subject,
           htmlContent: emailContent.htmlContent,
+          plainTextContent: emailContent.plainTextContent,
           attachment: {
             name: event.title.replace(/[^a-zA-Z0-9åäöÅÄÖ]/g, '_') + '.ics',
             contentType: 'text/calendar',

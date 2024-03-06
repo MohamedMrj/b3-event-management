@@ -60,7 +60,7 @@ namespace B3.Complete.Eventwebb
             // Create the email content
             var emailContent = new EmailContent(newEmail.Subject)
             {
-                PlainText = "This email message is sent from Azure Communication Service Email.",
+                PlainText = newEmail.PlainTextContent,
                 Html = newEmail.HtmlContent
             };
 
