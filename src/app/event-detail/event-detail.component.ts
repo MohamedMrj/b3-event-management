@@ -181,6 +181,15 @@ export class EventDetailComponent implements OnInit {
       switchMap(event => {
         this.event = event;
         this.titleService.setTitle(event.title);
+
+        this.organizerInfo$ = this.eventService.getOrganizerContactInfo(event.creatorUserId).pipe(
+          catchError(error => {
+            console.error('Error fetching organizer info:', error);
+            this.snackBar.open('Fel vid hämtning av arrangörsinformation', 'Stäng', { duration: 3000 });
+            return of(null);
+          })
+        );
+
         return this.eventService.fetchAllResponses(eventId);
       }),
       catchError(error => {
