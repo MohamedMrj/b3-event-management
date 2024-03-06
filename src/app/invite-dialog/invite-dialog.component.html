@@ -2,10 +2,17 @@
 <mat-dialog-content>
   <form [formGroup]="emailsForm">
     <div formArrayName="emails">
-      <div *ngFor="let email of emailFormArray.controls; let i = index" class="email-input-row">
+      <div *ngFor="let emailControl of emailFormArray.controls; let i = index" class="email-input-row">
         <mat-form-field class="full-width">
           <mat-label>E-post</mat-label>
-          <input matInput [formControlName]="i">
+          <input type="text" matInput [formControlName]="i" [matAutocomplete]="auto" data-1p-ignore>
+
+          <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+            <mat-option *ngFor="let user of filterUsers(emailControl.value)" [value]="user.username">
+              {{ user.firstName }} {{ user.lastName }}
+              <span class="option-email">({{ user.username }})</span>
+            </mat-option>
+          </mat-autocomplete>
         </mat-form-field>
         <button mat-icon-button aria-label="Remove email" (click)="removeEmail(i)" class="removeButton">
           <mat-icon>delete</mat-icon>

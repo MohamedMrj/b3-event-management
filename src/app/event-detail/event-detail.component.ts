@@ -111,7 +111,9 @@ export class EventDetailComponent implements OnInit {
 
   inviteDialog() {
     const dialogRef = this.dialog.open(InviteDialogComponent, {
-      width: '358px',
+      width: '100%',
+      minWidth: '375px',
+      maxWidth: '536px',
     });
 
     dialogRef.afterClosed().subscribe((recipients: string[]) => {
