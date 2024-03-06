@@ -62,8 +62,9 @@ export class InviteDialogComponent implements OnInit {
 
 
   // Add this method to your InviteDialogComponent class
-  displayFn(user: UserAccount): string {
-    return user ? `${user.firstName} ${user.lastName}` : '';
+  displayFn(username: string): string {
+    // Directly return the username, since that's what you want to display
+    return username;
   }
 
   addEmail() {

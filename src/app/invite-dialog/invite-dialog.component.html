@@ -5,7 +5,7 @@
       <div *ngFor="let emailControl of emailFormArray.controls; let i = index" class="email-input-row">
         <mat-form-field class="full-width">
           <mat-label>E-post</mat-label>
-          <input type="text" matInput [formControlName]="i" [matAutocomplete]="auto" data-1p-ignore>
+          <input type="text" name="searchUser" matInput [formControlName]="i" [matAutocomplete]="auto" data-1p-ignore>
 
           <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
             <mat-option *ngFor="let user of filterUsers(emailControl.value)" [value]="user.username">
