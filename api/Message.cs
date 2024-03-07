@@ -3,10 +3,6 @@ using Azure.Communication.Email;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Threading.Tasks;
 using System.Text.Json;
 
 namespace B3.Complete.Eventwebb
@@ -22,13 +18,11 @@ namespace B3.Complete.Eventwebb
             log.LogInformation("Processing a new email sending request.");
 
             // Set up the connection to the Azure Communication Services resource
-            var endpoint = "https://b3eventwebbcommservice.europe.communication.azure.com/";
-            var accessKey = "7axz1Tyjtw9vpis0Rt9sPcHSnnctbRJ34kE5UBWGT8+4eBJehi7fgIJHgTAjRkuClhIkneW1tS4I0HxkH1sgFw==";
-            var connectionString = $"endpoint={endpoint};accesskey={accessKey}";
+            var connectionString = Constants.EmailConnectionString;
             EmailClient emailClient = new EmailClient(connectionString);
 
             // Set up the sender address
-            var sender = "B3EventWeb@73808b03-f7d2-482d-a917-8b397989c0ee.azurecomm.net";
+            var sender = Constants.EmailSenderAddress;
 
             // Parse the request body
             EmailEntity? newEmail;
